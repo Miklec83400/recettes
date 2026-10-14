@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Le carnet de recettes de Fanie et Michael">
+<meta name="description" content="Le carnet de recettes de Fanie et Michaël">
 <meta name="theme-color" content="#D5EAC3">
 <meta name="color-scheme" content="only light">
 <meta name="mobile-web-app-capable" content="yes">
@@ -19,7 +19,7 @@ body{margin:0;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transpar
 img{max-width:100%}
 [hidden]{display:none!important}
 </style>
-<title>Les recettes de Fanie & Michael</title>
+<title>Les recettes de Fanie & Michaël</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap">
@@ -27,7 +27,7 @@ img{max-width:100%}
 <style>
 /* Layout : appli mobile de cuisine — barre d'appli en haut, une vue à la fois, barre d'onglets fixe en bas sur téléphone */
 :root{
-  --bg:#FAFCF7; --head:#D5EAC3; --surface:#FFFFFF; --sunk:#E9F2E1; --line:#D9E6CE; --ink:#2C3826; --muted:#62705A;
+  --bg:#F1F7EA; --head:#D5EAC3; --surface:#FFFFFF; --sunk:#E9F2E1; --line:#D9E6CE; --ink:#2C3826; --muted:#62705A;
   --accent:#B4496A; --on-accent:#FFFFFF; --green:#5C8C39; --on-green:#FFFFFF; --green-soft:#D5EAC3; --on-green-soft:#2F4A1C;
   --hl:#F8D3DD; --on-hl:#6A2238; --danger:#B3261E;
   --f-display:"Fredoka",ui-rounded,system-ui,-apple-system,sans-serif;
@@ -50,11 +50,14 @@ button{cursor:pointer}
 header.top{background:var(--head);position:sticky;top:env(safe-area-inset-top,0px);z-index:6}
 header.top .wrap{padding-block:12px;display:flex;gap:12px;align-items:center;justify-content:space-between}
 .brand{background:none;border:0;padding:0;text-align:left;display:flex;align-items:center;gap:12px;min-width:0}
-.logo{width:44px;height:44px;border-radius:14px;background:var(--surface);color:var(--accent);display:grid;place-items:center;font-size:26px;flex:none}
+.logo{width:56px;height:56px;border-radius:17px;background:var(--surface);color:var(--accent);display:grid;place-items:center;font-size:34px;flex:none}
+.logo.ms{width:56px}
 .brand small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-green-soft);font-weight:800}
 .brand h1{font-size:clamp(19px,5vw,28px);color:var(--ink)}
 .brand h1 em{font-style:normal;color:var(--accent)}
-.top-actions{display:flex;gap:8px}
+.top-actions{display:flex;gap:8px;margin-left:auto}
+.top-actions .btn{white-space:nowrap}
+@media (min-width:721px){.avbtn{margin-left:6px!important}}
 @media (max-width:720px){.top-actions{display:none}}
 .btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 18px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn:hover{border-color:var(--accent)}
@@ -135,6 +138,7 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .av.f{background-color:var(--hl);color:var(--on-hl)}
 .av.m{background-color:var(--green-soft);color:var(--on-green-soft)}
 .av.sm{width:32px;height:32px;font-size:14px}
+.av.hd{width:44px;height:44px;font-size:19px;box-shadow:0 0 0 2.5px var(--surface)}
 .av.md{width:56px;height:56px;font-size:22px}
 .av.lg{width:110px;height:110px;font-size:44px}
 .avs{display:inline-flex;align-items:center}
@@ -185,11 +189,11 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .fiche-tete h2{font-size:clamp(28px,6vw,40px)}
 .ing-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .ings{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.ing{width:100%;box-sizing:border-box;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 10px 8px 8px;border:0;background:var(--bg);border-radius:14px;text-align:left;color:var(--ink)}
+.ing{width:100%;box-sizing:border-box;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center;padding:8px 10px 8px 8px;border:0;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);border-radius:14px;text-align:left;color:var(--ink)}
 button.ing{cursor:pointer}
-.ing-ico{width:40px;height:40px;border-radius:12px;background:var(--surface);display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line)}
+.ing-ico{width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line)}
 .ing-ico svg{width:30px;height:30px}
-.ing-txt{min-width:0;display:grid;gap:1px}
+.ing-txt{min-width:0;display:grid;gap:1px;padding-right:2px}
 .ing-txt b{font-weight:700;line-height:1.25;overflow-wrap:anywhere}
 .ing-txt b.frigo{color:var(--accent)}
 .ing-txt small{font-size:12.5px;color:var(--muted);line-height:1.3}
@@ -210,7 +214,7 @@ button.ing{cursor:pointer}
 .poubelle[disabled]{opacity:.4;cursor:not-allowed}
 .btn.danger-plein{background:var(--danger);border-color:var(--danger);color:#fff}
 .ings li.multi{position:relative}
-.det-btn{position:absolute;left:68px;top:31px;border:0;background:none;padding:0;font-size:12.5px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
+.det-btn{display:inline-flex;margin:5px 0 2px 58px;border:0;background:none;padding:2px 0;font-size:12.5px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
 .det-btn .ms{font-size:15px;vertical-align:0;width:auto}
 .det-liste{list-style:none;margin:4px 0 2px 68px;padding:0;display:grid;gap:2px;font-size:12.5px;color:var(--muted)}
 .search-row{display:flex;gap:8px;align-items:center}
@@ -261,6 +265,16 @@ button.ing{cursor:pointer}
 .viewer-x{width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:26px;line-height:1}
 .viewer-piste{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x pan-y pinch-zoom}
 .viewer-piste::-webkit-scrollbar{display:none}
+.viewer-zone{flex:1;min-height:0;position:relative;display:flex}
+.viewer-zone .viewer-piste{flex:1}
+.fl{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:0;display:none;place-items:center;font-size:34px;line-height:1;padding-bottom:4px;cursor:pointer;z-index:2}
+.fl.g{left:12px}.fl.d{right:12px}
+.viewer .fl{background:rgba(255,255,255,.16);color:#fff}
+.viewer .fl:hover{background:rgba(255,255,255,.3)}
+.galerie-zone{position:relative}
+.galerie-zone .fl{width:40px;height:40px;font-size:28px;background:rgba(255,255,255,.88);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.souris{display:none}
+@media (hover:hover) and (pointer:fine){.fl{display:grid}.souris{display:inline}.tactile{display:none}}
 .viewer-slide{flex:0 0 100%;display:grid;place-items:center;scroll-snap-align:center;overflow:hidden}
 .viewer-slide img{max-width:100%;max-height:100%;object-fit:contain;user-select:none}
 .viewer-points{display:flex;justify-content:center;gap:6px;padding:10px}
@@ -349,14 +363,14 @@ textarea.input{min-height:110px;resize:vertical}
   <div class="wrap">
     <button class="brand" id="home" type="button" aria-label="Accueil">
       <span class="logo ms" aria-hidden="true">skillet</span>
-      <span><small>Nos recettes</small><h1>Les recettes de <em>Fanie</em> &amp; <em>Michael</em></h1></span>
+      <span><small>Nos recettes</small><h1>Les recettes de <em>Fanie</em> &amp; <em>Michaël</em></h1></span>
     </button>
-    <button class="avbtn" id="nav-profils" type="button" aria-label="Profils de Fanie et Michael"><span id="hdr-avs" class="avs"></span></button>
     <div class="top-actions">
       <button class="btn" id="nav-hasard" type="button"><span class="ms" aria-hidden="true">casino</span>Au hasard</button>
       <button class="btn" id="nav-extra" type="button"><span class="ms" aria-hidden="true">fact_check</span><span id="nav-extra-l">À valider</span></button>
       <button class="btn primary" id="nav-ajout" type="button"><span class="ms" aria-hidden="true">add</span>Ajouter</button>
     </div>
+    <button class="avbtn" id="nav-profils" type="button" aria-label="Mon profil"><span id="hdr-avs" class="avs"></span></button>
   </div>
 </header>
 <div class="wrap"><p class="status" id="status">Chargement du carnet…</p></div>
@@ -385,6 +399,7 @@ const UNITES = ["g","kg","ml","cl","L","c. à soupe","c. à café","pièce","gou
 const TYPES = ["Plat","Entrée","Dessert","Apéritif","Soupe","Salade","Accompagnement","Petit-déjeuner","Goûter","Boisson","Sauce"];
 const STYLES = ["One-pot","Pâtes","Riz","Végétarien","Rapide","Au four","Mijoté","Léger","Gourmand","Enfants","Batch cooking","Été","Hiver","Fête"];
 const AUTEURS = ["Fanie","Michael","Les deux"];
+const AFF = n => n==="Michael" ? "Michaël" : n;  // nom affiché
 const MAX_FRIGO = 5;
 const PRINCIPAUX = {"Poulet":["poulet","dinde","volaille"],"Bœuf":["boeuf","veau","steak"],"Porc":["porc","lardon","jambon","saucisse","chorizo","bacon"],"Agneau":["agneau"],"Poisson":["saumon","cabillaud","thon","poisson","truite","colin","sardine"],"Fruits de mer":["crevette","moule","saint-jacques","calamar","gambas"],"Œufs":["oeuf"],"Légumineuses":["lentille","pois chiche","haricot rouge","tofu"],"Légumes":["courgette","aubergine","potiron","courge","epinard","brocoli","chou","poireau"]};
 const TEMPS = [10,20,30,45,60,90,120];
@@ -716,9 +731,9 @@ function tempsHtml(r, long){
   return `<span>${ic("schedule")} ${parts.join(" · ")}${long&&p!=null&&c?` · ${fmtMin(p+c)} au total`:""}</span>`;
 }
 function nomAuteur(a){
-  if(a==="Les deux") return "Fanie & Michael";
+  if(a==="Les deux") return "Fanie & Michaël";
   if(String(a||"").startsWith("inv:")) return PROFILS_ID[a.slice(4)]?.prenom || "Invité";
-  return a||"";
+  return AFF(a)||"";
 }
 function filtreAuteur(r,v){
   if(!v) return true;
@@ -761,7 +776,7 @@ function aPrincipal(r,p){
 }
 const LOCAL_URLS = {};
 const blobUrl = id => !id ? "" : /^(https?:|data:|blob:)/.test(id) ? id : (LOCAL_URLS[id] || "");
-const photoUrl = r => r && r.photo ? blobUrl(r.photo) : "";
+const photoUrl = r => !r ? "" : blobUrl(r.photo || (r.photos||[])[0] || "");
 /* Photos enregistrées sur l'appareil quand l'appli tourne hors de Claude */
 const LocalAssets = {
   _db:null,
@@ -798,7 +813,7 @@ function avatar(nom, cls=""){
             : `<span class="av ${k} ${cls}" aria-hidden="true">${esc((nom||"?").charAt(0))}</span>`;
 }
 function choixAuteur(){
-  return `<div class="whos">${AUTEURS.map(a=>`<button class="who" type="button" data-aut="${esc(a)}" aria-pressed="${B.auteur===a}">${avatar(a,"md")}<span>${a==="Les deux"?"Tous les deux":esc(a)}</span></button>`).join("")}</div>`;
+  return `<div class="whos">${AUTEURS.map(a=>`<button class="who" type="button" data-aut="${esc(a)}" aria-pressed="${B.auteur===a}">${avatar(a,"md")}<span>${a==="Les deux"?"Tous les deux":esc(AFF(a))}</span></button>`).join("")}</div>`;
 }
 async function enregistrerProfil(nom, photo){
   const next={...PROFILS,[nom]:{...(PROFILS[nom]||{}),photo}};
@@ -815,15 +830,15 @@ function vueProfils(){
     <h2>Mon profil</h2>
     <div class="panel profil">
       ${avatar(monAvatarNom(),"lg")}
-      ${admin?`<h3>${esc(MOI.prenom||"Administrateur")}</h3><span class="tag">Administrateur du carnet</span>`
+      ${admin?`<h3>${esc(AFF(MOI.prenom)||"Administrateur")}</h3><span class="tag">Administrateur du carnet</span>`
         :`<div class="q" style="width:100%;text-align:left"><label for="moi-prenom">Votre prénom</label><input class="input" id="moi-prenom" value="${esc(MOI.prenom)}" placeholder="Votre prénom" autocomplete="given-name"></div>
           <button class="btn" type="button" id="moi-save">Enregistrer le prénom</button><span class="hint" id="moi-msg" aria-live="polite"></span>`}
       ${blocPhoto("moi",!!MOI.photo)}
     </div>
-    ${admin?`<div class="q"><span class="lbl">Fanie &amp; Michael</span>
-      <div class="whos">${["Fanie","Michael"].map(n=>`<div class="who">${avatar(n,"md")}<span>${n}</span></div>`).join("")}</div>
+    ${admin?`<div class="q"><span class="lbl">Fanie &amp; Michaël</span>
+      <div class="whos">${["Fanie","Michael"].map(n=>`<div class="who">${avatar(n,"md")}<span>${AFF(n)}</span></div>`).join("")}</div>
       <span class="hint">Chacun change sa photo depuis son propre compte.</span></div>`
-      :`<p class="hint" style="margin:0">Vous pouvez proposer des recettes. Elles sont visibles après validation par Fanie ou Michael.</p>`}
+      :`<p class="hint" style="margin:0">Vous pouvez proposer des recettes. Elles sont visibles après validation par Fanie ou Michaël.</p>`}
     <p class="hint" style="margin:0">Connecté avec ${esc(MOI.email)}.</p>
     <div><button class="btn" type="button" id="logout">${ic("logout")}Se déconnecter</button></div>
   </div>`;
@@ -845,7 +860,7 @@ function vueLogin(){
       <button class="btn ghost" type="button" id="login-voir" aria-label="${L.voir?"Masquer":"Afficher"} le mot de passe">${ic(L.voir?"visibility_off":"visibility")}</button></div></div>
     <div><button class="btn primary" type="button" id="login-go">${crea?"Créer mon compte":"Se connecter"}</button></div>
     <span class="${L.ok?"ok":"err"}" aria-live="polite">${esc(L.msg)}</span>
-    ${crea?`<p class="hint" style="margin:0">Vous pourrez voir les recettes et en proposer. Fanie ou Michael valident chaque proposition.</p>`:`<p class="hint" style="margin:0">Mot de passe oublié ? Demandez à Michael de le réinitialiser.</p>`}
+    ${crea?`<p class="hint" style="margin:0">Vous pourrez voir les recettes et en proposer. Fanie ou Michaël valident chaque proposition.</p>`:`<p class="hint" style="margin:0">Mot de passe oublié ? Demandez à Michaël de le réinitialiser.</p>`}
   </div>`;
 }
 const STATUTS={en_attente:"En attente de validation",validee:"Validée",refusee:"Refusée"};
@@ -870,7 +885,7 @@ function vueMiennes(){
   const mes=PROPS.filter(p=>p.auteur_id===MOI.id);
   return `<div class="row"><button class="btn ghost" type="button" data-back>← Recettes</button></div>
   <div class="wz" style="margin-top:12px"><h2>Mes propositions</h2>
-    <p class="hint" style="margin:0">Fanie ou Michael valident chaque recette, et chaque modification, avant qu'elle soit visible par tous.</p>
+    <p class="hint" style="margin:0">Fanie ou Michaël valident chaque recette, et chaque modification, avant qu'elle soit visible par tous.</p>
     ${W.msg&&W.msgOk?`<p class="ok" style="margin:0">${esc(W.msg)}</p>`:""}
     ${mes.length?mes.map(p=>carteProp(p,false)).join(""):`<div class="empty">${ic("menu_book")}<span>Vous n'avez encore rien proposé.</span><button class="btn primary" type="button" data-go-ajout>Proposer une recette</button></div>`}
   </div>`;
@@ -892,7 +907,7 @@ function blocInvite(){
   return `<div class="q"><span class="lbl">Proposée par</span>
     <div class="row">${avatar("inv:"+MOI.id,"md")}<input class="input" id="moi-prenom" placeholder="Votre prénom" value="${esc(MOI.prenom||"")}" style="max-width:220px" autocomplete="given-name"></div>
     ${blocPhoto("moi",!!MOI.photo)}
-    <span class="hint">Votre recette sera visible après validation par Fanie ou Michael.</span></div>`;
+    <span class="hint">Votre recette sera visible après validation par Fanie ou Michaël.</span></div>`;
 }
 const CAT_MOTS=[["Dessert",/dessert|g[aâ]teau|tarte sucr|patisser|pâtisser/i],["Entrée",/entr[ée]e/i],["Apéritif",/ap[ée]ritif|amuse/i],["Soupe",/soupe|velout/i],["Salade",/salade/i],["Accompagnement",/accompagnement/i],["Petit-déjeuner",/petit.d[ée]jeuner|brunch/i],["Goûter",/go[uû]ter/i],["Boisson",/boisson|cocktail/i],["Sauce",/sauce/i],["Plat",/plat/i]];
 async function importLien(){
@@ -1052,7 +1067,7 @@ function vueListe(){
     ${sg.rec.length?`<div class="grp"><span>Recettes</span>${sg.rec.map(r=>`<button class="rec" type="button" data-open="${esc(r.id)}">${ic(ICON_TYPE[r.categorie]||"restaurant")}${esc(r.titre)}</button>`).join("")}</div>`:""}
   </div>`:""}
   <div class="people" role="group" aria-label="Recettes de">
-    ${[["","Toutes",null],["Fanie","Fanie","Fanie"],["Michael","Michael","Michael"],["Les deux","Ensemble","Les deux"],["inv","Invités",null]].map(([v,l,a])=>{
+    ${[["","Toutes",null],["Fanie","Fanie","Fanie"],["Michael","Michaël","Michael"],["Les deux","Ensemble","Les deux"],["inv","Invités",null]].map(([v,l,a])=>{
       const n = recettes.filter(r=>filtreAuteur(r,v)).length;
       if(v==="inv" && !n) return "";
       return v==="" ? `<button class="pp" type="button" data-qui="" aria-pressed="${S.auteur===""}"><span>Toutes</span></button>`
@@ -1126,9 +1141,10 @@ function visionneuse(){
   const v=S.viewer; if(!v) return "";
   return `<div class="viewer" role="dialog" aria-modal="true" aria-label="Photos du plat">
     <div class="viewer-haut"><span class="mono" id="viewer-n">${v.i+1} / ${v.photos.length}</span><button class="viewer-x" type="button" data-viewer-fermer aria-label="Fermer">×</button></div>
-    <div class="viewer-piste" id="viewer-piste">${v.photos.map((ph,i)=>`<div class="viewer-slide"><img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} sur ${v.photos.length}"></div>`).join("")}</div>
+    <div class="viewer-zone"><div class="viewer-piste" id="viewer-piste">${v.photos.map((ph,i)=>`<div class="viewer-slide"><img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} sur ${v.photos.length}"></div>`).join("")}</div>
+      ${v.photos.length>1?`<button class="fl g" type="button" data-viewer-pas="-1" aria-label="Photo précédente">‹</button><button class="fl d" type="button" data-viewer-pas="1" aria-label="Photo suivante">›</button>`:""}</div>
     ${v.photos.length>1?`<div class="viewer-points">${v.photos.map((_,i)=>`<i class="${i===v.i?"on":""}"></i>`).join("")}</div>`:""}
-    <p class="viewer-aide">Glissez pour voir les autres photos · vers le bas pour fermer</p>
+    <p class="viewer-aide">${v.photos.length>1?`<span class="tactile">Glissez pour voir les autres photos · vers le bas pour fermer</span><span class="souris">Flèches ← → pour changer de photo · Échap pour fermer</span>`:`<span class="tactile">Glissez vers le bas pour fermer</span><span class="souris">Échap pour fermer</span>`}</p>
   </div>`;
 }
 function carte(r,hits){
@@ -1137,7 +1153,7 @@ function carte(r,hits){
   const manque=S.ingr.filter(x=>!hits.includes(x));
   return `<button class="card${S.selMode&&S.sel.has(r.id)?" sel":""}" type="button" data-open="${esc(r.id)}" ${S.selMode?`aria-pressed="${S.sel.has(r.id)}"`:""}>
     ${S.selMode?`<span class="sel-coche" aria-hidden="true">${ic(S.sel.has(r.id)?"check_circle":"radio_button_unchecked")}</span>`:""}
-    ${r.photo?`<div class="thumb photo" style="background-image:url('${esc(photoUrl(r))}')">`:`<div class="thumb ${ton(r)}">${illu(r)}`}${r.categorie?`<span class="badge">${esc(r.categorie)}</span>`:""}${(r.tags||[]).includes("Exemple")?`<span class="badge ex">Exemple</span>`:""}</div>
+    ${photoUrl(r)?`<div class="thumb photo" style="background-image:url('${esc(photoUrl(r))}')">`:`<div class="thumb ${ton(r)}">${illu(r)}`}${r.categorie?`<span class="badge">${esc(r.categorie)}</span>`:""}${(r.tags||[]).includes("Exemple")?`<span class="badge ex">Exemple</span>`:""}</div>
     <h3>${esc(r.titre||"Sans titre")}</h3>
     <div class="meta">${tempsHtml(r)}${r.personnes?`<span>${ic("group")} ${esc(r.personnes)}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}${esc(nomAuteur(r.auteur))}</span>`:""}</div>
     <p class="ingr-preview">${ing}${noms.length>7?` +${noms.length-7}`:""}</p>
@@ -1209,7 +1225,7 @@ function quitterSelection(){ S.selMode=false; S.sel=new Set(); S.selConfirm=fals
 function ligneIngr(g,f,cocher){
   const v=g.i, p=pastilleGroupe(g,f), frigo=S.ingr.some(x=>ingrMatch(v.nom,x));
   const coche=cocher&&S.coches.has(g.k), plusieurs=g.parts.length>1, ouvert=plusieurs&&S.detOuvert.has(g.k);
-  const corps=`<span class="ing-ico">${icoIngr(v.nom)}</span><span class="ing-txt"><b class="${frigo?"frigo":""}">${esc(v.nom)}</b>${v.detail?`<small>${esc(v.detail)}</small>`:""}${plusieurs?`<small class="place-det">&nbsp;</small>`:""}</span>${p?`<span class="qte-pill">${esc(p)}</span>`:"<span></span>"}`;
+  const corps=`<span class="ing-ico">${icoIngr(v.nom)}</span><span class="ing-txt"><b class="${frigo?"frigo":""}">${esc(v.nom)}</b>${v.detail?`<small>${esc(v.detail)}</small>`:""}</span>${p?`<span class="qte-pill">${esc(p)}</span>`:"<span></span>"}`;
   const det = plusieurs ? `<button class="det-btn" type="button" data-det="${g.k}" aria-expanded="${ouvert}">${ic("info")}utilisé ${g.parts.length} fois</button>` : "";
   const liste = ouvert ? `<ul class="det-liste">${g.parts.map(pt=>`<li>↳ ${esc(pastilleQte(pt,f)||"un peu")}${pt.etape?` · étape ${pt.etape}`:""}</li>`).join("")}</ul>` : "";
   const ligne = cocher ? `<button class="ing" type="button" data-ck="${g.k}" aria-pressed="${coche}">${corps}</button>` : `<div class="ing">${corps}</div>`;
@@ -1235,7 +1251,7 @@ function vueFiche(){
   </div>
   ${S.confirmSuppr?`<div class="confirm"><span>Supprimer « ${esc(r.titre)} » du carnet ?</span><button class="btn danger" type="button" id="suppr-ok">Oui, supprimer</button><button class="btn" type="button" id="suppr-non">Annuler</button></div>`:""}
   <div class="fiche-tete">
-    ${(r.photos||[]).length>1?`<div class="galerie">${r.photos.map((ph,i)=>`<button class="galerie-btn" type="button" data-voir="${i}" aria-label="Voir la photo ${i+1} en plein écran"><img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} du plat" loading="lazy"></button>`).join("")}</div><span class="hint">${r.photos.length} photos · touchez pour agrandir.</span>`:r.photo?`<button class="thumb big photo photo-btn" type="button" data-voir="0" aria-label="Voir la photo en plein écran" style="background-image:url('${esc(photoUrl(r))}')"></button>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
+    ${(r.photos||[]).length>1?`<div class="galerie-zone"><div class="galerie" id="galerie">${r.photos.map((ph,i)=>`<button class="galerie-btn" type="button" data-voir="${i}" aria-label="Voir la photo ${i+1} en plein écran"><img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} du plat" loading="lazy"></button>`).join("")}</div><button class="fl g" type="button" data-galerie-pas="-1" aria-label="Photo précédente">‹</button><button class="fl d" type="button" data-galerie-pas="1" aria-label="Photo suivante">›</button></div><span class="hint">${r.photos.length} photos · touchez pour agrandir.</span>`:r.photo?`<button class="thumb big photo photo-btn" type="button" data-voir="0" aria-label="Voir la photo en plein écran" style="background-image:url('${esc(photoUrl(r))}')"></button>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
     ${MOI?.admin&&!ap?blocPhoto("fiche",!!r.photo):""}
     <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
     <h2>${esc(r.titre||"Sans titre")}</h2>
@@ -1382,7 +1398,7 @@ function render(garderFocus){
   const a=document.activeElement, fid=a&&a.id, sel=a&&a.selectionStart;
   const corpsSheet=document.getElementById("sheet-corps"), sheetY=corpsSheet?corpsSheet.scrollTop:0;
   app.innerHTML = S.vue==="attente"?`<div class="empty">${ic("skillet")}<span>Ouverture du carnet…</span></div>`:S.vue==="login"?vueLogin():S.vue==="fiche"||S.vue==="apercu"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():S.vue==="miennes"?vueMiennes():S.vue==="valider"?vueValider():vueListe();
-  document.getElementById("hdr-avs").innerHTML = MOI ? avatar(monAvatarNom(),"sm") : "";
+  document.getElementById("hdr-avs").innerHTML = MOI ? avatar(monAvatarNom(),"hd") : "";
   const enAttente = PROPS.filter(p=>p.statut==="en_attente").length;
   const extraL = MOI&&MOI.admin ? "À valider" : "Mes recettes";
   for(const id of ["tab-extra-l","nav-extra-l"]){ const el=document.getElementById(id); if(el) el.textContent=extraL; }
@@ -1461,6 +1477,8 @@ app.addEventListener("click", async e=>{
   if(t.id==="vider-frigo"){ S.ingr=[]; S.complet=false; render(); return; }
   if(d.voir!=null && "voir" in d){ const r=recettes.find(x=>x.id===S.ficheId)||(S.vue==="apercu"?apercuRec():null); const ph=(r?.photos?.length?r.photos:(r?.photo?[r.photo]:[])); if(ph.length){ S.viewer={photos:ph,i:+d.voir}; render(); } return; }
   if("viewerFermer" in d){ S.viewer=null; render(); return; }
+  if(d.viewerPas){ defiler(document.getElementById("viewer-piste"), +d.viewerPas); return; }
+  if(d.galeriePas){ defiler(document.getElementById("galerie"), +d.galeriePas); return; }
   if("det" in d){ const k=+d.det; S.detOuvert.has(k)?S.detOuvert.delete(k):S.detOuvert.add(k); const y=scrollY; render(); scrollTo({top:y}); return; }
   if(d.ck!=null && "ck" in d){ const k=+d.ck; S.coches.has(k)?S.coches.delete(k):S.coches.add(k); const y=scrollY; render(); scrollTo({top:y}); return; }
   if(S.lpFired && d.open){ S.lpFired=false; return; }
@@ -1580,7 +1598,7 @@ app.addEventListener("keydown", e=>{
   const t=e.target;
   if(t.id==="frigo-q" && e.key==="Enter"){ e.preventDefault(); const b=app.querySelector('.sheet [data-add="ingr"]'); if(b) b.click(); return; }
   if(e.key==="Escape" && (S.sheet||S.viewer)){ S.sheet=null; S.viewer=null; render(); return; }
-  if(S.viewer && (e.key==="ArrowRight"||e.key==="ArrowLeft")){ const p=document.getElementById("viewer-piste"); if(p) p.scrollBy({left:(e.key==="ArrowRight"?1:-1)*p.clientWidth,behavior:"smooth"}); return; }
+  if(S.viewer && (e.key==="ArrowRight"||e.key==="ArrowLeft")){ const p=document.getElementById("viewer-piste"); defiler(p, e.key==="ArrowRight"?1:-1); return; }
   if(t.id==="login-email" && e.key==="Enter"){ e.preventDefault(); focusId("login-mdp"); return; }
   if(t.id==="login-mdp" && e.key==="Enter"){ e.preventDefault(); connexion(); return; }
   if(t.id==="q" && e.key==="Enter"){
@@ -1623,12 +1641,12 @@ async function connexion(){
     const m=(err.message||"").toLowerCase(); L.ok=false;
     L.msg = m.includes("invalid login") ? "E-mail ou mot de passe incorrect."
       : m.includes("already registered")||m.includes("already been registered") ? "Ce compte existe déjà : choisissez « J'ai déjà un compte »."
-      : m.includes("not confirmed") ? "Ce compte attend une confirmation. Demandez à Michael de le débloquer."
+      : m.includes("not confirmed") ? "Ce compte attend une confirmation. Demandez à Michaël de le débloquer."
       : m.includes("rate")||m.includes("limit") ? "Trop d'essais. Attendez quelques minutes, puis réessayez."
       : "La connexion n'a pas abouti. Vérifiez votre réseau, puis réessayez.";
     render(); return;
   }
-  if(!res.data.session){ L.ok=false; L.msg="Compte créé, mais il doit encore être activé. Prévenez Michael."; render(); return; }
+  if(!res.data.session){ L.ok=false; L.msg="Compte créé, mais il doit encore être activé. Prévenez Michaël."; render(); return; }
   Object.assign(L,{mdp:"",msg:"",ok:false});
   await demarrerSession();
 }
@@ -1648,7 +1666,7 @@ async function sauver(){
     if(MOI && !MOI.admin){
       const propId=B._propId; await proposer(rec, propId);
       if(!B.id) lsSet(LS_DRAFT,null);
-      B=null; W.msg= propId ? "Modification envoyée : elle sera visible après validation." : "Recette envoyée : elle sera visible après validation par Fanie ou Michael."; W.msgOk=true; aller("miennes"); return;
+      B=null; W.msg= propId ? "Modification envoyée : elle sera visible après validation." : "Recette envoyée : elle sera visible après validation par Fanie ou Michaël."; W.msgOk=true; aller("miennes"); return;
     }
     const id=await enregistrer(rec);
     if(!B.id) lsSet(LS_DRAFT,null);
@@ -1717,6 +1735,13 @@ app.addEventListener("pointerup", lpStop); app.addEventListener("pointercancel",
 app.addEventListener("pointermove", e=>{ if(Math.abs(e.clientX-lpX)>10||Math.abs(e.clientY-lpY)>10) lpStop(); });
 app.addEventListener("contextmenu", e=>{ if(e.target.closest(".card")) e.preventDefault(); });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && S.selMode){ quitterSelection(); render(); } });
+// Passe à la photo suivante / précédente (et repart au début après la dernière)
+function defiler(p, pas){
+  if(!p) return;
+  const n=p.children.length, w=p.clientWidth||1;
+  const i=(Math.round(p.scrollLeft/w)+pas+n)%n;
+  p.scrollTo({left:i*w, behavior:"smooth"});
+}
 function initVisionneuse(){
   const p=document.getElementById("viewer-piste"); if(!p) return;
   requestAnimationFrame(()=>{ p.scrollLeft=S.viewer.i*p.clientWidth; });
