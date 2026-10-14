@@ -1,0 +1,26 @@
+LES RECETTES DE FANIE & MICHAEL — version téléphone (iPhone, iPad, Android)
+
+1. METTRE L'APPLI EN LIGNE (une seule fois, environ 5 minutes)
+   - Sur un ordinateur, ouvrez https://app.netlify.com/drop
+   - Créez un compte gratuit (pour que le site reste en ligne).
+   - Glissez le DOSSIER "recettes-app" (dézippé) dans la zone indiquée.
+   - Netlify vous donne un lien du type https://quelque-chose.netlify.app
+     Vous pouvez le renommer dans "Site configuration > Change site name".
+
+2. L'INSTALLER SUR UN TÉLÉPHONE
+   iPhone / iPad : ouvrir le lien dans Safari > bouton Partager > "Sur l'écran d'accueil".
+   Android : ouvrir le lien dans Chrome > menu ⋮ > "Installer l'application"
+             (ou "Ajouter à l'écran d'accueil").
+   L'icône "Recettes F&M" apparaît : l'appli s'ouvre en plein écran, même sans réseau.
+
+3. BON À SAVOIR (version de test)
+   - Les recettes et les photos sont enregistrées sur chaque téléphone.
+     Elles ne sont pas encore partagées entre Fanie et Michael.
+   - Sauvegarde : touchez les ronds F et M en haut > "Exporter mes recettes".
+   - L'import automatique par Claude ("Je l'ai trouvée sur internet")
+     ne fonctionne que dans la version Claude.
+   - Étape suivante : base de données partagée, comptes invités et validation.
+
+4. METTRE À JOUR
+   Glissez le nouveau dossier sur la page "Deploys" de votre site Netlify.
+   Les téléphones récupèrent la nouvelle version à la prochaine ouverture.
