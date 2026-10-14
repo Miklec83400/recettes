@@ -161,6 +161,15 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .pp[aria-pressed="true"] .n{color:var(--on-green-soft)}
 .av.all{width:32px;height:32px;background:var(--sunk);color:var(--green)}
 .av.all .ms{font-size:18px;vertical-align:0}
+.av.g{background-color:var(--sunk);color:var(--ink)}
+.tabbar{grid-template-columns:repeat(5,1fr)}
+.tabbar button{position:relative}
+.badge-n{position:absolute;top:0;right:calc(50% - 22px);min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:11px;line-height:18px}
+.prop{display:grid;gap:10px}
+.pill{font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px}
+.pill.s-en_attente{background:var(--hl);color:var(--on-hl)}
+.pill.s-validee{background:var(--green-soft);color:var(--on-green-soft)}
+.pill.s-refusee{background:transparent;border:1.5px solid var(--danger);color:var(--danger)}
 .sublbl{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:10px 0 6px}
 .thumb.big .ms{font-size:64px}
 .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);align-items:center}
@@ -239,7 +248,6 @@ textarea.input{min-height:110px;resize:vertical}
 
 </head>
 <body>
-<script>window.RECETTES_DEPART = [{"auteur": "Les deux", "categorie": "Plat", "creeLe": "2026-10-14T06:00:00.000Z", "duree": 20, "etapes": ["Cuire les spaghetti dans une grande casserole d'eau salée.", "Faire dorer les lardons à sec dans une poêle.", "Battre les œufs avec le parmesan râpé et beaucoup de poivre.", "Égoutter les pâtes en gardant un peu d'eau de cuisson, les mélanger hors du feu avec les lardons puis le mélange œufs-parmesan."], "ingredients": [{"nom": "Spaghetti", "qte": "400", "unite": "g"}, {"nom": "Lardons", "qte": "200", "unite": "g"}, {"nom": "Œufs", "qte": "3", "unite": "pièce"}, {"nom": "Parmesan", "qte": "80", "unite": "g"}, {"nom": "Poivre", "qte": "", "unite": "au goût"}, {"nom": "Sel", "qte": "", "unite": "au goût"}], "notes": "Recette d'exemple : supprimez-la quand vous voulez.", "personnes": 4, "source": "", "tags": ["Exemple", "Pâtes", "Rapide"], "titre": "Pâtes carbonara", "id": "exemple-carbonara", "photo": ""}, {"auteur": "Les deux", "categorie": "Accompagnement", "creeLe": "2026-10-14T05:59:00.000Z", "duree": 45, "etapes": ["Couper les courgettes en rondelles et les faire revenir 10 minutes avec l'ail.", "Mélanger la crème, les œufs et la muscade.", "Disposer les courgettes dans un plat, verser le mélange et couvrir de gruyère.", "Enfourner 25 minutes à 200 °C."], "ingredients": [{"nom": "Courgette", "qte": "4", "unite": "pièce"}, {"nom": "Crème fraîche", "qte": "20", "unite": "cl"}, {"nom": "Œufs", "qte": "2", "unite": "pièce"}, {"nom": "Gruyère râpé", "qte": "100", "unite": "g"}, {"nom": "Ail", "qte": "1", "unite": "gousse"}, {"nom": "Muscade", "qte": "", "unite": "au goût"}], "notes": "Recette d'exemple : supprimez-la quand vous voulez.", "personnes": 4, "source": "", "tags": ["Exemple", "Végétarien", "Au four"], "titre": "Gratin de courgettes", "id": "exemple-gratin-courgettes", "photo": ""}, {"auteur": "Les deux", "categorie": "Plat", "creeLe": "2026-10-14T12:08:02.000Z", "duree": 40, "etapes": ["Dans une cocotte, faire dorer le bœuf haché avec l'oignon et le poivron coupés en dés.", "Ajouter l'ail, le cumin, le paprika et le piment, mélanger 1 minute.", "Ajouter le riz, les tomates concassées, les haricots rouges égouttés, le bouillon émietté et l'eau.", "Couvrir et laisser mijoter 20 minutes à feu doux, en remuant de temps en temps, jusqu'à ce que le riz soit tendre."], "ingredients": [{"nom": "Bœuf haché", "qte": "500", "unite": "g"}, {"nom": "Riz", "qte": "200", "unite": "g"}, {"nom": "Haricots rouges", "qte": "400", "unite": "g"}, {"nom": "Tomates concassées", "qte": "400", "unite": "g"}, {"nom": "Bouillon cube", "qte": "1", "unite": "pièce"}, {"nom": "Eau", "qte": "50", "unite": "cl"}, {"nom": "Oignon", "qte": "1", "unite": "pièce"}, {"nom": "Poivron", "qte": "1", "unite": "pièce"}, {"nom": "Ail", "qte": "2", "unite": "gousse"}, {"nom": "Cumin", "qte": "1", "unite": "c. à café"}, {"nom": "Paprika", "qte": "1", "unite": "c. à café"}, {"nom": "Piment", "qte": "1", "unite": "pincée"}, {"nom": "Sel", "qte": "", "unite": "au goût"}], "notes": "Recette d'exemple. Encore meilleur réchauffé le lendemain.", "personnes": 4, "photo": "", "principal": ["Bœuf"], "source": "", "tags": ["Exemple", "One-pot", "Riz", "Hiver"], "titre": "Chili con carne et riz tout-en-un", "id": "exemple-onepot-chili"}, {"auteur": "Les deux", "categorie": "Plat", "creeLe": "2026-10-14T12:08:03.000Z", "duree": 35, "etapes": ["Dans une cocotte, faire revenir l'oignon émincé et le poulet en dés dans l'huile pendant 5 minutes.", "Ajouter l'ail et le curry, mélanger 1 minute.", "Ajouter le riz rincé, les carottes en rondelles, le lait de coco, le bouillon émietté et l'eau. Mélanger une fois.", "Couvrir et cuire 18 minutes à feu doux, sans remuer.", "Ajouter les petits pois, couvrir encore 3 minutes. Parsemer de coriandre avant de servir."], "ingredients": [{"nom": "Poulet", "qte": "500", "unite": "g"}, {"nom": "Riz", "qte": "250", "unite": "g"}, {"nom": "Lait de coco", "qte": "400", "unite": "ml"}, {"nom": "Bouillon cube", "qte": "1", "unite": "pièce"}, {"nom": "Eau", "qte": "40", "unite": "cl"}, {"nom": "Oignon", "qte": "1", "unite": "pièce"}, {"nom": "Ail", "qte": "2", "unite": "gousse"}, {"nom": "Curry", "qte": "2", "unite": "c. à soupe"}, {"nom": "Carotte", "qte": "2", "unite": "pièce"}, {"nom": "Petits pois", "qte": "150", "unite": "g"}, {"nom": "Coriandre", "qte": "10", "unite": "g"}, {"nom": "Huile de tournesol", "qte": "1", "unite": "c. à soupe"}, {"nom": "Sel", "qte": "", "unite": "au goût"}], "notes": "Recette d'exemple.", "personnes": 4, "photo": "", "principal": ["Poulet"], "source": "", "tags": ["Exemple", "One-pot", "Riz"], "titre": "Curry de poulet coco et riz en cocotte", "id": "exemple-onepot-curry-poulet"}, {"auteur": "Les deux", "categorie": "Plat", "creeLe": "2026-10-14T12:08:01.000Z", "duree": 30, "etapes": ["Dans une cocotte, faire revenir l'oignon émincé quelques minutes, puis ajouter l'ail, le gingembre et le curry.", "Ajouter les lentilles corail rincées, la patate douce en petits dés, le lait de coco, les tomates et l'eau.", "Cuire 20 minutes à feu doux en remuant de temps en temps, jusqu'à ce que les lentilles soient fondantes.", "Ajouter les épinards 2 minutes avant la fin. Arroser de jus de citron vert et saler."], "ingredients": [{"nom": "Lentilles", "qte": "250", "unite": "g"}, {"nom": "Patate douce", "qte": "400", "unite": "g"}, {"nom": "Lait de coco", "qte": "400", "unite": "ml"}, {"nom": "Tomates concassées", "qte": "400", "unite": "g"}, {"nom": "Eau", "qte": "50", "unite": "cl"}, {"nom": "Oignon", "qte": "1", "unite": "pièce"}, {"nom": "Ail", "qte": "2", "unite": "gousse"}, {"nom": "Gingembre", "qte": "1", "unite": "c. à café"}, {"nom": "Curry", "qte": "2", "unite": "c. à café"}, {"nom": "Épinards", "qte": "100", "unite": "g"}, {"nom": "Citron vert", "qte": "1", "unite": "pièce"}, {"nom": "Sel", "qte": "", "unite": "au goût"}], "notes": "Recette d'exemple. Prendre des lentilles corail : elles cuisent vite et rendent le plat crémeux.", "personnes": 4, "photo": "", "principal": ["Légumineuses"], "source": "", "tags": ["Exemple", "One-pot", "Végétarien", "Léger"], "titre": "Dahl de lentilles corail et patate douce", "id": "exemple-onepot-dahl"}, {"auteur": "Michael", "categorie": "Plat", "creeLe": "2026-10-14T12:08:04.000Z", "duree": 20, "etapes": ["Dans une grande sauteuse, mettre les spaghetti crus, les tomates coupées en morceaux, l'oignon émincé, l'ail écrasé et la moitié du basilic.", "Ajouter le bouillon émietté, l'huile d'olive et l'eau.", "Porter à ébullition puis cuire 10 à 12 minutes à feu moyen en remuant souvent, jusqu'à ce que le liquide soit presque absorbé.", "Hors du feu, ajouter la mozzarella en morceaux, le parmesan râpé et le reste du basilic. Poivrer et servir."], "ingredients": [{"nom": "Spaghetti", "qte": "400", "unite": "g"}, {"nom": "Tomate", "qte": "400", "unite": "g"}, {"nom": "Oignon", "qte": "1", "unite": "pièce"}, {"nom": "Ail", "qte": "2", "unite": "gousse"}, {"nom": "Basilic", "qte": "15", "unite": "g"}, {"nom": "Bouillon cube", "qte": "1", "unite": "pièce"}, {"nom": "Eau", "qte": "90", "unite": "cl"}, {"nom": "Huile d'olive", "qte": "2", "unite": "c. à soupe"}, {"nom": "Mozzarella", "qte": "125", "unite": "g"}, {"nom": "Parmesan", "qte": "40", "unite": "g"}, {"nom": "Sel", "qte": "", "unite": "au goût"}, {"nom": "Poivre", "qte": "", "unite": "au goût"}], "modifieLe": "2026-10-14T12:12:09.274Z", "notes": "Recette d'exemple. Tout cuit dans la même casserole : l'amidon des pâtes fait une sauce crémeuse.", "personnes": 4, "photo": "", "principal": ["Légumes"], "source": "", "tags": ["Exemple", "One-pot", "Pâtes", "Végétarien", "Rapide"], "titre": "One-pot pasta tomates, mozzarella et basilic", "id": "exemple-onepot-pasta-tomate"}, {"auteur": "Les deux", "categorie": "Plat", "creeLe": "2026-10-14T11:49:00.000Z", "duree": 40, "etapes": ["Préchauffer le four à 190 °C.", "Dans 4 plats individuels allant au four, mélanger le riz cru, le poulet en dés, le yaourt grec et le bouillon. Saler, poivrer.", "Répartir la courge, les carottes et les épinards par-dessus.", "Parsemer de fromage en grains.", "Cuire environ 30 minutes, jusqu'à ce que le poulet soit cuit et le riz tendre. Couvrir d'aluminium si le fromage colore trop.", "Servir tout de suite, ou laisser refroidir avant de ranger."], "ingredients": [{"nom": "Riz basmati", "qte": "200", "unite": "g"}, {"nom": "Blanc de poulet", "qte": "400", "unite": "g"}, {"nom": "Yaourt grec", "qte": "160", "unite": "g"}, {"nom": "Bouillon de poulet", "qte": "400", "unite": "ml"}, {"nom": "Courge", "qte": "240", "unite": "g"}, {"nom": "Carotte", "qte": "240", "unite": "g"}, {"nom": "Épinards", "qte": "160", "unite": "g"}, {"nom": "Fromage en grains", "qte": "80", "unite": "g"}, {"nom": "Sel", "qte": "", "unite": "au goût"}, {"nom": "Poivre", "qte": "", "unite": "au goût"}], "notes": "Se garde 3 jours au réfrigérateur ou 1 mois au congélateur. Préparation 10 min, cuisson 30 min.", "personnes": 4, "principal": ["Poulet"], "source": "https://producteurslaitiersducanada.ca/fr/plaisirs-laitiers/recettes/repas-one-pot-au-poulet", "tags": ["One-pot", "Riz", "Au four"], "titre": "Repas « one-pot » au poulet", "id": "test-riz-poulet-courge", "photo": ""}];</script>
 <header class="top">
   <div class="wrap">
     <button class="brand" id="home" type="button" aria-label="Accueil">
@@ -249,6 +257,7 @@ textarea.input{min-height:110px;resize:vertical}
     <button class="avbtn" id="nav-profils" type="button" aria-label="Profils de Fanie et Michael"><span id="hdr-avs" class="avs"></span></button>
     <div class="top-actions">
       <button class="btn" id="nav-hasard" type="button"><span class="ms" aria-hidden="true">casino</span>Au hasard</button>
+      <button class="btn" id="nav-extra" type="button"><span class="ms" aria-hidden="true">fact_check</span><span id="nav-extra-l">À valider</span></button>
       <button class="btn primary" id="nav-ajout" type="button"><span class="ms" aria-hidden="true">add</span>Ajouter</button>
     </div>
   </div>
@@ -258,10 +267,12 @@ textarea.input{min-height:110px;resize:vertical}
 <nav class="tabbar" id="tabbar" aria-label="Navigation">
   <button type="button" data-tab="home"><span class="ms" aria-hidden="true">home</span>Accueil</button>
   <button type="button" data-tab="frigo"><span class="ms" aria-hidden="true">kitchen</span>Mon frigo</button>
-  <button type="button" data-tab="add" class="add"><span class="ms" aria-hidden="true">add</span>Ajouter</button>
+  <button type="button" data-tab="add" class="add"><span class="ms" aria-hidden="true">add</span><span id="tab-add-l">Ajouter</span></button>
   <button type="button" data-tab="hasard"><span class="ms" aria-hidden="true">casino</span>Au hasard</button>
+  <button type="button" data-tab="extra" id="tab-extra"><span class="ms" aria-hidden="true">fact_check</span><span id="tab-extra-l">À valider</span><b class="badge-n" id="tab-extra-n" hidden></b></button>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ---------- Données de référence ---------- */
 const CATALOGUE = {
@@ -337,10 +348,17 @@ function analyserLigne(txt){
 
 /* ---------- État ---------- */
 let recettes = [], charge=false, modeStockage="attente";
-let db=null, col=null, sample=null, assets=null, peutEcrire=true;
+let db=null, col=null, sample=null, assets=null, peutEcrire=false;
+const SB_URL="https://vshxudfhstondwcdpdxs.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzaHh1ZGZoc3RvbmR3Y2RwZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5NzczMzMsImV4cCI6MjEwNzU1MzMzM30.0ockwakfigfeghTQoJr_PxSkHsCuAqOyFvSx6EKbUO0";
+const sb = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, autoRefreshToken:true, detectSessionInUrl:true}}) : null;
+let MOI=null;          // {id, email, admin, prenom, photo}
+let PROPS=[];          // propositions visibles (les miennes, ou toutes pour Fanie et Michael)
+let PROFILS_ID={};     // id -> {prenom, photo}
+const L={email:"",code:"",envoye:false,msg:"",ok:false};
 let PROFILS = {};   // {Fanie:{photo}, Michael:{photo}}
 const LS_MOI="recettes-fm-moi", LS_PROFILS="recettes-fm-profils";
-const S = { vue:"liste", q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
+const S = { vue:"attente", propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
 let B = null;           // brouillon de recette
 const W = { etape:1, msg:"", msgOk:false, impMsg:"", impEnCours:false, ingQ:"" };
 const ETAPES = ["Départ","L'essentiel","Ingrédients","Préparation","Vérifier"];
@@ -354,28 +372,57 @@ const lsSet=(k,v)=>{ try{ v==null?localStorage.removeItem(k):localStorage.setIte
 let draftTimer=null;
 function garderBrouillon(){ clearTimeout(draftTimer); draftTimer=setTimeout(()=>{ if(B && !B.id) lsSet(LS_DRAFT,B); },400); }
 
+const rowToRec = r => ({ id:r.id, titre:r.titre, categorie:r.categorie, personnes:r.personnes??"", duree:r.duree??"", auteur:r.auteur,
+  tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:r.photo||"", creeLe:r.cree_le });
+const recToRow = r => ({ ...(r.id?{id:r.id}:{}), titre:r.titre, categorie:r.categorie, personnes:+r.personnes||null, duree:+r.duree||null, auteur:r.auteur,
+  tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:r.photo||"", modifie_le:new Date().toISOString() });
+async function chargerTout(){
+  const [r, pa, pr, pp] = await Promise.all([
+    sb.from("recettes").select("*"),
+    sb.rpc("profils_admins"),
+    sb.from("profils").select("id,prenom,photo"),
+    sb.from("propositions").select("*").order("soumis_le",{ascending:false})
+  ]);
+  if(r.error) throw r.error;
+  recettes=r.data.map(rowToRec); lsSet(LS_KEY,recettes);
+  PROFILS={}; (pa.data||[]).forEach(x=>{ PROFILS[x.prenom]={photo:x.photo||"", id:x.id}; });
+  PROFILS_ID={}; (pr.data||[]).forEach(x=>{ PROFILS_ID[x.id]=x; });
+  PROPS=pp.data||[];
+  if(MOI){ const me=PROFILS_ID[MOI.id]; if(me){ MOI.photo=me.photo||""; if(!MOI.admin) MOI.prenom=MOI.prenom||me.prenom||""; } }
+  charge=true;
+}
 async function enregistrer(rec){
-  const {id,...data}=rec;
-  data.modifieLe=new Date().toISOString();
-  if(!data.creeLe) data.creeLe=data.modifieLe;
-  if(modeStockage==="db"){
-    if(id){ await col.doc(id).set(data); return id; }
-    const ref=col.doc(); await ref.set(data); return ref.id;
-  }
-  const nid=id||("r"+Date.now().toString(36));
-  const i=recettes.findIndex(r=>r.id===nid);
-  if(i>=0) recettes[i]={id:nid,...data}; else recettes.push({id:nid,...data});
-  lsSet(LS_KEY,recettes); return nid;
+  const {data,error}=await sb.from("recettes").upsert(recToRow(rec)).select("id").single();
+  if(error) throw error;
+  await chargerTout(); return data.id;
+}
+async function proposer(rec, propId){
+  const {id,creeLe,...d}=rec;
+  const q = propId ? sb.from("propositions").update({donnees:d}).eq("id",propId) : sb.from("propositions").insert({donnees:d});
+  const {error}=await q; if(error) throw error;
+  await chargerTout();
 }
 async function supprimer(id){
-  if(modeStockage==="db"){ await col.doc(id).delete(); return; }
-  recettes=recettes.filter(r=>r.id!==id); lsSet(LS_KEY,recettes);
+  const {error}=await sb.from("recettes").delete().eq("id",id); if(error) throw error;
+  await chargerTout();
 }
 function majStatus(){
+  if(S.vue==="login"||S.vue==="attente"){ statusEl.textContent=""; return; }
   if(!charge){ statusEl.textContent="Chargement du carnet…"; return; }
   const n=recettes.length;
   const base = n===0?"Le carnet est vide.":`${n} recette${n>1?"s":""} dans le carnet.`;
-  statusEl.textContent = base + (modeStockage==="db"?" Partagé entre vous deux.":(window.claude?" Enregistré seulement dans ce navigateur.":" Enregistré sur cet appareil."));
+  statusEl.textContent = base + (!MOI?" Hors connexion : lecture seule." : MOI.admin?" Partagé entre Fanie et Michael.":" Vos propositions passent par Fanie ou Michael.");
+}
+function nomAuteur(a){
+  if(a==="Les deux") return "Fanie & Michael";
+  if(String(a||"").startsWith("inv:")) return PROFILS_ID[a.slice(4)]?.prenom || "Invité";
+  return a||"";
+}
+function filtreAuteur(r,v){
+  if(!v) return true;
+  if(v==="inv") return String(r.auteur||"").startsWith("inv:");
+  if(v==="Les deux") return r.auteur==="Les deux";
+  return r.auteur===v || r.auteur==="Les deux";
 }
 
 /* ---------- Recherche ---------- */
@@ -411,7 +458,7 @@ function aPrincipal(r,p){
   return (r.ingredients||[]).some(i=>{ const n=norm(i.nom); return mots.some(m=>n.includes(m)) && !n.startsWith("bouillon"); });
 }
 const LOCAL_URLS = {};
-const blobUrl = id => id ? (LOCAL_URLS[id] || "/_blob/"+id) : "";
+const blobUrl = id => !id ? "" : /^https?:/.test(id) ? id : (LOCAL_URLS[id] || "");
 const photoUrl = r => r && r.photo ? blobUrl(r.photo) : "";
 /* Photos enregistrées sur l'appareil quand l'appli tourne hors de Claude */
 const LocalAssets = {
@@ -438,6 +485,11 @@ async function reduireImage(file){
 }
 function avatar(nom, cls=""){
   if(nom==="Les deux") return `<span class="avs">${avatar("Fanie",cls)}${avatar("Michael",cls)}</span>`;
+  if(String(nom||"").startsWith("inv:")){
+    const p=PROFILS_ID[nom.slice(4)]||(MOI&&nom.slice(4)===MOI.id?MOI:{}); const pre=p.prenom||"?";
+    return p.photo ? `<span class="av g ${cls}" role="img" aria-label="${esc(pre)}" style="background-image:url('${esc(blobUrl(p.photo))}')"></span>`
+                   : `<span class="av g ${cls}" aria-hidden="true">${esc(pre.charAt(0).toUpperCase())}</span>`;
+  }
   const ph=PROFILS[nom]?.photo;
   const k = nom==="Fanie"?"f":"m";
   return ph ? `<span class="av ${k} ${cls}" role="img" aria-label="${esc(nom)}" style="background-image:url('${esc(blobUrl(ph))}')"></span>`
@@ -451,27 +503,122 @@ async function enregistrerProfil(nom, photo){
   if(modeStockage==="db") await db.doc("profils/personnes").set(next);
   else { PROFILS=next; lsSet(LS_PROFILS,PROFILS); render(); }
 }
+function monAvatarNom(){ return MOI&&MOI.admin&&PROFILS[MOI.prenom] ? MOI.prenom : "inv:"+(MOI?MOI.id:""); }
 function vueProfils(){
-  const moi=lsGet(LS_MOI,"");
+  if(!MOI) return vueLogin();
+  const admin=MOI.admin;
   return `
   <div class="row" style="justify-content:space-between"><button class="btn ghost" type="button" data-back>← Recettes</button></div>
   <div class="wz" style="margin-top:12px">
-    <h2>Fanie &amp; Michael</h2>
-    <p class="hint" style="margin:0">Chaque photo est enregistrée une seule fois. Elle s'affiche quand on choisit qui ajoute une recette, et sur chaque recette.</p>
-    <div class="profils">${["Fanie","Michael"].map(n=>`<div class="panel profil">
-      ${avatar(n,"lg")}
-      <h3>${n}</h3>
-      ${assets&&peutEcrire?blocPhoto("pf-"+n, !!PROFILS[n]?.photo):`<span class="hint">Seuls les éditeurs du carnet peuvent changer les photos.</span>`}
-    </div>`).join("")}</div>
-    <div class="q"><span class="lbl">Sur cet appareil, c'est…</span>
-      <span class="hint">Choisi automatiquement quand vous ajoutez une recette depuis cet appareil.</span>
-      <div class="whos">${["Fanie","Michael"].map(n=>`<button class="who" type="button" data-moi="${n}" aria-pressed="${moi===n}">${avatar(n,"md")}<span>${n}</span></button>`).join("")}</div></div>
-    ${!window.claude?`<div class="q"><span class="lbl">Sauvegarde</span>
-      <span class="hint">Les recettes sont enregistrées sur ce téléphone. Exportez-les de temps en temps pour ne rien perdre, ou pour les passer sur un autre appareil.</span>
-      <div class="row"><button class="btn" type="button" id="export">${ic("download")}Exporter mes recettes</button>
-      <label class="btn" for="import-file">${ic("upload")}Importer une sauvegarde<input type="file" id="import-file" accept="application/json,.json" hidden></label></div>
-      <span class="hint" id="backup-msg" aria-live="polite"></span></div>`:""}
+    <h2>Mon profil</h2>
+    <div class="panel profil">
+      ${avatar(monAvatarNom(),"lg")}
+      ${admin?`<h3>${esc(MOI.prenom||"Administrateur")}</h3><span class="tag">Administrateur du carnet</span>`
+        :`<div class="q" style="width:100%;text-align:left"><label for="moi-prenom">Votre prénom</label><input class="input" id="moi-prenom" value="${esc(MOI.prenom)}" placeholder="Votre prénom" autocomplete="given-name"></div>
+          <button class="btn" type="button" id="moi-save">Enregistrer le prénom</button><span class="hint" id="moi-msg" aria-live="polite"></span>`}
+      ${blocPhoto("moi",!!MOI.photo)}
+    </div>
+    ${admin?`<div class="q"><span class="lbl">Fanie &amp; Michael</span>
+      <div class="whos">${["Fanie","Michael"].map(n=>`<div class="who">${avatar(n,"md")}<span>${n}</span></div>`).join("")}</div>
+      <span class="hint">Chacun change sa photo depuis son propre compte.</span></div>`
+      :`<p class="hint" style="margin:0">Vous pouvez proposer des recettes. Elles sont visibles après validation par Fanie ou Michael.</p>`}
+    <p class="hint" style="margin:0">Connecté avec ${esc(MOI.email)}.</p>
+    <div><button class="btn" type="button" id="logout">${ic("logout")}Se déconnecter</button></div>
   </div>`;
+}
+function vueLogin(){
+  return `<div class="wz" style="max-width:440px;margin:16px auto 0">
+    <div class="thumb t-green" style="height:120px">${ic("skillet")}</div>
+    <h2>Bienvenue dans notre carnet</h2>
+    <p class="hint" style="margin:0">Entrez votre e-mail : vous recevrez un code pour vous connecter, sans mot de passe. Vous restez connecté ensuite.</p>
+    ${!L.envoye?`<div class="q"><label for="login-email">Votre e-mail</label>
+        <input class="input" id="login-email" type="email" inputmode="email" autocomplete="email" enterkeyhint="send" placeholder="prenom@exemple.fr" value="${esc(L.email)}"></div>
+      <div><button class="btn primary" type="button" id="login-send">Recevoir mon code</button></div>`
+    :`<div class="q"><label for="login-code">Code reçu par e-mail</label>
+        <span class="hint">Envoyé à ${esc(L.email)}. Regardez aussi dans les spams.</span>
+        <input class="input big mono" id="login-code" inputmode="numeric" autocomplete="one-time-code" enterkeyhint="go" maxlength="10" placeholder="123456" value="${esc(L.code)}"></div>
+      <div class="row"><button class="btn primary" type="button" id="login-verify">Se connecter</button><button class="btn ghost" type="button" id="login-back">Changer d'e-mail</button></div>`}
+    <span class="${L.ok?"ok":"err"}" aria-live="polite">${esc(L.msg)}</span>
+  </div>`;
+}
+const STATUTS={en_attente:"En attente de validation",validee:"Validée",refusee:"Refusée"};
+function carteProp(p, admin){
+  const d=p.donnees||{}; const auteur=PROFILS_ID[p.auteur_id]||{};
+  return `<div class="panel prop">
+    <div class="row" style="justify-content:space-between"><span class="pill s-${p.statut}">${STATUTS[p.statut]||""}</span><span class="hint mono">${new Date(p.soumis_le).toLocaleDateString("fr-FR")}</span></div>
+    <h3>${esc(d.titre||"Sans titre")}</h3>
+    ${admin?`<span class="by">${avatar("inv:"+p.auteur_id)}${esc(auteur.prenom||"Invité")} · ${p.recette_id?"modification d'une recette publiée":"nouvelle recette"}</span>`
+      :(p.recette_id&&p.statut==="en_attente"?`<span class="hint">La version déjà publiée reste affichée en attendant.</span>`:"")}
+    ${p.statut==="refusee"&&p.motif?`<p class="err" style="margin:0">Motif : ${esc(p.motif)}</p>`:""}
+    <div class="row">
+      <button class="btn" type="button" data-apercu="${p.id}">${ic("visibility")}Voir</button>
+      ${!admin?`<button class="btn" type="button" data-pedit="${p.id}">${ic("edit")}Modifier</button>`:""}
+      ${admin&&p.statut==="en_attente"?`<button class="btn primary" type="button" data-valider="${p.id}">${ic("check")}Valider</button><button class="btn danger" type="button" data-refuser="${p.id}">Refuser</button>`:""}
+    </div>
+    ${admin&&S.refusId===p.id?`<div class="q"><label for="motif">Motif du refus (facultatif)</label><input class="input" id="motif" placeholder="Ex. il manque les quantités">
+      <div class="row"><button class="btn danger" type="button" data-refus-ok="${p.id}">Confirmer le refus</button><button class="btn ghost" type="button" data-refus-non>Annuler</button></div></div>`:""}
+  </div>`;
+}
+function vueMiennes(){
+  const mes=PROPS.filter(p=>p.auteur_id===MOI.id);
+  return `<div class="row"><button class="btn ghost" type="button" data-back>← Recettes</button></div>
+  <div class="wz" style="margin-top:12px"><h2>Mes propositions</h2>
+    <p class="hint" style="margin:0">Fanie ou Michael valident chaque recette, et chaque modification, avant qu'elle soit visible par tous.</p>
+    ${W.msg&&W.msgOk?`<p class="ok" style="margin:0">${esc(W.msg)}</p>`:""}
+    ${mes.length?mes.map(p=>carteProp(p,false)).join(""):`<div class="empty">${ic("menu_book")}<span>Vous n'avez encore rien proposé.</span><button class="btn primary" type="button" data-go-ajout>Proposer une recette</button></div>`}
+  </div>`;
+}
+function vueValider(){
+  const att=PROPS.filter(p=>p.statut==="en_attente"), hist=PROPS.filter(p=>p.statut!=="en_attente").slice(0,30);
+  return `<div class="row"><button class="btn ghost" type="button" data-back>← Recettes</button></div>
+  <div class="wz" style="margin-top:12px"><h2>À valider</h2>
+    ${W.msg&&W.msgOk?`<p class="ok" style="margin:0">${esc(W.msg)}</p>`:""}
+    ${att.length?att.map(p=>carteProp(p,true)).join(""):`<div class="empty">${ic("task_alt")}<span>Rien à valider pour le moment.</span></div>`}
+    ${hist.length?`<details class="more"><summary>Déjà traitées (${hist.length})</summary><div style="display:grid;gap:10px;margin-top:10px">${hist.map(p=>carteProp(p,true)).join("")}</div></details>`:""}
+  </div>`;
+}
+function apercuRec(){
+  const p=PROPS.find(x=>x.id===S.propId); if(!p) return null;
+  return {...(p.donnees||{}), id:"apercu", auteur:"inv:"+p.auteur_id};
+}
+function blocInvite(){
+  return `<div class="q"><span class="lbl">Proposée par</span>
+    <div class="row">${avatar("inv:"+MOI.id,"md")}<input class="input" id="moi-prenom" placeholder="Votre prénom" value="${esc(MOI.prenom||"")}" style="max-width:220px" autocomplete="given-name"></div>
+    ${blocPhoto("moi",!!MOI.photo)}
+    <span class="hint">Votre recette sera visible après validation par Fanie ou Michael.</span></div>`;
+}
+function importSimple(){
+  const txt=(B._imp||"").trim();
+  if(txt.length<20){ W.impMsg="Collez d'abord le texte de la recette."; render(); return; }
+  const lignes=txt.split(/\n+/).map(l=>l.replace(/^\s*[-•*·]\s*/,"").trim()).filter(Boolean);
+  const ing=[], et=[]; let titre="";
+  for(const l of lignes){
+    if(/^(\d|½|¼|¾)/.test(l) && l.length<80){ const a=analyserLigne(l); if(a&&a.nom) ing.push(a); continue; }
+    if(/^(sel|poivre)\b/i.test(l) && l.length<40){ ing.push({nom:cap(l.split(/[ ,]/)[0].toLowerCase()),qte:"",unite:"au goût"}); continue; }
+    if(!titre && l.length<80 && !/ingr|étape|preparation|préparation|personnes/i.test(l)){ titre=l; continue; }
+    if(l.length>=35) et.push(l.replace(/^(étape\s*)?\d+[.):-]?\s*/i,""));
+  }
+  if(titre && !B.titre) B.titre=titre;
+  if(ing.length) B.ingredients=ing;
+  if(et.length) B.etapes=et;
+  garderBrouillon();
+  W.etape=4; W.msg="Fiche pré-remplie : vérifiez chaque partie, puis enregistrez."; W.msgOk=true; render(); scrollTo({top:0});
+}
+async function demarrerSession(){
+  const {data:{session}} = await sb.auth.getSession();
+  if(!session){ MOI=null; peutEcrire=false; S.vue="login"; charge=true; render(); return; }
+  const u=session.user;
+  const [adm, prof] = await Promise.all([sb.rpc("is_admin"), sb.from("profils").select("*").eq("id",u.id).maybeSingle()]);
+  MOI={id:u.id, email:u.email, admin:!!adm.data, prenom:prof.data?.prenom||"", photo:prof.data?.photo||""};
+  if(!prof.data) await sb.from("profils").insert({id:u.id, prenom:""});
+  assets=true; peutEcrire=true;
+  await chargerTout();
+  if(MOI.admin){
+    const me=Object.entries(PROFILS).find(([n,x])=>x.id===u.id);
+    if(me && MOI.prenom!==me[0]){ MOI.prenom=me[0]; await sb.from("profils").update({prenom:me[0]}).eq("id",u.id); }
+  }
+  if(S.vue==="login"||S.vue==="attente") S.vue="liste";
+  render();
 }
 function blocPhoto(cible, aUne){
   return `<div class="photobox" data-drop="${cible}">
@@ -490,18 +637,26 @@ async function traiterPhoto(cible, file){
   if(msg) msg.textContent="Envoi de la photo…";
   try{
     const id=await envoyerPhoto(file);
-    if(cible.startsWith("pf-")){ await enregistrerProfil(cible.slice(3), id); }
+    if(cible==="moi"){ const {error}=await sb.from("profils").update({photo:id}).eq("id",MOI.id); if(error) throw error; MOI.photo=id; await chargerTout(); render(); }
     else if(cible==="wz"){ B.photo=id; garderBrouillon(); render(); }
-    else { const r=recettes.find(x=>x.id===S.ficheId); if(!r) return; if(modeStockage==="db") await col.doc(r.id).update({photo:id}); else { r.photo=id; lsSet(LS_KEY,recettes); render(); } }
+    else { const r=recettes.find(x=>x.id===S.ficheId); if(!r) return; const {error}=await sb.from("recettes").update({photo:id}).eq("id",r.id); if(error) throw error; await chargerTout(); render(); }
   }catch(err){ if(msg) msg.textContent="La photo n'a pas pu être envoyée. Essayez une image plus légère (moins de 20 Mo)."; }
 }
 async function retirerPhoto(cible){
-  if(cible.startsWith("pf-")){ try{ await enregistrerProfil(cible.slice(3), ""); }catch{} return; }
-  if(cible==="wz"){ B.photo=""; garderBrouillon(); render(); return; }
-  const r=recettes.find(x=>x.id===S.ficheId); if(!r) return;
-  try{ if(modeStockage==="db") await col.doc(r.id).update({photo:""}); else { r.photo=""; lsSet(LS_KEY,recettes); render(); } }catch{}
+  try{
+    if(cible==="moi"){ await sb.from("profils").update({photo:""}).eq("id",MOI.id); MOI.photo=""; await chargerTout(); render(); return; }
+    if(cible==="wz"){ B.photo=""; garderBrouillon(); render(); return; }
+    const r=recettes.find(x=>x.id===S.ficheId); if(!r) return;
+    await sb.from("recettes").update({photo:""}).eq("id",r.id); await chargerTout(); render();
+  }catch{}
 }
-async function envoyerPhoto(file){ const blob=await reduireImage(file); const r=await assets.upload(blob); return r.id; }
+async function envoyerPhoto(file){
+  const blob=await reduireImage(file);
+  const path=`${MOI.id}/${Date.now().toString(36)}${Math.random().toString(36).slice(2,6)}.jpg`;
+  const {error}=await sb.storage.from("photos").upload(path, blob, {contentType:blob.type||"image/jpeg", upsert:false});
+  if(error) throw error;
+  return sb.storage.from("photos").getPublicUrl(path).data.publicUrl;
+}
 function resultats(){
   const mots=norm(S.q).split(/\s+/).filter(Boolean);
   let out=recettes.map(r=>({r,hits:S.ingr.filter(x=>contient(r,x))}));
@@ -512,7 +667,7 @@ function resultats(){
   if(S.types.length) out=out.filter(({r})=>S.types.includes(r.categorie));
   if(S.styles.length) out=out.filter(({r})=>S.styles.every(st=>aStyle(r,st)));
   if(S.principal.length) out=out.filter(({r})=>S.principal.some(p=>aPrincipal(r,p)));
-  if(S.auteur) out=out.filter(({r})=> S.auteur==="Les deux" ? r.auteur==="Les deux" : (r.auteur===S.auteur || r.auteur==="Les deux"));
+  if(S.auteur) out=out.filter(({r})=>filtreAuteur(r,S.auteur));
   if(S.dureeMax) out=out.filter(({r})=>+r.duree>0 && +r.duree<=S.dureeMax);
   if(S.ingr.length){
     out=out.filter(o=>S.complet? o.hits.length===S.ingr.length : o.hits.length>0);
@@ -550,9 +705,10 @@ function vueListe(){
     ${sg.rec.length?`<div class="grp"><span>Recettes</span>${sg.rec.map(r=>`<button class="rec" type="button" data-open="${esc(r.id)}">${ic(ICON_TYPE[r.categorie]||"restaurant")}${esc(r.titre)}</button>`).join("")}</div>`:""}
   </div>`:""}
   <div class="people" role="group" aria-label="Recettes de">
-    ${[["","Toutes",null],["Fanie","Fanie","Fanie"],["Michael","Michael","Michael"],["Les deux","Ensemble","Les deux"]].map(([v,l,a])=>{
-      const n = v? recettes.filter(r=>v==="Les deux"? r.auteur==="Les deux" : (r.auteur===v||r.auteur==="Les deux")).length : recettes.length;
-      return `<button class="pp" type="button" data-qui="${esc(v)}" aria-pressed="${S.auteur===v}">${a?avatar(a,"sm"):`<span class="av all">${ic("menu_book")}</span>`}<span>${l}</span><span class="mono n">${n}</span></button>`;}).join("")}
+    ${[["","Toutes",null],["Fanie","Fanie","Fanie"],["Michael","Michael","Michael"],["Les deux","Ensemble","Les deux"],["inv","Invités",null]].map(([v,l,a])=>{
+      const n = recettes.filter(r=>filtreAuteur(r,v)).length;
+      if(v==="inv" && !n) return "";
+      return `<button class="pp" type="button" data-qui="${esc(v)}" aria-pressed="${S.auteur===v}">${a?avatar(a,"sm"):`<span class="av all">${ic(v==="inv"?"group":"menu_book")}</span>`}<span>${l}</span><span class="mono n">${n}</span></button>`;}).join("")}
   </div>
   ${S.ingr.length||S.types.length||S.styles.length||S.principal.length?`<div class="active" aria-label="Filtres choisis">
     ${S.ingr.map(x=>`<button class="chip on-ingr" type="button" data-rm="ingr" data-v="${esc(x)}" aria-label="Retirer ${esc(x)}">${esc(x)}<span class="x-in" aria-hidden="true">×</span></button>`).join("")}
@@ -586,7 +742,7 @@ function vueListe(){
   </details>
 
   <div class="results-head">
-    <h2>${S.ingr.length?"Du plus au moins correspondant":S.auteur&&!(S.q||S.types.length||S.styles.length||S.principal.length||S.dureeMax)?(S.auteur==="Les deux"?"Nos recettes à deux":"Les recettes de "+esc(S.auteur)):filtresActifs()?"Résultats":"Toutes nos recettes"}</h2>
+    <h2>${S.ingr.length?"Du plus au moins correspondant":S.auteur&&!(S.q||S.types.length||S.styles.length||S.principal.length||S.dureeMax)?(S.auteur==="Les deux"?"Nos recettes à deux":S.auteur==="inv"?"Les recettes de nos invités":"Les recettes de "+esc(S.auteur)):filtresActifs()?"Résultats":"Toutes nos recettes"}</h2>
     <span class="hint mono">${res.length} recette${res.length>1?"s":""}</span>
   </div>
   ${!charge?`<div class="empty">Chargement…</div>`
@@ -601,7 +757,7 @@ function carte(r,hits){
   return `<button class="card" type="button" data-open="${esc(r.id)}">
     ${r.photo?`<div class="thumb photo" style="background-image:url('${esc(photoUrl(r))}')">`:`<div class="thumb ${ton(r)}">${ic(ICON_TYPE[r.categorie]||"restaurant")}`}${r.categorie?`<span class="badge">${esc(r.categorie)}</span>`:""}${(r.tags||[]).includes("Exemple")?`<span class="badge ex">Exemple</span>`:""}</div>
     <h3>${esc(r.titre||"Sans titre")}</h3>
-    <div class="meta">${r.duree?`<span>${ic("schedule")} ${esc(r.duree)} min</span>`:""}${r.personnes?`<span>${ic("group")} ${esc(r.personnes)}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}${esc(r.auteur==="Les deux"?"Fanie & Michael":r.auteur)}</span>`:""}</div>
+    <div class="meta">${r.duree?`<span>${ic("schedule")} ${esc(r.duree)} min</span>`:""}${r.personnes?`<span>${ic("group")} ${esc(r.personnes)}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}${esc(nomAuteur(r.auteur))}</span>`:""}</div>
     <p class="ingr-preview">${ing}${ings.length>7?` +${ings.length-7}`:""}</p>
     ${S.ingr.length?`<div class="bar" aria-hidden="true"><i style="width:${Math.round(hits.length/S.ingr.length*100)}%"></i></div>
       <span class="match">${hits.length===S.ingr.length?"Utilise tout ce que vous avez choisi":`${hits.length} sur ${S.ingr.length}`}${manque.length&&hits.length<S.ingr.length?` <span class="miss">· sans ${esc(manque.join(", "))}</span>`:""}</span>`:""}
@@ -619,13 +775,15 @@ function listeIngredients(r,f){
   return `<ul class="ilist">${(r.ingredients||[]).map(i=>`<li class="${S.ingr.some(x=>ingrMatch(i.nom,x))?"hit":""}"><span>${esc(i.nom)}</span><span class="qty">${i.unite==="au goût"||!i.qte?(i.unite==="au goût"?"au goût":""):`${fmtQte(i.qte,f)} ${esc(i.unite||"")}`}</span></li>`).join("")||`<li class="hint">Aucun ingrédient.</li>`}</ul>`;
 }
 function vueFiche(){
-  const r=recettes.find(x=>x.id===S.ficheId);
+  const ap=S.vue==="apercu";
+  const r= ap ? apercuRec() : recettes.find(x=>x.id===S.ficheId);
   if(!r) return `<div class="empty">Cette recette n'existe plus.<button class="btn" type="button" data-back>Retour</button></div>`;
   const base=+r.personnes||0, pers=S.personnes??base, f=base?pers/base:1;
   return `
   <div class="row" style="justify-content:space-between">
-    <button class="btn ghost" type="button" data-back>← Toutes les recettes</button>
-    ${peutEcrire?`<div class="row"><button class="btn" type="button" data-edit="${esc(r.id)}">Modifier</button><button class="btn danger" type="button" id="suppr">Supprimer</button></div>`:""}
+    ${ap?`<button class="btn ghost" type="button" data-retour-props>← Retour</button>`:`<button class="btn ghost" type="button" data-back>← Toutes les recettes</button>`}
+    ${ap&&MOI?.admin&&PROPS.find(x=>x.id===S.propId)?.statut==="en_attente"?`<div class="row"><button class="btn primary" type="button" data-valider="${S.propId}">${ic("check")}Valider</button></div>`:""}
+    ${MOI?.admin&&!ap?`<div class="row"><button class="btn" type="button" data-edit="${esc(r.id)}">Modifier</button><button class="btn danger" type="button" id="suppr">Supprimer</button></div>`:""}
   </div>
   ${S.confirmSuppr?`<div class="confirm"><span>Supprimer « ${esc(r.titre)} » du carnet ?</span><button class="btn danger" type="button" id="suppr-ok">Oui, supprimer</button><button class="btn" type="button" id="suppr-non">Annuler</button></div>`:""}
   <div class="fiche">
@@ -636,11 +794,11 @@ function vueFiche(){
     </aside>
     <article style="display:grid;gap:16px;align-content:start;min-width:0">
       ${r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${ic(ICON_TYPE[r.categorie]||"restaurant")}</div>`}
-      ${assets&&peutEcrire?blocPhoto("fiche",!!r.photo):""}
+      ${MOI?.admin&&!ap?blocPhoto("fiche",!!r.photo):""}
       <div style="display:grid;gap:10px">
         <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
         <h2>${esc(r.titre||"Sans titre")}</h2>
-        <div class="meta" style="font-size:14px">${r.duree?`<span>${ic("schedule")} ${esc(r.duree)} min</span>`:""}${base?`<span>${ic("group")} pour ${base}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(r.auteur==="Les deux"?"Fanie & Michael":r.auteur)}</span>`:""}</div>
+        <div class="meta" style="font-size:14px">${r.duree?`<span>${ic("schedule")} ${esc(r.duree)} min</span>`:""}${base?`<span>${ic("group")} pour ${base}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(nomAuteur(r.auteur))}</span>`:""}</div>
       </div>
       <div class="panel"><span class="lbl">Préparation</span>
         ${(r.etapes||[]).length?`<ol class="steps">${r.etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol>`:`<p class="hint" style="margin:0">Pas encore d'étapes.</p>`}</div>
@@ -651,9 +809,9 @@ function vueFiche(){
 }
 
 /* ---------- Vue : assistant d'ajout ---------- */
-function nouveauBrouillon(){ return {titre:"",categorie:"Plat",personnes:4,duree:"",auteur:lsGet(LS_MOI,"")||"Les deux",tags:[],principal:[],photo:"",ingredients:[],etapes:[""],notes:"",source:"",_imp:""}; }
+function nouveauBrouillon(){ return {titre:"",categorie:"Plat",personnes:4,duree:"",auteur:(MOI&&MOI.admin&&["Fanie","Michael"].includes(MOI.prenom))?MOI.prenom:"Les deux",tags:[],principal:[],photo:"",ingredients:[],etapes:[""],notes:"",source:"",_imp:""}; }
 function stepNav(){
-  const debut = B.id ? 1 : 0;
+  const debut = (B.id||B._propId) ? 1 : 0;
   return `<nav class="steps-nav" aria-label="Étapes">${ETAPES.map((l,k)=>k<debut?"":`<button type="button" data-step="${k}" ${W.etape===k?'aria-current="step"':""} class="${k<W.etape?"done":""}"><b>${k-debut+1}</b>${l}</button>`).join("")}</nav>`;
 }
 function etape0(){
@@ -664,15 +822,15 @@ function etape0(){
     ${reprise?`<div class="resume"><span>Vous aviez commencé <strong>${esc(ancien.titre||"une recette")}</strong>.</span><button class="btn primary" type="button" id="reprendre">Reprendre</button></div>`:""}
     <div class="choices">
       <button class="choice" type="button" id="mode-main">${ic("edit_note")}<strong>Je l'écris</strong><span>Titre, ingrédients avec quantités, puis les étapes. Guidé pas à pas.</span></button>
-      <button class="choice" type="button" id="mode-web" ${B._web?'style="border-color:var(--accent)"':""}>${ic("language")}<strong>Je l'ai trouvée sur internet</strong><span>Collez le lien et le texte de la recette, Claude remplit la fiche pour vous.</span></button>
+      <button class="choice" type="button" id="mode-web" ${B._web?'style="border-color:var(--accent)"':""}>${ic("language")}<strong>Je l'ai trouvée sur internet</strong><span>Collez le lien et le texte de la recette : l'appli pré-remplit la fiche, vous vérifiez.</span></button>
     </div>
     ${B._web?`<div class="panel" style="display:grid;gap:14px">
       <div class="q"><label for="imp-url">1. Le lien de la page</label><input class="input" id="imp-url" type="url" inputmode="url" placeholder="https://www.marmiton.org/…" value="${esc(B.source)}"></div>
       <div class="q"><label for="imp-txt">2. Le texte de la recette</label>
-        <span class="hint">Sur le site, sélectionnez les ingrédients et les étapes, copiez, puis collez ici. La page ne peut pas lire le site elle-même.</span>
+        <span class="hint">Sur le site, sélectionnez le titre, les ingrédients et les étapes, copiez, puis collez ici.</span>
         <textarea class="input" id="imp-txt" placeholder="Collez ici…">${esc(B._imp||"")}</textarea></div>
-      <div class="row"><button class="btn primary" type="button" id="imp-go" ${sample&&!W.impEnCours?"":"disabled"}>${W.impEnCours?"Claude lit la recette…":"Remplir la fiche"}</button>
-        <span class="hint" aria-live="polite">${sample?esc(W.impMsg):"Le remplissage automatique n'est pas disponible ici. Choisissez « Je l'écris »."}</span></div>
+      <div class="row"><button class="btn primary" type="button" id="imp-simple">Pré-remplir la fiche</button>
+        <span class="hint" aria-live="polite">${esc(W.impMsg)}</span></div>
     </div>`:""}
   </div>`;
 }
@@ -740,7 +898,7 @@ function etape4(){
   return `<div class="wz review">
     ${B.photo?`<div class="thumb big photo" style="background-image:url('${esc(photoUrl(B))}')"></div>`:""}
     <h2>${esc(B.titre||"Recette sans titre")}</h2>
-    <div class="q"><span class="lbl">Qui ajoute cette recette ?</span>${choixAuteur()}</div>
+    ${MOI&&MOI.admin?`<div class="q"><span class="lbl">Qui ajoute cette recette ?</span>${choixAuteur()}</div>`:blocInvite()}
     ${manque.length?`<p class="err" style="margin:0">Il manque ${manque.join(" et ")}.</p>`:`<p class="ok" style="margin:0">Tout est prêt.</p>`}
     <div class="panel"><div class="head"><span class="lbl" style="margin:0">L'essentiel</span><button class="linkbtn" type="button" data-step="1">Modifier</button></div>
       <div class="meta" style="font-size:14px"><span>${esc(B.categorie)}</span><span>${B.personnes||"?"} pers.</span><span class="mono">${B.duree?B.duree+" min":"durée ?"}</span></div>
@@ -751,26 +909,36 @@ function etape4(){
   </div>`;
 }
 function vueForm(){
-  const last=W.etape===4, first=W.etape===(B.id?1:0);
+  const last=W.etape===4, first=W.etape===((B.id||B._propId)?1:0);
   const corps=[etape0,etape1,etape2,etape3,etape4][W.etape]();
   return `
-  <div class="row" style="justify-content:space-between"><button class="btn ghost" type="button" id="annuler">← Annuler</button><span class="hint">${B.id?"Modification":"Nouvelle recette"}</span></div>
+  <div class="row" style="justify-content:space-between"><button class="btn ghost" type="button" id="annuler">← Annuler</button><span class="hint">${B.id||B._propId?"Modification":(MOI&&!MOI.admin?"Proposer une recette":"Nouvelle recette")}</span></div>
   ${stepNav()}
   ${corps}
   ${W.etape===0?"":`<div class="wzbar">
     ${first?"<span></span>":`<button class="btn" type="button" id="prec">Précédent</button>`}
     <span class="msg ${W.msgOk?"ok":"err"}" aria-live="polite">${esc(W.msg)}</span>
-    ${last?`<button class="btn primary" type="button" id="save" ${peutEcrire?"":"disabled"}>Enregistrer</button>`:`<button class="btn primary" type="button" id="suiv">Suivant</button>`}
+    ${last?`<button class="btn primary" type="button" id="save" ${peutEcrire?"":"disabled"}>${MOI&&!MOI.admin?"Envoyer pour validation":"Enregistrer"}</button>`:`<button class="btn primary" type="button" id="suiv">Suivant</button>`}
   </div>`}`;
 }
 
 /* ---------- Rendu ---------- */
 function render(garderFocus){
   const a=document.activeElement, fid=a&&a.id, sel=a&&a.selectionStart;
-  app.innerHTML = S.vue==="fiche"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():vueListe();
-  document.getElementById("hdr-avs").innerHTML = avatar("Fanie","sm")+avatar("Michael","sm");
+  app.innerHTML = S.vue==="attente"?`<div class="empty">${ic("skillet")}<span>Ouverture du carnet…</span></div>`:S.vue==="login"?vueLogin():S.vue==="fiche"||S.vue==="apercu"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():S.vue==="miennes"?vueMiennes():S.vue==="valider"?vueValider():vueListe();
+  document.getElementById("hdr-avs").innerHTML = MOI ? avatar(monAvatarNom(),"sm") : "";
+  const enAttente = PROPS.filter(p=>p.statut==="en_attente").length;
+  const extraL = MOI&&MOI.admin ? "À valider" : "Mes recettes";
+  for(const id of ["tab-extra-l","nav-extra-l"]){ const el=document.getElementById(id); if(el) el.textContent=extraL; }
+  const nb=document.getElementById("tab-extra-n"); nb.hidden=!(MOI&&MOI.admin&&enAttente); nb.textContent=enAttente;
+  document.getElementById("nav-extra-l").textContent = MOI&&MOI.admin&&enAttente ? `À valider (${enAttente})` : extraL;
+  document.getElementById("tab-add-l").textContent = MOI&&!MOI.admin ? "Proposer" : "Ajouter";
+  document.getElementById("nav-ajout").lastChild.textContent = MOI&&!MOI.admin ? "Proposer" : "Ajouter";
+  document.getElementById("nav-extra").hidden = !MOI || S.vue==="form";
+  document.getElementById("nav-hasard").hidden = !MOI;
+  document.getElementById("nav-profils").hidden = !MOI;
   const tb=document.getElementById("tabbar");
-  tb.hidden = S.vue==="form";
+  tb.hidden = ["form","login","attente"].includes(S.vue);
   tb.querySelector('[data-tab="home"]').setAttribute("aria-current", S.vue==="liste"?"page":"false");
   tb.querySelector('[data-tab="add"]').hidden = !peutEcrire;
   document.getElementById("nav-ajout").hidden = S.vue==="form" || !peutEcrire;
@@ -793,6 +961,7 @@ document.getElementById("home").onclick=()=>aller("liste");
 document.getElementById("nav-ajout").onclick=ouvrirAjout;
 document.getElementById("nav-hasard").onclick=auHasard;
 document.getElementById("nav-profils").onclick=()=>aller("profils");
+document.getElementById("nav-extra").onclick=()=>{ W.msg=""; aller(MOI&&MOI.admin?"valider":"miennes"); };
 function auHasard(){
   const pool=resultats().map(o=>o.r), liste=pool.length?pool:recettes;
   if(!liste.length){ aller("liste"); return; }
@@ -806,6 +975,7 @@ document.getElementById("tabbar").addEventListener("click",e=>{
   if(t==="home") aller("liste");
   else if(t==="add") ouvrirAjout();
   else if(t==="hasard") auHasard();
+  else if(t==="extra"){ W.msg=""; aller(MOI&&MOI.admin?"valider":"miennes"); }
   else if(t==="frigo"){ S.vue="liste"; render(); document.getElementById("frigo")?.scrollIntoView({behavior:"smooth",block:"start"}); }
 });
 
@@ -854,6 +1024,19 @@ app.addEventListener("click", async e=>{
     const data=JSON.stringify({app:"recettes-fm",version:1,exporteLe:new Date().toISOString(),recettes:recettes.map(r=>({...r,photo:""})),profils:Object.fromEntries(Object.entries(PROFILS).map(([k,v])=>[k,{...v,photo:""}]))},null,2);
     const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([data],{type:"application/json"})); a.download="recettes-fanie-michael-"+new Date().toISOString().slice(0,10)+".json"; document.body.appendChild(a); a.click(); a.remove();
     const m=document.getElementById("backup-msg"); if(m) m.textContent=`${recettes.length} recettes exportées (sans les photos).`; return; }
+  if(t.id==="login-send"){ await envoyerCode(); return; }
+  if(t.id==="login-verify"){ await verifierCode(); return; }
+  if(t.id==="login-back"){ Object.assign(L,{envoye:false,code:"",msg:""}); render(); return; }
+  if(t.id==="logout"){ await sb.auth.signOut(); MOI=null; PROPS=[]; recettes=[]; charge=false; S.vue="login"; render(); return; }
+  if(t.id==="moi-save"){ const v=(MOI.prenom||"").trim(); const m=document.getElementById("moi-msg"); if(!v){ if(m) m.textContent="Indiquez votre prénom."; return; } const {error}=await sb.from("profils").update({prenom:v}).eq("id",MOI.id); if(m) m.textContent=error?"Le prénom n'a pas pu être enregistré.":"Prénom enregistré."; if(!error){ await chargerTout(); } return; }
+  if(t.id==="imp-simple"){ importSimple(); return; }
+  if(d.apercu){ S.propId=d.apercu; S.retourVue=S.vue; S.personnes=null; aller("apercu"); return; }
+  if("retourProps" in d){ aller(S.retourVue||"liste"); return; }
+  if(d.pedit){ const p=PROPS.find(x=>x.id===d.pedit); if(!p) return; B={...nouveauBrouillon(),...JSON.parse(JSON.stringify(p.donnees||{})),_propId:p.id}; if(!B.etapes||!B.etapes.length) B.etapes=[""]; W.etape=1; W.msg=""; W.ingQ=""; aller("form"); return; }
+  if(d.valider){ t.disabled=true; const {error}=await sb.rpc("valider_proposition",{p_id:d.valider}); if(error){ t.disabled=false; alertMsg("La validation n'a pas abouti. Réessayez."); return; } await chargerTout(); W.msg="Recette validée : elle est maintenant visible."; W.msgOk=true; aller("valider"); return; }
+  if(d.refuser){ S.refusId=d.refuser; render(); focusId("motif"); return; }
+  if("refusNon" in d){ S.refusId=null; render(); return; }
+  if(d.refusOk){ const motif=(document.getElementById("motif")?.value||"").trim(); const {error}=await sb.from("propositions").update({statut:"refusee",motif,traite_le:new Date().toISOString()}).eq("id",d.refusOk); if(error){ alertMsg("Le refus n'a pas abouti. Réessayez."); return; } S.refusId=null; await chargerTout(); W.msg="Proposition refusée."; W.msgOk=true; aller("valider"); return; }
   if(d.moi){ const cur=lsGet(LS_MOI,""); lsSet(LS_MOI, cur===d.moi?null:d.moi); render(); return; }
   if(d.photoRm){ await retirerPhoto(d.photoRm); return; }
   if(d.princ){ const L=B.principal||[]; B.principal=L.includes(d.princ)?L.filter(x=>x!==d.princ):[...L,d.princ]; garderBrouillon(); render(); return; }
@@ -870,6 +1053,9 @@ app.addEventListener("click", async e=>{
 
 app.addEventListener("input", e=>{
   const t=e.target;
+  if(t.id==="login-email"){ L.email=t.value.trim(); return; }
+  if(t.id==="login-code"){ L.code=t.value.replace(/\s/g,""); return; }
+  if(t.id==="moi-prenom" && MOI){ MOI.prenom=t.value; return; }
   if(t.id==="q"){ S.q=t.value; S.sugMasque=false; render(true); return; }
   if(!B) return;
   if(t.id==="ing-add"){ W.ingQ=t.value; render(true); return; }
@@ -904,6 +1090,8 @@ app.addEventListener("dragleave", e=>{ const z=e.target.closest("[data-drop]"); 
 app.addEventListener("drop", e=>{ const z=e.target.closest("[data-drop]"); if(!z) return; e.preventDefault(); z.classList.remove("over"); const f=e.dataTransfer?.files?.[0]; if(f) traiterPhoto(z.dataset.drop, f); });
 app.addEventListener("keydown", e=>{
   const t=e.target;
+  if(t.id==="login-email" && e.key==="Enter"){ e.preventDefault(); envoyerCode(); return; }
+  if(t.id==="login-code" && e.key==="Enter"){ e.preventDefault(); verifierCode(); return; }
   if(t.id==="q" && e.key==="Enter"){
     e.preventDefault();
     const v=S.q.trim(), n=norm(v); if(!n) return;
@@ -930,19 +1118,47 @@ app.addEventListener("keydown", e=>{
   }
 });
 
+function alertMsg(m){ statusEl.textContent=m; window.scrollTo({top:0}); }
+async function envoyerCode(){
+  const email=(L.email||"").trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ L.msg="Entrez une adresse e-mail valide."; L.ok=false; render(); return; }
+  L.msg="Envoi du code…"; L.ok=true; render();
+  const {error}=await sb.auth.signInWithOtp({email, options:{shouldCreateUser:true}});
+  if(error){ L.ok=false; L.msg = /rate|limit|seconds/i.test(error.message||"") ? "Trop de demandes de code. Attendez quelques minutes, puis réessayez." : "Le code n'a pas pu être envoyé. Vérifiez l'adresse, puis réessayez."; render(); return; }
+  L.email=email; L.envoye=true; L.msg=""; render(); focusId("login-code");
+}
+async function verifierCode(){
+  const token=(L.code||"").trim();
+  if(token.length<6){ L.msg="Entrez le code reçu par e-mail."; L.ok=false; render(); return; }
+  L.msg="Vérification…"; L.ok=true; render();
+  const {error}=await sb.auth.verifyOtp({email:L.email, token, type:"email"});
+  if(error){ L.ok=false; L.msg="Ce code ne fonctionne pas ou a expiré. Vérifiez-le, ou demandez-en un nouveau."; render(); return; }
+  Object.assign(L,{code:"",envoye:false,msg:""});
+  await demarrerSession();
+}
 async function sauver(){
   if(!B.titre.trim()){ W.msg="Ajoutez un titre (étape 1)."; render(); return; }
+  if(MOI && !MOI.admin){
+    const pre=(MOI.prenom||"").trim();
+    if(!pre){ W.msg="Indiquez votre prénom, juste en dessous."; W.msgOk=false; render(); focusId("moi-prenom"); return; }
+    await sb.from("profils").update({prenom:pre}).eq("id",MOI.id);
+  }
   const rec={ id:B.id, titre:B.titre.trim(), categorie:B.categorie, personnes:+B.personnes||"", duree:+B.duree||"",
     auteur:B.auteur, tags:B.tags, principal:B.principal||[], photo:B.photo||"", ingredients:B.ingredients.map(i=>({nom:i.nom,qte:String(i.qte||"").trim(),unite:i.unite})),
     etapes:B.etapes.map(s=>String(s).replace(/^\s*\d+[.)]\s*/,"").trim()).filter(Boolean),
     notes:B.notes||"", source:(B.source||"").trim(), creeLe:B.creeLe };
   const btn=document.getElementById("save"); if(btn){ btn.disabled=true; btn.textContent="Enregistrement…"; }
   try{
+    if(MOI && !MOI.admin){
+      const propId=B._propId; await proposer(rec, propId);
+      if(!B.id) lsSet(LS_DRAFT,null);
+      B=null; W.msg= propId ? "Modification envoyée : elle sera visible après validation." : "Recette envoyée : elle sera visible après validation par Fanie ou Michael."; W.msgOk=true; aller("miennes"); return;
+    }
     const id=await enregistrer(rec);
     if(!B.id) lsSet(LS_DRAFT,null);
     B=null; S.ficheId=id; S.personnes=null; aller("fiche");
   }catch(err){
-    W.msg = err?.code==="quota_exceeded" ? "Le carnet est plein : supprimez quelques recettes." : "L'enregistrement n'a pas abouti. Vérifiez votre accès au carnet, puis réessayez.";
+    W.msg = "L'enregistrement n'a pas abouti. Vérifiez votre connexion, puis réessayez.";
     W.msgOk=false; render();
   }
 }
@@ -991,23 +1207,13 @@ ${txt.slice(0,12000)}
 /* ---------- Démarrage ---------- */
 render();
 (async()=>{
-  const use=window.claude?.use?.bind(window.claude);
-  let user=null;
-  if(use){ try{ [db,user,sample,assets]=await Promise.all([use("db"),use("user").catch(()=>null),use("sample").catch(()=>null),use("assets").catch(()=>null)]); }catch{} }
-  if(user){ try{ if(await user.can("data.write")===false) peutEcrire=false; }catch{} }
-  if(db){
-    modeStockage="db"; col=db.collection("recettes");
-    db.doc("profils/personnes").onSnapshot(d=>{ PROFILS=(d.exists&&d.data())||{}; if(S.vue!=="form") render(); else { const h=document.getElementById("hdr-avs"); if(h) h.innerHTML=avatar("Fanie","sm")+avatar("Michael","sm"); } },()=>{});
-    col.onSnapshot(s=>{
-      recettes=s.docs.map(d=>({id:d.id,...d.data()})); charge=true;
-      if(S.vue!=="form") render(); else majStatus();
-    },()=>{ statusEl.textContent="La connexion au carnet a été interrompue. Rechargez la page."; });
-  } else {
-    if(!use){ try{ await LocalAssets.loadAll(); assets=LocalAssets; }catch{} }
-    modeStockage="local"; recettes=lsGet(LS_KEY,null);
-    if(!recettes){ recettes=(window.RECETTES_DEPART||[]).map(r=>({...r})); lsSet(LS_KEY,recettes); }
-    PROFILS=lsGet(LS_PROFILS,{}); charge=true; render();
-  }
+  if(!sb){ statusEl.textContent="Connexion impossible pour le moment. Rechargez la page."; return; }
+  sb.auth.onAuthStateChange(ev=>{ if(ev==="SIGNED_OUT"){ MOI=null; PROPS=[]; S.vue="login"; render(); } });
+  try{ await demarrerSession(); }
+  catch(e){ recettes=lsGet(LS_KEY,[]); charge=true; peutEcrire=false; S.vue=recettes.length?"liste":"login"; render(); statusEl.textContent="Hors connexion : lecture seule."; }
+  document.addEventListener("visibilitychange", async()=>{
+    if(document.visibilityState==="visible" && MOI && !["form","login"].includes(S.vue)){ try{ await chargerTout(); render(); }catch{} }
+  });
 })();
 </script>
 
