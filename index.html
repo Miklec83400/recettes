@@ -355,7 +355,7 @@ const sb = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY, {auth:
 let MOI=null;          // {id, email, admin, prenom, photo}
 let PROPS=[];          // propositions visibles (les miennes, ou toutes pour Fanie et Michael)
 let PROFILS_ID={};     // id -> {prenom, photo}
-const L={email:"",code:"",envoye:false,msg:"",ok:false};
+const L={email:"",mdp:"",mode:"connexion",voir:false,msg:"",ok:false};
 let PROFILS = {};   // {Fanie:{photo}, Michael:{photo}}
 const LS_MOI="recettes-fm-moi", LS_PROFILS="recettes-fm-profils";
 const S = { vue:"attente", propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
@@ -527,18 +527,23 @@ function vueProfils(){
   </div>`;
 }
 function vueLogin(){
+  const crea=L.mode==="creation";
   return `<div class="wz" style="max-width:440px;margin:16px auto 0">
     <div class="thumb t-green" style="height:120px">${ic("skillet")}</div>
     <h2>Bienvenue dans notre carnet</h2>
-    <p class="hint" style="margin:0">Entrez votre e-mail : vous recevrez un code pour vous connecter, sans mot de passe. Vous restez connecté ensuite.</p>
-    ${!L.envoye?`<div class="q"><label for="login-email">Votre e-mail</label>
-        <input class="input" id="login-email" type="email" inputmode="email" autocomplete="email" enterkeyhint="send" placeholder="prenom@exemple.fr" value="${esc(L.email)}"></div>
-      <div><button class="btn primary" type="button" id="login-send">Recevoir mon code</button></div>`
-    :`<div class="q"><label for="login-code">Code reçu par e-mail</label>
-        <span class="hint">Envoyé à ${esc(L.email)}. Regardez aussi dans les spams.</span>
-        <input class="input big mono" id="login-code" inputmode="numeric" autocomplete="one-time-code" enterkeyhint="go" maxlength="10" placeholder="123456" value="${esc(L.code)}"></div>
-      <div class="row"><button class="btn primary" type="button" id="login-verify">Se connecter</button><button class="btn ghost" type="button" id="login-back">Changer d'e-mail</button></div>`}
+    <div class="seg" role="tablist" style="display:flex">
+      <button type="button" data-lmode="connexion" aria-pressed="${!crea}" style="flex:1;padding:8px">J'ai déjà un compte</button>
+      <button type="button" data-lmode="creation" aria-pressed="${crea}" style="flex:1;padding:8px">Créer mon compte</button>
+    </div>
+    <div class="q"><label for="login-email">Votre e-mail</label>
+      <input class="input" id="login-email" type="email" inputmode="email" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(L.email)}"></div>
+    <div class="q"><label for="login-mdp">${crea?"Choisissez un mot de passe":"Mot de passe"}</label>
+      ${crea?`<span class="hint">Au moins 6 caractères. Notez-le bien.</span>`:""}
+      <div class="row" style="flex-wrap:nowrap"><input class="input" id="login-mdp" type="${L.voir?"text":"password"}" autocomplete="${crea?"new-password":"current-password"}" enterkeyhint="go" value="${esc(L.mdp)}">
+      <button class="btn ghost" type="button" id="login-voir" aria-label="${L.voir?"Masquer":"Afficher"} le mot de passe">${ic(L.voir?"visibility_off":"visibility")}</button></div></div>
+    <div><button class="btn primary" type="button" id="login-go">${crea?"Créer mon compte":"Se connecter"}</button></div>
     <span class="${L.ok?"ok":"err"}" aria-live="polite">${esc(L.msg)}</span>
+    ${crea?`<p class="hint" style="margin:0">Vous pourrez voir les recettes et en proposer. Fanie ou Michael valident chaque proposition.</p>`:`<p class="hint" style="margin:0">Mot de passe oublié ? Demandez à Michael de le réinitialiser.</p>`}
   </div>`;
 }
 const STATUTS={en_attente:"En attente de validation",validee:"Validée",refusee:"Refusée"};
@@ -1024,9 +1029,9 @@ app.addEventListener("click", async e=>{
     const data=JSON.stringify({app:"recettes-fm",version:1,exporteLe:new Date().toISOString(),recettes:recettes.map(r=>({...r,photo:""})),profils:Object.fromEntries(Object.entries(PROFILS).map(([k,v])=>[k,{...v,photo:""}]))},null,2);
     const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([data],{type:"application/json"})); a.download="recettes-fanie-michael-"+new Date().toISOString().slice(0,10)+".json"; document.body.appendChild(a); a.click(); a.remove();
     const m=document.getElementById("backup-msg"); if(m) m.textContent=`${recettes.length} recettes exportées (sans les photos).`; return; }
-  if(t.id==="login-send"){ await envoyerCode(); return; }
-  if(t.id==="login-verify"){ await verifierCode(); return; }
-  if(t.id==="login-back"){ Object.assign(L,{envoye:false,code:"",msg:""}); render(); return; }
+  if(d.lmode){ L.mode=d.lmode; L.msg=""; render(); return; }
+  if(t.id==="login-voir"){ L.voir=!L.voir; render(); focusId("login-mdp"); return; }
+  if(t.id==="login-go"){ await connexion(); return; }
   if(t.id==="logout"){ await sb.auth.signOut(); MOI=null; PROPS=[]; recettes=[]; charge=false; S.vue="login"; render(); return; }
   if(t.id==="moi-save"){ const v=(MOI.prenom||"").trim(); const m=document.getElementById("moi-msg"); if(!v){ if(m) m.textContent="Indiquez votre prénom."; return; } const {error}=await sb.from("profils").update({prenom:v}).eq("id",MOI.id); if(m) m.textContent=error?"Le prénom n'a pas pu être enregistré.":"Prénom enregistré."; if(!error){ await chargerTout(); } return; }
   if(t.id==="imp-simple"){ importSimple(); return; }
@@ -1054,7 +1059,7 @@ app.addEventListener("click", async e=>{
 app.addEventListener("input", e=>{
   const t=e.target;
   if(t.id==="login-email"){ L.email=t.value.trim(); return; }
-  if(t.id==="login-code"){ L.code=t.value.replace(/\s/g,""); return; }
+  if(t.id==="login-mdp"){ L.mdp=t.value; return; }
   if(t.id==="moi-prenom" && MOI){ MOI.prenom=t.value; return; }
   if(t.id==="q"){ S.q=t.value; S.sugMasque=false; render(true); return; }
   if(!B) return;
@@ -1090,8 +1095,8 @@ app.addEventListener("dragleave", e=>{ const z=e.target.closest("[data-drop]"); 
 app.addEventListener("drop", e=>{ const z=e.target.closest("[data-drop]"); if(!z) return; e.preventDefault(); z.classList.remove("over"); const f=e.dataTransfer?.files?.[0]; if(f) traiterPhoto(z.dataset.drop, f); });
 app.addEventListener("keydown", e=>{
   const t=e.target;
-  if(t.id==="login-email" && e.key==="Enter"){ e.preventDefault(); envoyerCode(); return; }
-  if(t.id==="login-code" && e.key==="Enter"){ e.preventDefault(); verifierCode(); return; }
+  if(t.id==="login-email" && e.key==="Enter"){ e.preventDefault(); focusId("login-mdp"); return; }
+  if(t.id==="login-mdp" && e.key==="Enter"){ e.preventDefault(); connexion(); return; }
   if(t.id==="q" && e.key==="Enter"){
     e.preventDefault();
     const v=S.q.trim(), n=norm(v); if(!n) return;
@@ -1119,21 +1124,26 @@ app.addEventListener("keydown", e=>{
 });
 
 function alertMsg(m){ statusEl.textContent=m; window.scrollTo({top:0}); }
-async function envoyerCode(){
-  const email=(L.email||"").trim().toLowerCase();
+async function connexion(){
+  const email=(L.email||"").trim().toLowerCase(), password=L.mdp||"";
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ L.msg="Entrez une adresse e-mail valide."; L.ok=false; render(); return; }
-  L.msg="Envoi du code…"; L.ok=true; render();
-  const {error}=await sb.auth.signInWithOtp({email, options:{shouldCreateUser:true}});
-  if(error){ L.ok=false; L.msg = /rate|limit|seconds/i.test(error.message||"") ? "Trop de demandes de code. Attendez quelques minutes, puis réessayez." : "Le code n'a pas pu être envoyé. Vérifiez l'adresse, puis réessayez."; render(); return; }
-  L.email=email; L.envoye=true; L.msg=""; render(); focusId("login-code");
-}
-async function verifierCode(){
-  const token=(L.code||"").trim();
-  if(token.length<6){ L.msg="Entrez le code reçu par e-mail."; L.ok=false; render(); return; }
-  L.msg="Vérification…"; L.ok=true; render();
-  const {error}=await sb.auth.verifyOtp({email:L.email, token, type:"email"});
-  if(error){ L.ok=false; L.msg="Ce code ne fonctionne pas ou a expiré. Vérifiez-le, ou demandez-en un nouveau."; render(); return; }
-  Object.assign(L,{code:"",envoye:false,msg:""});
+  if(password.length<6){ L.msg="Le mot de passe doit faire au moins 6 caractères."; L.ok=false; render(); return; }
+  L.msg= L.mode==="creation" ? "Création du compte…" : "Connexion…"; L.ok=true; render();
+  let res;
+  if(L.mode==="creation") res=await sb.auth.signUp({email,password});
+  else res=await sb.auth.signInWithPassword({email,password});
+  const err=res.error;
+  if(err){
+    const m=(err.message||"").toLowerCase(); L.ok=false;
+    L.msg = m.includes("invalid login") ? "E-mail ou mot de passe incorrect."
+      : m.includes("already registered")||m.includes("already been registered") ? "Ce compte existe déjà : choisissez « J'ai déjà un compte »."
+      : m.includes("not confirmed") ? "Ce compte attend une confirmation. Demandez à Michael de le débloquer."
+      : m.includes("rate")||m.includes("limit") ? "Trop d'essais. Attendez quelques minutes, puis réessayez."
+      : "La connexion n'a pas abouti. Vérifiez votre réseau, puis réessayez.";
+    render(); return;
+  }
+  if(!res.data.session){ L.ok=false; L.msg="Compte créé, mais il doit encore être activé. Prévenez Michael."; render(); return; }
+  Object.assign(L,{mdp:"",msg:"",ok:false});
   await demarrerSession();
 }
 async function sauver(){
