@@ -177,6 +177,24 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .galerie::-webkit-scrollbar{display:none}
 .galerie img{flex:0 0 100%;height:min(60vw,320px);object-fit:cover;border-radius:14px;scroll-snap-align:center;background:var(--sunk)}
 .galerie.petite img{flex:0 0 46%;height:120px}
+.citation{margin:2px 0 16px;text-align:center;display:grid;gap:4px;padding-inline:8px}
+.citation blockquote{margin:0;font-family:var(--f-display);font-weight:500;font-size:17px;line-height:1.35;color:var(--ink);text-wrap:balance}
+.citation figcaption{font-size:12.5px;color:var(--muted)}
+.fiche-tete{display:grid;gap:10px;margin-top:12px}
+.fiche-tete h2{font-size:clamp(28px,6vw,40px)}
+.ing-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.ings{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ing{width:100%;box-sizing:border-box;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 10px 8px 8px;border:0;background:var(--bg);border-radius:14px;text-align:left;color:var(--ink)}
+button.ing{cursor:pointer}
+.ing-ico{width:40px;height:40px;border-radius:12px;background:var(--surface);display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line)}
+.ing-ico svg{width:30px;height:30px}
+.ing-txt{min-width:0;display:grid;gap:1px}
+.ing-txt b{font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.ing-txt b.frigo{color:var(--accent)}
+.ing-txt small{font-size:12.5px;color:var(--muted);line-height:1.3}
+.qte-pill{font-family:var(--f-mono);font-size:13px;background:var(--green-soft);color:var(--on-green-soft);padding:4px 10px;border-radius:999px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ing[aria-pressed="true"]{opacity:.45}
+.ing[aria-pressed="true"] .ing-txt b{text-decoration:line-through}
 .sublbl{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:10px 0 6px}
 .thumb.big .ms{font-size:64px}
 .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);align-items:center}
@@ -193,7 +211,7 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 
 /* Fiche */
 .fiche{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:22px;margin-top:14px}
-@media (max-width:720px){.fiche{grid-template-columns:1fr}.fiche > aside{order:2}}
+@media (max-width:720px){.fiche{grid-template-columns:1fr}}
 .fiche h2{font-size:clamp(28px,6vw,40px)}
 .panel{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:16px}
 .ilist{list-style:none;margin:0;padding:0}
@@ -291,7 +309,7 @@ const CATALOGUE = {
   "Fruits":["Citron","Citron vert","Pomme","Poire","Banane","Orange","Fraises","Framboises","Myrtilles","Abricot","Pêche","Ananas","Mangue","Raisins secs"],
   "Herbes & épices":["Sel","Poivre","Basilic","Persil","Coriandre","Ciboulette","Thym","Romarin","Laurier","Menthe","Origan","Herbes de Provence","Paprika","Cumin","Curry","Curcuma","Gingembre","Cannelle","Muscade","Piment"]
 };
-const UNITES = ["g","kg","ml","cl","L","c. à soupe","c. à café","pièce","gousse","tranche","pincée","sachet","boîte","au goût"];
+const UNITES = ["g","kg","ml","cl","L","c. à soupe","c. à café","pièce","gousse","tranche","pincée","poignée","brin","feuille","botte","sachet","boîte","au goût"];
 const TYPES = ["Plat","Entrée","Dessert","Apéritif","Soupe","Salade","Accompagnement","Petit-déjeuner","Goûter","Boisson","Sauce"];
 const STYLES = ["One-pot","Pâtes","Riz","Végétarien","Rapide","Au four","Mijoté","Léger","Gourmand","Enfants","Batch cooking","Été","Hiver","Fête"];
 const AUTEURS = ["Fanie","Michael","Les deux"];
@@ -351,7 +369,7 @@ const ALIAS_UNITES = [
   [/^(kg|kilos?|kilogrammes?)$/,"kg"],[/^(g|gr|grs|grammes?)$/,"g"],[/^(ml|millilitres?)$/,"ml"],[/^(cl|centilitres?)$/,"cl"],[/^(l|litres?)$/,"L"],
   [/^(cs|c\.?s\.?|cas|c\.? ?a\.? ?s\.?|cuil+eres? a soupe|cuil+ere a soupe|c\. a soupe|c a soupe|tbsp)$/,"c. à soupe"],
   [/^(cc|c\.?c\.?|cac|c\.? ?a\.? ?c\.?|cuil+eres? a cafe|c\. a cafe|c a cafe|tsp)$/,"c. à café"],
-  [/^(pincees?)$/,"pincée"],[/^(sachets?)$/,"sachet"],[/^(gousses?)$/,"gousse"],[/^(tranches?)$/,"tranche"],[/^(boites?|conserves?)$/,"boîte"],[/^(pieces?|pcs?)$/,"pièce"]
+  [/^(pincees?)$/,"pincée"],[/^(poignees?)$/,"poignée"],[/^(brins?)$/,"brin"],[/^(feuilles?)$/,"feuille"],[/^(bottes?)$/,"botte"],[/^(sachets?)$/,"sachet"],[/^(gousses?)$/,"gousse"],[/^(tranches?)$/,"tranche"],[/^(boites?|conserves?)$/,"boîte"],[/^(pieces?|pcs?)$/,"pièce"]
 ];
 function trouverUnite(t){ for(const [re,u] of ALIAS_UNITES) if(re.test(t)) return u; return null; }
 function nomConnu(nom){
@@ -379,6 +397,180 @@ function analyserLigne(txt){
   return {nom, qte, unite};
 }
 
+/* ---------- Ingrédients : petites images, nettoyage, affichage ---------- */
+const ING_ICO = {
+  banane:'<path d="M8 26c8 6 20 4 26-8l-3-2c-4 9-13 12-21 7z" fill="#F2C14E"/><path d="M31 15l3-4" stroke="#8B6A2B" stroke-width="2.5" stroke-linecap="round"/>',
+  pomme:'<circle cx="20" cy="23" r="11" fill="#E0533D"/><path d="M20 12c0-3 1-5 3-6" stroke="#6B4430" stroke-width="2" fill="none"/><ellipse cx="25" cy="9" rx="4" ry="2" fill="#5C9A33"/>',
+  poire:'<path d="M20 9c-3 0-4 4-4 7-4 2-7 6-7 10 0 5 5 8 11 8s11-3 11-8c0-4-3-8-7-10 0-3-1-7-4-7z" fill="#A6C94B"/><path d="M20 9V5" stroke="#6B4430" stroke-width="2"/>',
+  citron:'<ellipse cx="20" cy="21" rx="13" ry="10" fill="#F2D24E"/><circle cx="33" cy="21" r="2" fill="#E4BE2E"/><circle cx="7" cy="21" r="2" fill="#E4BE2E"/>',
+  orange:'<circle cx="20" cy="22" r="12" fill="#F0952E"/><ellipse cx="22" cy="9" rx="4" ry="2" fill="#5C9A33"/>',
+  fraise:'<path d="M20 34c-8-5-11-11-10-16 1-4 5-5 10-5s9 1 10 5c1 5-2 11-10 16z" fill="#E0533D"/><path d="M13 13l7-6 7 6-7 2z" fill="#5C9A33"/><g fill="#FBD9A0"><circle cx="16" cy="20" r="1"/><circle cx="24" cy="20" r="1"/><circle cx="20" cy="25" r="1"/><circle cx="17" cy="28" r="1"/><circle cx="23" cy="28" r="1"/></g>',
+  baies:'<g fill="#B4496A"><circle cx="14" cy="24" r="6"/><circle cx="26" cy="24" r="6"/><circle cx="20" cy="15" r="6"/></g><g fill="#E7A6B9"><circle cx="12" cy="22" r="1.4"/><circle cx="24" cy="22" r="1.4"/><circle cx="18" cy="13" r="1.4"/></g>',
+  tomate:'<circle cx="20" cy="22" r="12" fill="#E0533D"/><path d="M14 12l6 3 6-3-3 5h-6z" fill="#5C9A33"/>',
+  carotte:'<path d="M10 32l17-17 3 3-17 17c-2 1-4-1-3-3z" fill="#E9894A"/><path d="M28 14l4-7M29 15l7-3M28 13l1-7" stroke="#5C9A33" stroke-width="2.5" stroke-linecap="round"/>',
+  oignon:'<path d="M20 8c2 4 12 8 12 16 0 6-5 9-12 9s-12-3-12-9c0-8 10-12 12-16z" fill="#E2B57A"/><path d="M20 13v19M14 18c-1 5 0 10 2 13M26 18c1 5 0 10-2 13" stroke="#F3D3A5" stroke-width="1.5" fill="none"/>',
+  ail:'<path d="M20 7c1 4 11 9 11 17 0 6-5 9-11 9S9 30 9 24c0-8 10-13 11-17z" fill="#F4EFE6" stroke="#DCCFC4"/><path d="M20 14v18M15 19c-1 5 0 9 1 12M25 19c1 5 0 9-1 12" stroke="#DCCFC4" stroke-width="1.5" fill="none"/>',
+  pdt:'<ellipse cx="20" cy="21" rx="14" ry="10" fill="#D9A066" transform="rotate(-15 20 21)"/><g fill="#B98247"><circle cx="14" cy="19" r="1.2"/><circle cx="23" cy="16" r="1.2"/><circle cx="25" cy="25" r="1.2"/></g>',
+  courgette:'<rect x="5" y="16" width="30" height="10" rx="5" fill="#4E7A2A" transform="rotate(-20 20 21)"/><path d="M8 25l25-9" stroke="#7DB648" stroke-width="1.5"/>',
+  aubergine:'<path d="M12 30c-4-6 2-14 9-18 5-2 9 1 8 6-1 6-7 10-11 13-2 1-5 1-6-1z" fill="#6E3C7E"/><path d="M27 10l3-4 2 5z" fill="#5C9A33"/>',
+  poivron:'<path d="M12 16c0-3 3-5 8-5s8 2 8 5c2 4 2 11 0 15-2 3-5 3-8 1-3 2-6 2-8-1-2-4-2-11 0-15z" fill="#E0533D"/><path d="M20 11V6l3-1" stroke="#5C9A33" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+  champignon:'<path d="M6 20c0-8 6-12 14-12s14 4 14 12z" fill="#C98545"/><rect x="15" y="20" width="10" height="12" rx="4" fill="#F4EFE6"/>',
+  feuille:'<path d="M8 32C8 18 16 8 32 8c0 16-10 24-24 24z" fill="#7DB648"/><path d="M8 32L28 12" stroke="#4E7A2A" stroke-width="2"/>',
+  brocoli:'<circle cx="14" cy="16" r="7" fill="#5C9A33"/><circle cx="26" cy="16" r="7" fill="#5C9A33"/><circle cx="20" cy="11" r="7" fill="#7DB648"/><rect x="17" y="18" width="6" height="15" rx="3" fill="#A6D06A"/>',
+  avocat:'<path d="M20 6c-6 0-9 9-11 15-2 7 3 13 11 13s13-6 11-13C29 15 26 6 20 6z" fill="#4E7A2A"/><path d="M20 10c-4 0-6 7-8 12-1 5 3 9 8 9s9-4 8-9c-2-5-4-12-8-12z" fill="#C9DE7A"/><circle cx="20" cy="24" r="5" fill="#9A6237"/>',
+  pois:'<path d="M6 26c6-10 18-14 28-12-4 10-16 16-28 12z" fill="#7DB648"/><g fill="#A6D06A"><circle cx="14" cy="23" r="3"/><circle cx="20" cy="20" r="3"/><circle cx="26" cy="18" r="3"/></g>',
+  mais:'<ellipse cx="20" cy="19" rx="7" ry="13" fill="#F2C14E"/><path d="M13 23c-3 4-3 8 0 10 3-2 5-6 7-10M27 23c3 4 3 8 0 10-3-2-5-6-7-10" fill="#7DB648"/>',
+  courge:'<path d="M20 10c8 0 14 6 14 13s-6 11-14 11S6 30 6 23s6-13 14-13z" fill="#E9894A"/><path d="M14 12c-2 6-2 16 0 21M26 12c2 6 2 16 0 21" stroke="#D2742F" stroke-width="1.5" fill="none"/><path d="M20 10V5" stroke="#5C9A33" stroke-width="3" stroke-linecap="round"/>',
+  herbes:'<path d="M20 34V12" stroke="#4E7A2A" stroke-width="2"/><g fill="#5C9A33"><ellipse cx="14" cy="16" rx="6" ry="3" transform="rotate(-30 14 16)"/><ellipse cx="26" cy="16" rx="6" ry="3" transform="rotate(30 26 16)"/><ellipse cx="14" cy="25" rx="6" ry="3" transform="rotate(-30 14 25)"/><ellipse cx="26" cy="25" rx="6" ry="3" transform="rotate(30 26 25)"/><ellipse cx="20" cy="9" rx="3" ry="5"/></g>',
+  oeuf:'<ellipse cx="20" cy="21" rx="10" ry="13" fill="#F4E3C8"/><ellipse cx="17" cy="16" rx="3" ry="4" fill="#fff" opacity=".6"/>',
+  lait:'<path d="M12 12l4-6h8l4 6v22H12z" fill="#fff" stroke="#9FC3D9" stroke-width="1.5"/><rect x="12" y="18" width="16" height="8" fill="#9FC3D9"/>',
+  beurre:'<path d="M6 22l10-6h18v8l-10 6H6z" fill="#F7DC86"/><path d="M6 22h18l10-6M24 22v8" stroke="#E4BE2E" fill="none"/>',
+  fromage:'<path d="M6 30h28V14z" fill="#F2C14E"/><path d="M6 30L34 14" stroke="#E0A92E" stroke-width="1.5"/><g fill="#E0A92E"><circle cx="26" cy="25" r="2"/><circle cx="18" cy="27" r="1.5"/><circle cx="30" cy="20" r="1.5"/></g>',
+  creme:'<path d="M10 14h20l-2 18H12z" fill="#fff" stroke="#DCCFC4" stroke-width="1.5"/><rect x="9" y="11" width="22" height="4" rx="2" fill="#F3A9BE"/>',
+  farine:'<path d="M11 12h18l2 22H9z" fill="#F4EFE6" stroke="#DCCFC4" stroke-width="1.5"/><path d="M11 12l3-5h12l3 5" fill="#E7DCCB"/><circle cx="20" cy="23" r="4" fill="#F2C14E"/>',
+  levure:'<rect x="10" y="9" width="20" height="24" rx="2" fill="#F3A9BE"/><path d="M10 13h20" stroke="#fff" stroke-dasharray="2 2"/><circle cx="20" cy="23" r="4" fill="#fff"/>',
+  sel:'<path d="M13 16c0-6 14-6 14 0v16H13z" fill="#fff" stroke="#DCCFC4" stroke-width="1.5"/><g fill="#9AA79A"><circle cx="18" cy="11" r="1"/><circle cx="22" cy="11" r="1"/><circle cx="20" cy="9" r="1"/></g>',
+  epices:'<rect x="12" y="13" width="16" height="20" rx="3" fill="#E0533D"/><rect x="11" y="8" width="18" height="6" rx="2" fill="#6B4430"/><rect x="14" y="19" width="12" height="7" rx="1" fill="#FFF4DC"/>',
+  huile:'<path d="M17 8h6v4l4 5v17H13V17l4-5z" fill="#C9C24B"/><rect x="17" y="4" width="6" height="5" rx="1" fill="#6B4430"/><rect x="15" y="21" width="10" height="7" rx="1" fill="#FFF4DC"/>',
+  sauce:'<path d="M16 8h8v3l3 6v17H13V17l3-6z" fill="#E0533D"/><rect x="16" y="4" width="8" height="5" rx="1" fill="#fff" stroke="#DCCFC4"/><rect x="15" y="22" width="10" height="6" rx="1" fill="#FFF4DC"/>',
+  pain:'<path d="M6 22c0-8 6-12 14-12s14 4 14 12z" fill="#D9A066"/><rect x="6" y="24" width="28" height="7" rx="3.5" fill="#E2B57A"/><g fill="#FFF4DC"><ellipse cx="15" cy="15" rx="1.4" ry=".8"/><ellipse cx="22" cy="13" rx="1.4" ry=".8"/><ellipse cx="26" cy="17" rx="1.4" ry=".8"/></g>',
+  pates:'<g fill="none" stroke="#F2C14E" stroke-width="3" stroke-linecap="round"><path d="M8 14q4-5 8 0t8 0 8 0"/><path d="M8 21q4-5 8 0t8 0 8 0"/><path d="M8 28q4-5 8 0t8 0 8 0"/></g>',
+  riz:'<path d="M6 20h28c0 8-6 13-14 13S6 28 6 20z" fill="#B4496A"/><path d="M8 20c2-6 7-9 12-9s10 3 12 9z" fill="#FFFDF6"/>',
+  viande:'<path d="M8 18c2-7 12-10 20-7 6 2 7 9 2 14-5 6-14 8-19 4-3-3-4-7-3-11z" fill="#C0504D"/><path d="M14 18c4-3 10-3 13 0" stroke="#F3A9BE" stroke-width="2" fill="none"/><circle cx="24" cy="22" r="3" fill="#FFF4DC"/>',
+  poulet:'<path d="M10 22c-2-8 6-14 13-11 6 3 6 11 1 14l-5 3c-4 2-8-1-9-6z" fill="#C98545"/><path d="M23 25l7 7" stroke="#F4EFE6" stroke-width="4" stroke-linecap="round"/><circle cx="31" cy="31" r="2.5" fill="#F4EFE6"/><circle cx="33" cy="29" r="2.5" fill="#F4EFE6"/>',
+  bacon:'<path d="M6 13q7-5 14 0t14 0v6q-7-5-14 0t-14 0z" fill="#D9737A"/><path d="M6 23q7-5 14 0t14 0v6q-7-5-14 0t-14 0z" fill="#D9737A"/><path d="M6 16q7-5 14 0t14 0M6 26q7-5 14 0t14 0" stroke="#FBE1E4" stroke-width="1.5" fill="none"/>',
+  poisson:'<path d="M5 20c5-7 15-8 22 0-7 8-17 7-22 0z" fill="#7FA9C9"/><path d="M27 20l8-6v12z" fill="#7FA9C9"/><circle cx="11" cy="19" r="1.5" fill="#2C3826"/>',
+  saumon:'<path d="M5 20c5-7 15-8 22 0-7 8-17 7-22 0z" fill="#F2A07B"/><path d="M27 20l8-6v12z" fill="#F2A07B"/><path d="M12 16l3 8M17 15l3 9" stroke="#FBD3C0" stroke-width="1.5"/><circle cx="9" cy="19" r="1.3" fill="#2C3826"/>',
+  crevette:'<path d="M28 10c-10-2-18 6-16 15 1 5 6 7 10 5" stroke="#F2896B" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M22 30l-6 4M20 30l-2 6" stroke="#F2896B" stroke-width="2" stroke-linecap="round"/>',
+  chocolat:'<rect x="9" y="8" width="22" height="26" rx="3" fill="#6B4430"/><path d="M9 17h22M9 26h22M20 8v26" stroke="#8A5A3F" stroke-width="1.5"/>',
+  miel:'<path d="M12 14h16v18a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3z" fill="#F2C14E"/><rect x="11" y="9" width="18" height="6" rx="2" fill="#C98545"/>',
+  eau:'<path d="M20 6c6 9 10 14 10 19a10 10 0 0 1-20 0c0-5 4-10 10-19z" fill="#9FC9E4"/>',
+  vin:'<path d="M13 6h14c0 9-3 14-7 14s-7-5-7-14z" fill="#B4496A"/><path d="M20 20v10M14 33h12" stroke="#DCCFC4" stroke-width="2.5" stroke-linecap="round"/>',
+  bouillon:'<path d="M10 16l10-5 10 5v12l-10 5-10-5z" fill="#F2C14E"/><path d="M10 16l10 5 10-5M20 21v12" stroke="#E0A92E" stroke-width="1.5" fill="none"/>',
+  noix:'<ellipse cx="20" cy="21" rx="11" ry="12" fill="#C98545"/><path d="M20 9v24M14 15c3 3 3 9 0 13M26 15c-3 3-3 9 0 13" stroke="#9A6237" stroke-width="1.5" fill="none"/>',
+  cornichon:'<rect x="7" y="15" width="26" height="11" rx="5.5" fill="#6E8F2E" transform="rotate(-25 20 20)"/><g fill="#A6C94B"><circle cx="14" cy="23" r="1"/><circle cx="20" cy="20" r="1"/><circle cx="26" cy="17" r="1"/></g>',
+  autre:'<circle cx="20" cy="20" r="12" fill="#D5EAC3"/><path d="M13 25c0-8 6-12 14-12 0 8-6 12-14 12z" fill="#5C9A33"/>'
+};
+const ING_MOTS = [
+  [/patate douce|butternut|potiron|citrouille|courge/, "courge"],
+  [/pomme de terre|pommes de terre|potatoe|patate/, "pdt"],
+  [/banane/, "banane"], [/^pommes?\b/, "pomme"], [/poire/, "poire"], [/citron/, "citron"],
+  [/orange|clementine|mandarine|peche|abricot|mangue|ananas|nectarine/, "orange"], [/fraise/, "fraise"],
+  [/framboise|myrtille|cassis|groseille|cerise|raisin|mure/, "baies"],
+  [/ketchup|moutarde|mayonnaise|savora|sauce|vinaigre|soja|tabasco|pesto|harissa/, "sauce"],
+  [/tomate/, "tomate"], [/carotte/, "carotte"], [/echalote|oignon/, "oignon"], [/(^|\s)ail(\s|$)|gousses? d.ail/, "ail"],
+  [/courgette|concombre/, "courgette"], [/aubergine/, "aubergine"], [/poivron/, "poivron"], [/champignon|cepe|girolle/, "champignon"],
+  [/brocoli|chou-fleur|chou fleur/, "brocoli"],
+  [/epinard|salade|laitue|roquette|mache|chou|blette|poireau|endive|cresson/, "feuille"], [/avocat/, "avocat"],
+  [/petits? pois|haricot|feve|lentille|pois chiche/, "pois"], [/(^|\s)mais(\s|$)/, "mais"],
+  [/basilic|persil|coriandre|ciboulette|menthe|thym|romarin|laurier|origan|aneth|estragon|herbes/, "herbes"],
+  [/oeuf|jaune d|blanc d/, "oeuf"],
+  [/creme|yaourt|fromage blanc|faisselle|petit-suisse/, "creme"], [/beurre/, "beurre"],
+  [/cheddar|fromage|gruyere|parmesan|comte|mozzarella|chevre|feta|emmental|raclette|reblochon|ricotta|mascarpone|roquefort|camembert|brie|burrata/, "fromage"],
+  [/(^|\s)lait/, "lait"],
+  [/cornichon|capre|olive/, "cornichon"],
+  [/levure|bicarbonate/, "levure"], [/farine|sucre|maizena|semoule|chapelure|fecule/, "farine"],
+  [/(^|\s)(sel|poivre)(\s|$)/, "sel"],
+  [/paprika|cumin|curry|curcuma|cannelle|muscade|piment|epice|cayenne|gingembre|vanille|safran|ras el hanout|quatre-epices/, "epices"],
+  [/huile/, "huile"],
+  [/pain|brioche|baguette|toast|burger|tortilla|wrap/, "pain"],
+  [/pate|spaghetti|penne|tagliatelle|lasagne|gnocchi|macaroni|fusilli|nouille|vermicelle/, "pates"],
+  [/(^|\s)riz|quinoa|boulgour/, "riz"],
+  [/poulet|dinde|volaille|canard/, "poulet"],
+  [/lardon|bacon|jambon|poitrine|chorizo|saucisse|saucisson|pancetta/, "bacon"],
+  [/boeuf|steak|veau|agneau|porc|viande|hache|merguez|cote/, "viande"],
+  [/saumon|truite/, "saumon"], [/poisson|cabillaud|thon|colin|sardine|lieu|dorade|maquereau/, "poisson"],
+  [/crevette|gambas|moule|saint-jacques|calamar/, "crevette"],
+  [/chocolat|cacao/, "chocolat"], [/miel|sirop/, "miel"], [/(^|\s)eau(\s|$)/, "eau"],
+  [/(^|\s)vin(\s|$)|biere|porto|cognac|rhum/, "vin"], [/bouillon/, "bouillon"],
+  [/noix|noisette|amande|pignon|cacahuete|pistache/, "noix"]
+];
+function icoIngr(nom){
+  const n=norm(nom); const m=ING_MOTS.find(([re])=>re.test(n));
+  return `<svg viewBox="0 0 40 40" aria-hidden="true">${ING_ICO[m?m[1]:"autre"]}</svg>`;
+}
+const UNITE_PLURIEL={tranche:"tranches",gousse:"gousses",pincée:"pincées",sachet:"sachets",boîte:"boîtes",poignée:"poignées",brin:"brins",feuille:"feuilles",botte:"bottes"};
+const MAGASIN=/(?:,\s*|\s+)(?:du|de la|de l'|chez le|chez la|au|à la)\s+(?:boucher|boucherie|primeur|primeurs|boulanger|boulangerie|crèmerie|crémerie|cremerie|fromager|fromagerie|poissonnier|poissonnerie|marché|traiteur|épicier|épicerie|maraîcher)(?=$|[\s,)])/gi;
+const BRUIT=/(?:,\s*|\s+)(?:non emballée?s?|en vrac|à la coupe)(?=$|[\s,)])/gi;
+const DETAIL_FIN=/(?:,\s*|\s+)(à chair ferme|bien mûre?s?|mûre?s?|râpée?s?|coupée?s?|émincée?s?|en dés|en tranches|en morceaux|égouttée?s?|ramollie?s?|pelée?s?|lavée?s?|fondue?s?)$/i;
+const UNITE_DEBUT=/^(poignée|tranche|brin|feuille|botte|pincée|gousse|sachet)s?\s+(?:de\s+|d['’]\s*)/i;
+function nettoyerIngr(i){
+  if(!i) return i;
+  let nom=String(i.nom||"").replace(MAGASIN,"").replace(BRUIT,"").replace(/\s+/g," ").trim();
+  let detail=String(i.detail||"").trim(), unite=i.unite||"", qte=String(i.qte??"").trim();
+  const par=[]; nom=nom.replace(/\s*\(([^)]*)\)\s*/g,(_,x)=>{ if(x.trim()) par.push(x.trim()); return " "; }).trim();
+  const u=nom.match(UNITE_DEBUT);
+  if(u){ unite=u[1].toLowerCase().replace(/^pincee$/,"pincée").replace(/^poignee$/,"poignée"); nom=nom.slice(u[0].length); if(!qte) qte="1"; }
+  let d; while((d=nom.match(DETAIL_FIN))){ par.unshift(d[1]); nom=nom.slice(0,d.index).trim(); }
+  if(par.length) detail=[...par, detail].filter(Boolean).join(", ");
+  if(/^(sel|poivre|sel et poivre|sel, poivre|poivre et sel)$/i.test(nom) && !qte) unite="au goût";
+  if(!qte && unite!=="au goût" && /^(g|kg|ml|cl|L|pièce)$/.test(unite)) unite="";
+  nom=cap(nom||String(i.nom||""));
+  return {...i, nom, detail, qte, unite};
+}
+const estAssaisonnement = i => i.unite==="au goût" || /^(sel|poivre|piment|paprika|cumin|curry|curcuma|cannelle|muscade|herbes de provence|epices|quatre-epices|ras el hanout)\b/.test(norm(i.nom));
+function pastilleQte(i,f){
+  if(i.unite==="au goût") return "au goût";
+  if(!i.qte) return "";
+  const q=fmtQte(i.qte,f), n=parseFloat(String(q).replace(",","."));
+  let u=i.unite||"";
+  if(u==="pièce") u=""; else if(n>1 && UNITE_PLURIEL[u]) u=UNITE_PLURIEL[u];
+  return (q+" "+u).trim();
+}
+
+/* ---------- Phrase du jour : change toutes les 2 h de 7 h à 22 h ---------- */
+const CITATIONS = [
+  ["La découverte d'un mets nouveau fait plus pour le bonheur du genre humain que la découverte d'une étoile.","Brillat-Savarin","Physiologie du goût"],
+  ["Il faut cultiver notre jardin.","Voltaire","Candide"],
+  ["On ne peut pas bien penser, bien aimer, bien dormir, si l'on n'a pas bien dîné.","Virginia Woolf","Une chambre à soi"],
+  ["La plus perdue de toutes les journées est celle où l'on n'a pas ri.","Chamfort",""],
+  ["Patience et longueur de temps font plus que force ni que rage.","Jean de La Fontaine","Le Lion et le Rat"],
+  ["La cuisine, c'est quand les choses ont le goût de ce qu'elles sont.","Curnonsky",""],
+  ["Le suprême bonheur de la vie, c'est la conviction qu'on est aimé.","Victor Hugo","Les Misérables"],
+  ["Convier quelqu'un, c'est se charger de son bonheur pendant tout le temps qu'il est sous notre toit.","Brillat-Savarin","Physiologie du goût"],
+  ["Une vie sans fête est une longue route sans auberge.","Démocrite",""],
+  ["On ne voit bien qu'avec le cœur.","Antoine de Saint-Exupéry","Le Petit Prince"],
+  ["L'appétit vient en mangeant.","Rabelais","Gargantua"],
+  ["Quand je danse, je danse ; quand je dors, je dors.","Montaigne","Essais"],
+  ["Faites simple.","Auguste Escoffier",""],
+  ["Le plaisir est le commencement et la fin de la vie heureuse.","Épicure","Lettre à Ménécée"],
+  ["Hâtez-vous lentement.","Nicolas Boileau","L'Art poétique"],
+  ["Soyons reconnaissants aux personnes qui nous donnent du bonheur ; elles sont les charmants jardiniers par qui nos âmes sont fleuries.","Marcel Proust",""],
+  ["La table est l'entremetteuse de l'amitié.","Proverbe français",""],
+  ["Il faut manger pour vivre, et non pas vivre pour manger.","Molière","L'Avare"],
+  ["Au milieu de l'hiver, j'apprenais enfin qu'il y avait en moi un été invincible.","Albert Camus","Retour à Tipasa"],
+  ["Le plaisir de la table est de tous les âges, de toutes les conditions, de tous les pays et de tous les jours.","Brillat-Savarin","Physiologie du goût"],
+  ["Mieux vaut un plat de légumes là où règne l'amour qu'un bœuf engraissé là où règne la haine.","Livre des Proverbes","15, 17"],
+  ["C'est le temps que tu as perdu pour ta rose qui fait ta rose si importante.","Antoine de Saint-Exupéry","Le Petit Prince"],
+  ["De tous les biens que la sagesse procure pour le bonheur de toute la vie, l'amitié est de beaucoup le plus grand.","Épicure","Maximes capitales"],
+  ["Le cœur a ses raisons que la raison ne connaît point.","Blaise Pascal","Pensées"],
+  ["Un dessert sans fromage est une belle à qui il manque un œil.","Brillat-Savarin","Physiologie du goût"],
+  ["Ce n'est pas parce que les choses sont difficiles que nous n'osons pas, c'est parce que nous n'osons pas qu'elles sont difficiles.","Sénèque","Lettres à Lucilius"],
+  ["Petit à petit, l'oiseau fait son nid.","Proverbe français",""],
+  ["Aimer, ce n'est pas se regarder l'un l'autre, c'est regarder ensemble dans la même direction.","Antoine de Saint-Exupéry","Terre des hommes"],
+  ["Nous ne sommes jamais si heureux ni si malheureux qu'on s'imagine.","La Rochefoucauld","Maximes"],
+  ["Les animaux se repaissent ; l'homme mange ; l'homme d'esprit seul sait manger.","Brillat-Savarin","Physiologie du goût"],
+  ["Il faut imaginer Sisyphe heureux.","Albert Camus","Le Mythe de Sisyphe"],
+  ["Le superflu, chose très nécessaire.","Voltaire","Le Mondain"],
+  ["Vingt fois sur le métier remettez votre ouvrage.","Nicolas Boileau","L'Art poétique"],
+  ["Le bonheur n'est pas chose aisée : il est très difficile de le trouver en nous, et impossible de le trouver ailleurs.","Chamfort",""],
+  ["Qui dort dîne.","Proverbe français",""],
+  ["Travaillez, prenez de la peine : c'est le fonds qui manque le moins.","Jean de La Fontaine","Le Laboureur et ses Enfants"],
+  ["Il faut être toujours ivre. Tout est là.","Charles Baudelaire","Enivrez-vous"],
+  ["Ventre affamé n'a point d'oreilles.","Jean de La Fontaine","Le Milan et le Rossignol"]
+];
+function citationDuMoment(d=new Date()){
+  let jour=Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000), h=d.getHours(), slot;
+  if(h<7){ jour-=1; slot=7; } else slot=Math.min(7,Math.floor((h-7)/2));
+  const cle=jour*8+slot;
+  return {cle, c:CITATIONS[((cle%CITATIONS.length)+CITATIONS.length)%CITATIONS.length]};
+}
+function citationHtml(){
+  const {cle,c}=citationDuMoment(); S.citCle=cle;
+  return `<figure class="citation"><blockquote>« ${esc(c[0])} »</blockquote><figcaption>${esc(c[1])}${c[2]?`, <i>${esc(c[2])}</i>`:""}</figcaption></figure>`;
+}
+setInterval(()=>{ if(S.vue==="liste" && citationDuMoment().cle!==S.citCle && !document.activeElement?.matches?.("input,textarea")) render(); }, 60000);
+
 /* ---------- État ---------- */
 let recettes = [], charge=false, modeStockage="attente";
 let db=null, col=null, sample=null, assets=null, peutEcrire=false;
@@ -391,7 +583,7 @@ let PROFILS_ID={};     // id -> {prenom, photo}
 const L={email:"",mdp:"",mode:"connexion",voir:false,msg:"",ok:false};
 let PROFILS = {};   // {Fanie:{photo}, Michael:{photo}}
 const LS_MOI="recettes-fm-moi", LS_PROFILS="recettes-fm-profils";
-const S = { vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
+const S = { coches:new Set(), citCle:null, vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
 let B = null;           // brouillon de recette
 const W = { impOk:false, etape:1, msg:"", msgOk:false, impMsg:"", impEnCours:false, ingQ:"" };
 const ETAPES = ["Départ","L'essentiel","Ingrédients","Préparation","Vérifier"];
@@ -466,12 +658,12 @@ function filtreAuteur(r,v){
 /* ---------- Recherche ---------- */
 function tousIngredientsConnus(){
   const m=new Map(); TOUS_CATALOGUE.forEach(n=>m.set(sing(n),n));
-  recettes.forEach(r=>(r.ingredients||[]).forEach(i=>{ if(i.nom && !m.has(sing(i.nom))) m.set(sing(i.nom),i.nom); }));
+  recettes.forEach(r=>(r.ingredients||[]).forEach(i0=>{ const i=nettoyerIngr(i0); if(i.nom && !m.has(sing(i.nom))) m.set(sing(i.nom),i.nom); }));
   return [...m.values()];
 }
 function ingredientsFrequents(){
   const c=new Map();
-  recettes.forEach(r=>(r.ingredients||[]).forEach(i=>{ if(["sel","poivre"].includes(norm(i.nom))) return; c.set(i.nom,(c.get(i.nom)||0)+1); }));
+  recettes.forEach(r=>(r.ingredients||[]).forEach(i0=>{ const i=nettoyerIngr(i0); if(estAssaisonnement(i)) return; c.set(i.nom,(c.get(i.nom)||0)+1); }));
   return [...c.entries()].sort((a,b)=>b[1]-a[1]).map(e=>e[0]);
 }
 function ingrMatch(nomRecette, cherche){
@@ -647,7 +839,7 @@ async function importLien(){
     else if(j.total!=null && j.prep!=null) B.cuisson=Math.max(0,j.total-j.prep);
     if(j.prep==null && j.cuisson==null && j.total) B.duree=j.total;
     const cat=CAT_MOTS.find(([,re])=>re.test(j.categorie||"")); if(cat) B.categorie=cat[0];
-    if(j.ingredients?.length) B.ingredients=j.ingredients.map(analyserLigne).filter(x=>x&&x.nom);
+    if(j.ingredients?.length) B.ingredients=j.ingredients.map(analyserLigne).filter(x=>x&&x.nom).map(nettoyerIngr);
     if(j.etapes?.length) B.etapes=j.etapes;
     if(j.photos?.length){ B.photos=j.photos; B.photo=j.photos[0]; }
     B.source=j.source||url;
@@ -670,7 +862,7 @@ function importSimple(){
     if(l.length>=35) et.push(l.replace(/^(étape\s*)?\d+[.):-]?\s*/i,""));
   }
   if(titre && !B.titre) B.titre=titre;
-  if(ing.length) B.ingredients=ing;
+  if(ing.length) B.ingredients=ing.map(nettoyerIngr);
   if(et.length) B.etapes=et;
   garderBrouillon();
   W.etape=4; W.msg="Fiche pré-remplie : vérifiez chaque partie, puis enregistrez."; W.msgOk=true; render(); scrollTo({top:0});
@@ -768,6 +960,7 @@ function vueListe(){
   const frigo = [...new Set([...ingredientsFrequents(),"Tomate","Œufs","Pâtes","Poulet","Crème fraîche","Courgette","Riz","Fromage blanc"])].filter(x=>!S.ingr.includes(x)).slice(0,14);
   const res = resultats();
   return `
+  ${citationHtml()}
   <div class="hero-search">
     <span class="ms ico" aria-hidden="true">search</span>
     <input class="input" id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Pâtes, tomate, dessert, rapide…" value="${esc(S.q)}" aria-label="Chercher une recette, un ingrédient ou un style">
@@ -849,8 +1042,18 @@ function fmtQte(q,f){
   if(!isFinite(n)) return esc(q||"");
   return String(Math.round(n*f*100)/100).replace(".",",");
 }
-function listeIngredients(r,f){
-  return `<ul class="ilist">${(r.ingredients||[]).map(i=>`<li class="${S.ingr.some(x=>ingrMatch(i.nom,x))?"hit":""}"><span>${esc(i.nom)}</span><span class="qty">${i.unite==="au goût"||!i.qte?(i.unite==="au goût"?"au goût":""):`${fmtQte(i.qte,f)} ${esc(i.unite||"")}`}</span></li>`).join("")||`<li class="hint">Aucun ingrédient.</li>`}</ul>`;
+function ligneIngr(i,k,f,cocher){
+  const v=nettoyerIngr(i), p=pastilleQte(v,f), frigo=S.ingr.some(x=>ingrMatch(v.nom,x));
+  const coche=cocher&&S.coches.has(k);
+  const corps=`<span class="ing-ico">${icoIngr(v.nom)}</span><span class="ing-txt"><b class="${frigo?"frigo":""}">${esc(v.nom)}</b>${v.detail?`<small>${esc(v.detail)}</small>`:""}</span>${p?`<span class="qte-pill">${esc(p)}</span>`:"<span></span>"}`;
+  return cocher ? `<li><button class="ing" type="button" data-ck="${k}" aria-pressed="${coche}">${corps}</button></li>` : `<li><div class="ing">${corps}</div></li>`;
+}
+function listeIngredients(r,f,cocher){
+  const tous=(r.ingredients||[]).map((i,k)=>[i,k]);
+  if(!tous.length) return `<p class="hint" style="margin:0">Aucun ingrédient.</p>`;
+  const base=tous.filter(([i])=>!estAssaisonnement(nettoyerIngr(i))), ass=tous.filter(([i])=>estAssaisonnement(nettoyerIngr(i)));
+  return `<ul class="ings">${base.map(([i,k])=>ligneIngr(i,k,f,cocher)).join("")}</ul>
+    ${ass.length?`<span class="lbl" style="margin:14px 0 6px">Assaisonnement</span><ul class="ings">${ass.map(([i,k])=>ligneIngr(i,k,f,cocher)).join("")}</ul>`:""}`;
 }
 function vueFiche(){
   const ap=S.vue==="apercu";
@@ -864,24 +1067,24 @@ function vueFiche(){
     ${MOI?.admin&&!ap?`<div class="row"><button class="btn" type="button" data-edit="${esc(r.id)}">Modifier</button><button class="btn danger" type="button" id="suppr">Supprimer</button></div>`:""}
   </div>
   ${S.confirmSuppr?`<div class="confirm"><span>Supprimer « ${esc(r.titre)} » du carnet ?</span><button class="btn danger" type="button" id="suppr-ok">Oui, supprimer</button><button class="btn" type="button" id="suppr-non">Annuler</button></div>`:""}
+  <div class="fiche-tete">
+    ${(r.photos||[]).length>1?`<div class="galerie">${r.photos.map((ph,i)=>`<img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} du plat" loading="lazy">`).join("")}</div><span class="hint">${r.photos.length} photos : faites glisser pour les voir.</span>`:r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
+    ${MOI?.admin&&!ap?blocPhoto("fiche",!!r.photo):""}
+    <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
+    <h2>${esc(r.titre||"Sans titre")}</h2>
+    <div class="meta" style="font-size:14px">${tempsHtml(r,true)}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(nomAuteur(r.auteur))}</span>`:""}</div>
+  </div>
   <div class="fiche">
     <aside class="panel">
-      <span class="lbl">Ingrédients</span>
-      ${base?`<div class="stepper-n" style="margin-bottom:10px"><button class="round" type="button" data-pers="-1" aria-label="Une personne de moins">−</button><span class="mono">${pers} pers.</span><button class="round" type="button" data-pers="1" aria-label="Une personne de plus">+</button></div>`:""}
-      ${listeIngredients(r,f)}
+      <div class="ing-head"><span class="lbl" style="margin:0">Ingrédients</span>
+        ${base?`<div class="stepper-n"><button class="round" type="button" data-pers="-1" aria-label="Une personne de moins">−</button><span class="mono">${pers} pers.</span><button class="round" type="button" data-pers="1" aria-label="Une personne de plus">+</button></div>`:""}</div>
+      ${listeIngredients(r,f,true)}
+      ${(r.ingredients||[]).length?`<span class="hint" style="display:block;margin-top:10px">Touchez un ingrédient pour le cocher pendant la préparation.</span>`:""}
     </aside>
     <article style="display:grid;gap:16px;align-content:start;min-width:0">
-      ${(r.photos||[]).length>1?`<div class="galerie">${r.photos.map((ph,i)=>`<img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} du plat" loading="lazy">`).join("")}</div><span class="hint" style="margin-top:-8px">${r.photos.length} photos : faites glisser pour les voir.</span>`:r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
-      ${MOI?.admin&&!ap?blocPhoto("fiche",!!r.photo):""}
-      <div style="display:grid;gap:10px">
-        <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
-        <h2>${esc(r.titre||"Sans titre")}</h2>
-        <div class="meta" style="font-size:14px">${tempsHtml(r,true)}${base?`<span>${ic("group")} pour ${base}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(nomAuteur(r.auteur))}</span>`:""}</div>
-      </div>
       <div class="panel"><span class="lbl">Préparation</span>
         ${(r.etapes||[]).length?`<ol class="steps">${r.etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol>`:`<p class="hint" style="margin:0">Pas encore d'étapes.</p>`}</div>
       ${r.notes?`<div class="panel"><span class="lbl">Notes</span><p style="margin:0;white-space:pre-wrap">${esc(r.notes)}</p></div>`:""}
-      ${r.source?`<p class="src hint">Source : <a href="${esc(/^https?:\/\//.test(r.source)?r.source:"https://"+r.source)}" target="_blank" rel="noopener">${esc(r.source)}</a></p>`:""}
     </article>
   </div>`;
 }
@@ -988,7 +1191,7 @@ function etape4(){
     <div class="panel"><div class="head"><span class="lbl" style="margin:0">L'essentiel</span><button class="linkbtn" type="button" data-step="1">Modifier</button></div>
       <div class="meta" style="font-size:14px"><span>${esc(B.categorie)}</span><span>${B.personnes||"?"} pers.</span>${tempsHtml(B,true)||`<span>durée ?</span>`}</div>
       ${B.tags.length||(B.principal||[]).length?`<div class="row">${[...(B.principal||[]),...B.tags].map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div>
-    <div class="panel"><div class="head"><span class="lbl" style="margin:0">Ingrédients (${B.ingredients.length})</span><button class="linkbtn" type="button" data-step="2">Modifier</button></div>${listeIngredients(B,1)}</div>
+    <div class="panel"><div class="head"><span class="lbl" style="margin:0">Ingrédients (${B.ingredients.length})</span><button class="linkbtn" type="button" data-step="2">Modifier</button></div>${listeIngredients(B,1,false)}</div>
     <div class="panel"><div class="head"><span class="lbl" style="margin:0">Préparation (${etapes.length})</span><button class="linkbtn" type="button" data-step="3">Modifier</button></div>
       ${etapes.length?`<ol class="steps">${etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol>`:`<p class="hint" style="margin:0">Pas d'étapes (vous pourrez les ajouter plus tard).</p>`}</div>
   </div>`;
@@ -1080,7 +1283,8 @@ app.addEventListener("click", async e=>{
   const t=e.target.closest("button"); if(!t) return;
   const d=t.dataset;
   /* accueil */
-  if(d.open){ S.ficheId=d.open; S.personnes=null; aller("fiche"); return; }
+  if(d.ck!=null && "ck" in d){ const k=+d.ck; S.coches.has(k)?S.coches.delete(k):S.coches.add(k); const y=scrollY; render(); scrollTo({top:y}); return; }
+  if(d.open){ S.coches=new Set(); S.ficheId=d.open; S.personnes=null; aller("fiche"); return; }
   if("back" in d){ aller("liste"); return; }
   if("goAjout" in d){ ouvrirAjout(); return; }
   if(d.add){ if(d.add==="ingr" && !S.ingr.includes(d.v) && S.ingr.length>=MAX_FRIGO){ return; } if(!S[d.add].includes(d.v)) S[d.add].push(d.v); S.q=""; S.sugMasque=false; render(); return; }
