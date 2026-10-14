@@ -51,7 +51,8 @@ header.top{background:var(--head);position:sticky;top:env(safe-area-inset-top,0p
 header.top .wrap{padding-block:12px;display:flex;gap:12px;align-items:center;justify-content:space-between}
 .brand{background:none;border:0;padding:0;text-align:left;display:flex;align-items:center;gap:12px;min-width:0}
 .logo{width:56px;height:56px;border-radius:17px;background:var(--surface);color:var(--accent);display:grid;place-items:center;font-size:34px;flex:none}
-.logo.ms{width:56px}
+.logo-img{overflow:hidden;box-shadow:0 1px 4px rgba(47,74,28,.12)}
+.logo-img img{width:100%;height:100%;display:block;transform:scale(1.28)}
 .brand small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-green-soft);font-weight:800}
 .brand h1{font-size:clamp(19px,5vw,28px);color:var(--ink)}
 .brand h1 em{font-style:normal;color:var(--accent)}
@@ -374,7 +375,7 @@ textarea.input{min-height:110px;resize:vertical}
 <header class="top">
   <div class="wrap">
     <button class="brand" id="home" type="button" aria-label="Accueil">
-      <span class="logo ms" aria-hidden="true">skillet</span>
+      <span class="logo logo-img" aria-hidden="true"><img src="icons/icon-192.png" alt="" width="56" height="56"></span>
       <span><small>Nos recettes</small><h1>Les recettes de <em>Fanie</em> &amp; <em>Michaël</em></h1></span>
     </button>
     <div class="top-actions">
