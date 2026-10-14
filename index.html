@@ -177,9 +177,10 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .galerie::-webkit-scrollbar{display:none}
 .galerie img{flex:0 0 100%;height:min(60vw,320px);object-fit:cover;border-radius:14px;scroll-snap-align:center;background:var(--sunk)}
 .galerie.petite img{flex:0 0 46%;height:120px}
-.citation{margin:2px 0 16px;text-align:center;display:grid;gap:4px;padding-inline:8px}
-.citation blockquote{margin:0;font-family:var(--f-display);font-weight:500;font-size:17px;line-height:1.35;color:var(--ink);text-wrap:balance}
-.citation figcaption{font-size:12.5px;color:var(--muted)}
+.citation{margin:4px 0 18px;text-align:center;display:grid;gap:4px;padding:14px 20px 16px;background:#FFF6E3;border:1px solid #EADBB8;border-radius:8px;box-shadow:inset 0 0 0 5px #FFF6E3,inset 0 0 0 6px #EADBB8,0 2px 8px rgba(120,90,30,.06)}
+.cit-gm{font-family:Georgia,"Times New Roman",serif;font-size:34px;line-height:.6;height:16px;color:var(--accent)}
+.citation blockquote{margin:0;font-family:var(--f-display);font-weight:500;font-style:italic;font-size:17px;line-height:1.4;color:#3B3226;text-wrap:balance}
+.citation figcaption{font-size:12.5px;color:#7A6A50}
 .fiche-tete{display:grid;gap:10px;margin-top:12px}
 .fiche-tete h2{font-size:clamp(28px,6vw,40px)}
 .ing-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
@@ -208,6 +209,10 @@ button.ing{cursor:pointer}
 .poubelle .ms{font-size:24px;vertical-align:0}
 .poubelle[disabled]{opacity:.4;cursor:not-allowed}
 .btn.danger-plein{background:var(--danger);border-color:var(--danger);color:#fff}
+.ings li.multi{position:relative}
+.det-btn{position:absolute;left:68px;top:31px;border:0;background:none;padding:0;font-size:12.5px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
+.det-btn .ms{font-size:15px;vertical-align:0;width:auto}
+.det-liste{list-style:none;margin:4px 0 2px 68px;padding:0;display:grid;gap:2px;font-size:12.5px;color:var(--muted)}
 .sublbl{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:10px 0 6px}
 .thumb.big .ms{font-size:64px}
 .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);align-items:center}
@@ -580,7 +585,7 @@ function citationDuMoment(d=new Date()){
 }
 function citationHtml(){
   const {cle,c}=citationDuMoment(); S.citCle=cle;
-  return `<figure class="citation"><blockquote>« ${esc(c[0])} »</blockquote><figcaption>${esc(c[1])}${c[2]?`, <i>${esc(c[2])}</i>`:""}</figcaption></figure>`;
+  return `<figure class="citation"><span class="cit-gm" aria-hidden="true">“</span><blockquote>${esc(c[0])}</blockquote><figcaption>— ${esc(c[1])}${c[2]?`, <i>${esc(c[2])}</i>`:""}</figcaption></figure>`;
 }
 setInterval(()=>{ if(S.vue==="liste" && citationDuMoment().cle!==S.citCle && !document.activeElement?.matches?.("input,textarea")) render(); }, 60000);
 
@@ -596,7 +601,7 @@ let PROFILS_ID={};     // id -> {prenom, photo}
 const L={email:"",mdp:"",mode:"connexion",voir:false,msg:"",ok:false};
 let PROFILS = {};   // {Fanie:{photo}, Michael:{photo}}
 const LS_MOI="recettes-fm-moi", LS_PROFILS="recettes-fm-profils";
-const S = { sel:new Set(), selMode:false, selConfirm:false, lpFired:false, coches:new Set(), citCle:null, vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
+const S = { detOuvert:new Set(), sel:new Set(), selMode:false, selConfirm:false, lpFired:false, coches:new Set(), citCle:null, vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
 let B = null;           // brouillon de recette
 const W = { impOk:false, etape:1, msg:"", msgOk:false, impMsg:"", impEnCours:false, ingQ:"" };
 const ETAPES = ["Départ","L'essentiel","Ingrédients","Préparation","Vérifier"];
@@ -1076,12 +1081,28 @@ function regrouperIngr(r){
     return g;
   });
 }
+const FAMILLES={ "c. à café":["cuil",1], "c. à soupe":["cuil",3], "g":["masse",1], "kg":["masse",1000], "ml":["vol",1], "cl":["vol",10], "L":["vol",1000] };
+function totalFamille(fam, base, unites){
+  const r=x=>Math.round(x*100)/100;
+  if(fam==="cuil") return base%3===0 ? [r(base/3),"c. à soupe"] : [r(base),"c. à café"];
+  if(fam==="masse") return base>=1000 ? [r(base/1000),"kg"] : [r(base),"g"];
+  if(fam==="vol") return base>=1000 ? [r(base/1000),"L"] : (unites.has("cl")&&base%10===0 ? [r(base/10),"cl"] : [r(base),"ml"]);
+}
 function pastilleGroupe(g,f){
   const parts=g.parts.filter(p=>p.unite!=="au goût" && p.qte);
   if(!parts.length) return g.parts.some(p=>p.unite==="au goût") ? "au goût" : "";
-  const parUnite=new Map();
-  for(const p of parts){ const n=parseFloat(String(p.qte).replace(",",".")); const u=p.unite||"pièce"; if(!isFinite(n)){ parUnite.set(u+"#"+parUnite.size,{q:p.qte,u}); continue; } const c=parUnite.get(u); if(c&&isFinite(c.n)) c.n+=n; else parUnite.set(u,{n,u}); }
-  return [...parUnite.values()].map(x=>pastilleQte({qte:x.n!=null?String(x.n):x.q, unite:x.u},f)).join(" + ");
+  const fams=new Map(), autres=new Map(), brut=[];
+  for(const p of parts){
+    const n=parseFloat(String(p.qte).replace(",",".")); const u=p.unite||"pièce";
+    if(!isFinite(n)){ brut.push(pastilleQte(p,f)); continue; }
+    const fa=FAMILLES[u];
+    if(fa){ const c=fams.get(fa[0])||{base:0,unites:new Set()}; c.base+=n*fa[1]; c.unites.add(u); fams.set(fa[0],c); }
+    else autres.set(u,(autres.get(u)||0)+n);
+  }
+  const out=[];
+  for(const [fam,c] of fams){ const [q,u]=totalFamille(fam,c.base,c.unites); out.push(pastilleQte({qte:String(q),unite:u},f)); }
+  for(const [u,n] of autres) out.push(pastilleQte({qte:String(n),unite:u},f));
+  return out.concat(brut).join(" + ");
 }
 function barreSelection(res){
   const n=S.sel.size;
@@ -1097,12 +1118,12 @@ function barreSelection(res){
 function quitterSelection(){ S.selMode=false; S.sel=new Set(); S.selConfirm=false; }
 function ligneIngr(g,f,cocher){
   const v=g.i, p=pastilleGroupe(g,f), frigo=S.ingr.some(x=>ingrMatch(v.nom,x));
-  const coche=cocher&&S.coches.has(g.k);
-  const plusieurs=g.parts.length>1;
-  const pourquoi = plusieurs ? `Utilisé ${g.parts.length} fois : ${g.parts.map(pt=>`${pastilleQte(pt,f)||"un peu"}${pt.etape?` (étape ${pt.etape})`:""}`).join(" · ")}` : "";
-  const detail=[v.detail, pourquoi].filter(Boolean);
-  const corps=`<span class="ing-ico">${icoIngr(v.nom)}</span><span class="ing-txt"><b class="${frigo?"frigo":""}">${esc(v.nom)}</b>${detail.map(d=>`<small>${esc(d)}</small>`).join("")}</span>${p?`<span class="qte-pill">${esc(p)}</span>`:"<span></span>"}`;
-  return cocher ? `<li><button class="ing" type="button" data-ck="${g.k}" aria-pressed="${coche}">${corps}</button></li>` : `<li><div class="ing">${corps}</div></li>`;
+  const coche=cocher&&S.coches.has(g.k), plusieurs=g.parts.length>1, ouvert=plusieurs&&S.detOuvert.has(g.k);
+  const corps=`<span class="ing-ico">${icoIngr(v.nom)}</span><span class="ing-txt"><b class="${frigo?"frigo":""}">${esc(v.nom)}</b>${v.detail?`<small>${esc(v.detail)}</small>`:""}${plusieurs?`<small class="place-det">&nbsp;</small>`:""}</span>${p?`<span class="qte-pill">${esc(p)}</span>`:"<span></span>"}`;
+  const det = plusieurs ? `<button class="det-btn" type="button" data-det="${g.k}" aria-expanded="${ouvert}">${ic("info")}utilisé ${g.parts.length} fois</button>` : "";
+  const liste = ouvert ? `<ul class="det-liste">${g.parts.map(pt=>`<li>↳ ${esc(pastilleQte(pt,f)||"un peu")}${pt.etape?` · étape ${pt.etape}`:""}</li>`).join("")}</ul>` : "";
+  const ligne = cocher ? `<button class="ing" type="button" data-ck="${g.k}" aria-pressed="${coche}">${corps}</button>` : `<div class="ing">${corps}</div>`;
+  return `<li class="${plusieurs?"multi":""}">${ligne}${det}${liste}</li>`;
 }
 function listeIngredients(r,f,cocher){
   const groupes=regrouperIngr(r);
@@ -1339,6 +1360,7 @@ app.addEventListener("click", async e=>{
   const t=e.target.closest("button"); if(!t) return;
   const d=t.dataset;
   /* accueil */
+  if("det" in d){ const k=+d.det; S.detOuvert.has(k)?S.detOuvert.delete(k):S.detOuvert.add(k); const y=scrollY; render(); scrollTo({top:y}); return; }
   if(d.ck!=null && "ck" in d){ const k=+d.ck; S.coches.has(k)?S.coches.delete(k):S.coches.add(k); const y=scrollY; render(); scrollTo({top:y}); return; }
   if(S.lpFired && d.open){ S.lpFired=false; return; }
   if(S.selMode && d.open && t.classList.contains("card")){ S.sel.has(d.open)?S.sel.delete(d.open):S.sel.add(d.open); S.selConfirm=false; const y=scrollY; render(); scrollTo({top:y}); return; }
@@ -1352,7 +1374,7 @@ app.addEventListener("click", async e=>{
     if(error){ alertMsg("La suppression n'a pas abouti. Réessayez."); S.selConfirm=false; render(); return; }
     await chargerTout(); quitterSelection(); render(); alertMsg(`${ids.length} recette${ids.length>1?"s":""} supprimée${ids.length>1?"s":""}.`); setTimeout(()=>majStatus(),4000); return;
   }
-  if(d.open){ S.coches=new Set(); S.ficheId=d.open; S.personnes=null; aller("fiche"); return; }
+  if(d.open){ S.detOuvert=new Set(); S.coches=new Set(); S.ficheId=d.open; S.personnes=null; aller("fiche"); return; }
   if("back" in d){ aller("liste"); return; }
   if("goAjout" in d){ ouvrirAjout(); return; }
   if(d.add){ if(d.add==="ingr" && !S.ingr.includes(d.v) && S.ingr.length>=MAX_FRIGO){ return; } if(!S[d.add].includes(d.v)) S[d.add].push(d.v); S.q=""; S.sugMasque=false; render(); return; }
