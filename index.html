@@ -213,6 +213,60 @@ button.ing{cursor:pointer}
 .det-btn{position:absolute;left:68px;top:31px;border:0;background:none;padding:0;font-size:12.5px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
 .det-btn .ms{font-size:15px;vertical-align:0;width:auto}
 .det-liste{list-style:none;margin:4px 0 2px 68px;padding:0;display:grid;gap:2px;font-size:12.5px;color:var(--muted)}
+.search-row{display:flex;gap:8px;align-items:center}
+.search-row .hero-search{flex:1;min-width:0}
+.filtre-btn{position:relative;flex:none;height:54px;border-radius:999px;border:0;background:var(--green);color:var(--on-green);padding:0 16px;display:inline-flex;align-items:center;gap:6px;font-weight:800}
+.filtre-btn .ms{vertical-align:0}
+@media (max-width:380px){.filtre-btn span:not(.ms){display:none}}
+.filtre-btn .bdg{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:12px;display:grid;place-items:center;padding:0 5px;box-sizing:border-box}
+.cats{display:flex;gap:12px;overflow-x:auto;padding:14px 2px 6px;scrollbar-width:none;margin-inline:-2px}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:none;border:0;background:none;padding:0;display:grid;justify-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--ink);width:66px}
+.cat-ill{width:62px;height:62px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);display:grid;place-items:center;overflow:hidden}
+.cat:nth-child(odd) .cat-ill{background:var(--hl)}
+.cat:nth-child(even) .cat-ill{background:var(--green-soft)}
+.cat-ill .illu{width:58px;height:auto}
+.cat[aria-pressed="true"] .cat-ill{box-shadow:0 0 0 3px var(--green)}
+.cat[aria-pressed="true"]{color:var(--green)}
+.frigo-btn{width:100%;margin-top:10px;display:flex;align-items:center;gap:12px;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;color:var(--ink)}
+.frigo-ico{width:40px;height:40px;border-radius:12px;background:var(--hl);color:var(--on-hl);display:grid;place-items:center;flex:none}
+.frigo-ico .ms{vertical-align:0;font-size:22px}
+.frigo-txt{flex:1;min-width:0;display:grid}
+.frigo-txt b{font-weight:800}
+.frigo-txt span{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frigo-n{color:var(--accent)}
+.voile{position:fixed;inset:0;background:rgba(28,40,24,.42);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--surface);border-radius:22px 22px 0 0;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 -10px 30px rgba(0,0,0,.15);max-width:720px;margin:0 auto}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:monte .22s ease-out}@keyframes monte{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}}
+.sheet-grab{width:44px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 2px;cursor:pointer}
+.sheet-tete{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px max(16px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px))}
+.sheet-tete h2{font-size:20px}
+.sheet-corps{overflow-y:auto;padding:6px max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px));overscroll-behavior:contain}
+.sheet-corps .sec{padding:10px 0;border-bottom:1px solid var(--sunk)}
+.sheet-corps .sec:last-child{border-bottom:0}
+.sheet-pied{display:flex;gap:10px;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));border-top:1px solid var(--sunk)}
+.sheet-pied .btn{flex:1}
+.cases{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.case{height:74px;border-radius:14px;border:1.5px dashed var(--line);display:grid;place-items:center;color:var(--muted);font-size:20px;background:var(--bg)}
+.case.on{border:0;background:var(--hl);color:var(--on-hl);position:relative;padding:6px 2px;gap:2px;font-size:11px;font-weight:800;align-content:center}
+.case-ico svg{width:30px;height:30px}
+.case-nom{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 3px}
+.case-x{position:absolute;top:2px;right:6px;font-size:14px}
+.mini-ico svg{width:20px;height:20px;vertical-align:-5px}
+.photo-btn{border:0;padding:0;cursor:zoom-in;width:100%}
+.galerie-btn{flex:0 0 100%;border:0;padding:0;background:none;scroll-snap-align:center;cursor:zoom-in}
+.galerie-btn img{width:100%;height:min(60vw,320px);object-fit:cover;border-radius:14px;display:block;background:var(--sunk)}
+.viewer{position:fixed;inset:0;z-index:40;background:#0B0D0A;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.viewer-haut{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;color:#E8EEE4;font-size:14px}
+.viewer-x{width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:26px;line-height:1}
+.viewer-piste{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x pan-y pinch-zoom}
+.viewer-piste::-webkit-scrollbar{display:none}
+.viewer-slide{flex:0 0 100%;display:grid;place-items:center;scroll-snap-align:center;overflow:hidden}
+.viewer-slide img{max-width:100%;max-height:100%;object-fit:contain;user-select:none}
+.viewer-points{display:flex;justify-content:center;gap:6px;padding:10px}
+.viewer-points i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35)}
+.viewer-points i.on{background:#fff}
+.viewer-aide{margin:0;text-align:center;color:rgba(255,255,255,.55);font-size:12px;padding:0 16px 12px}
 .sublbl{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:10px 0 6px}
 .thumb.big .ms{font-size:64px}
 .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);align-items:center}
@@ -601,7 +655,7 @@ let PROFILS_ID={};     // id -> {prenom, photo}
 const L={email:"",mdp:"",mode:"connexion",voir:false,msg:"",ok:false};
 let PROFILS = {};   // {Fanie:{photo}, Michael:{photo}}
 const LS_MOI="recettes-fm-moi", LS_PROFILS="recettes-fm-profils";
-const S = { detOuvert:new Set(), sel:new Set(), selMode:false, selConfirm:false, lpFired:false, coches:new Set(), citCle:null, vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
+const S = { sheet:null, frigoQ:"", viewer:null, detOuvert:new Set(), sel:new Set(), selMode:false, selConfirm:false, lpFired:false, coches:new Set(), citCle:null, vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
 let B = null;           // brouillon de recette
 const W = { impOk:false, etape:1, msg:"", msgOk:false, impMsg:"", impEnCours:false, ingQ:"" };
 const ETAPES = ["Départ","L'essentiel","Ingrédients","Préparation","Vérifier"];
@@ -706,7 +760,7 @@ function aPrincipal(r,p){
   return (r.ingredients||[]).some(i=>{ const n=norm(i.nom); return mots.some(m=>n.includes(m)) && !n.startsWith("bouillon"); });
 }
 const LOCAL_URLS = {};
-const blobUrl = id => !id ? "" : /^https?:/.test(id) ? id : (LOCAL_URLS[id] || "");
+const blobUrl = id => !id ? "" : /^(https?:|data:|blob:)/.test(id) ? id : (LOCAL_URLS[id] || "");
 const photoUrl = r => r && r.photo ? blobUrl(r.photo) : "";
 /* Photos enregistrées sur l'appareil quand l'appli tourne hors de Claude */
 const LocalAssets = {
@@ -972,16 +1026,24 @@ function suggestions(q){
 const filtresActifs=()=>S.q||S.ingr.length||S.styles.length||S.types.length||S.principal.length||S.dureeMax||S.auteur||S.prepMax!=null||S.cuisMax!=null;
 
 /* ---------- Vue : accueil + recherche ---------- */
+const RACCOURCIS=[["Plats","types","Plat"],["Desserts","types","Dessert"],["Entrées","types","Entrée"],["One-pot","styles","One-pot"],["Rapide","styles","Rapide"],["Végétarien","styles","Végétarien"],["Pâtes","styles","Pâtes"],["Soupes","types","Soupe"],["Salades","types","Salade"],["Apéritif","types","Apéritif"],["Accompagnements","types","Accompagnement"]];
+function illuRaccourci(k,v){
+  const r = k==="types" ? {categorie:v, tags:[], ingredients:[]} : v==="One-pot" ? {tags:["One-pot"],categorie:"Plat"} : v==="Pâtes" ? {categorie:"Plat",tags:[],ingredients:[{nom:"Spaghetti"}]} : v==="Végétarien" ? {categorie:"Salade",tags:[]} : v==="Rapide" ? {categorie:"Entrée",tags:[]} : {categorie:"Plat",tags:[]};
+  return illu(r);
+}
+const nbFiltres=()=>S.types.length+S.styles.length+S.principal.length+(S.prepMax!=null)+(S.cuisMax!=null)+(S.complet?1:0);
 function vueListe(){
   const sg = S.sugMasque ? null : suggestions(S.q);
   const vide = sg && !sg.types.length && !sg.styles.length && !sg.ingr.length && !sg.rec.length;
-  const frigo = [...new Set([...ingredientsFrequents(),"Tomate","Œufs","Pâtes","Poulet","Crème fraîche","Courgette","Riz","Fromage blanc"])].filter(x=>!S.ingr.includes(x)).slice(0,14);
-  const res = resultats();
+  const res = resultats(), nf=nbFiltres();
   return `
   ${citationHtml()}
-  <div class="hero-search">
-    <span class="ms ico" aria-hidden="true">search</span>
-    <input class="input" id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Pâtes, tomate, dessert, rapide…" value="${esc(S.q)}" aria-label="Chercher une recette, un ingrédient ou un style">
+  <div class="search-row">
+    <div class="hero-search">
+      <span class="ms ico" aria-hidden="true">search</span>
+      <input class="input" id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Pâtes, tomate, dessert…" value="${esc(S.q)}" aria-label="Chercher une recette, un ingrédient ou un style">
+    </div>
+    <button class="filtre-btn" type="button" data-sheet="filtres" aria-label="Filtres${nf?` (${nf} actifs)`:""}">${ic("tune")}<span>Filtres</span>${nf?`<b class="bdg">${nf}</b>`:""}</button>
   </div>
   ${sg?`<div class="sug" role="listbox" aria-label="Suggestions">
     ${vide?`<span class="hint">Rien de connu pour « ${esc(S.q)} ». La recherche porte quand même sur les titres et les ingrédients.</span>`:""}
@@ -996,6 +1058,12 @@ function vueListe(){
       return v==="" ? `<button class="pp" type="button" data-qui="" aria-pressed="${S.auteur===""}"><span>Toutes</span></button>`
         : `<button class="pp bub" type="button" data-qui="${esc(v)}" aria-pressed="${S.auteur===v}" aria-label="Recettes : ${esc(l)}" title="${esc(l)}">${a?avatar(a,"sm"):`<span class="av all">${ic("group")}</span>`}</button>`;}).join("")}
   </div>
+  <div class="cats" aria-label="Catégories">${RACCOURCIS.map(([l,k,v])=>`<button class="cat" type="button" data-toggle="${k}" data-v="${esc(v)}" aria-pressed="${S[k].includes(v)}"><span class="cat-ill">${illuRaccourci(k,v)}</span><span>${esc(l)}</span></button>`).join("")}</div>
+  <button class="frigo-btn" type="button" data-sheet="frigo">
+    <span class="frigo-ico">${ic("kitchen")}</span>
+    <span class="frigo-txt"><b>Cuisiner avec ce que j'ai</b><span>${S.ingr.length?esc(S.ingr.join(", ")):"Choisissez jusqu'à 5 ingrédients"}</span></span>
+    ${S.ingr.length?`<b class="mono frigo-n">${S.ingr.length}/5</b>`:ic("chevron_right")}
+  </button>
   ${S.ingr.length||S.types.length||S.styles.length||S.principal.length||S.prepMax!=null||S.cuisMax!=null?`<div class="active" aria-label="Filtres choisis">
     ${S.ingr.map(x=>`<button class="chip on-ingr" type="button" data-rm="ingr" data-v="${esc(x)}" aria-label="Retirer ${esc(x)}">${esc(x)}<span class="x-in" aria-hidden="true">×</span></button>`).join("")}
     ${[...S.types.map(x=>["types",x]),...S.principal.map(x=>["principal",x]),...S.styles.map(x=>["styles",x])].map(([k,x])=>`<button class="chip on-style" type="button" data-rm="${k}" data-v="${esc(x)}" aria-label="Retirer ${esc(x)}">${esc(x)}<span class="x-in" aria-hidden="true">×</span></button>`).join("")}
@@ -1003,31 +1071,6 @@ function vueListe(){
     ${S.cuisMax!=null?`<button class="chip on-style" type="button" data-rmtemps="cuis">${S.cuisMax===0?"Sans cuisson":"Cuisson ≤ "+fmtMin(S.cuisMax)}<span class="x-in" aria-hidden="true">×</span></button>`:""}
     <button class="btn ghost" type="button" id="reset">Tout effacer</button>
   </div>`:""}
-
-  ${filtresActifs()&&charge?`<div class="count-line"><strong class="mono">${res.length}</strong> recette${res.length>1?"s":""} ${res.length?(res.length>1?"correspondent":"correspond"):"ne correspond"}</div>`:""}
-  <div class="block">
-    <h2>${ic("restaurant_menu")}Envie de…</h2>
-    <span class="sublbl">Type de plat</span>
-    <div class="scroller" aria-label="Types de plat">${TYPES.map(x=>`<button class="chip" type="button" data-toggle="types" data-v="${esc(x)}" aria-pressed="${S.types.includes(x)}">${ic(ICON_TYPE[x])}${esc(x)}</button>`).join("")}</div>
-    <span class="sublbl">Ingrédient principal</span>
-    <div class="scroller" aria-label="Ingrédient principal">${Object.keys(PRINCIPAUX).map(x=>`<button class="chip" type="button" data-toggle="principal" data-v="${esc(x)}" aria-pressed="${S.principal.includes(x)}">${esc(x)}</button>`).join("")}</div>
-    <span class="sublbl">Style</span>
-    <div class="scroller" aria-label="Styles">${STYLES.map(x=>`<button class="chip" type="button" data-toggle="styles" data-v="${esc(x)}" aria-pressed="${S.styles.includes(x)}">${ic(ICON_STYLE[x])}${esc(x)}</button>`).join("")}</div>
-  </div>
-
-  <div class="block" id="frigo">
-    <h2>${ic("kitchen")}Dans mon frigo <span class="sub">jusqu'à 5 ingrédients${S.ingr.length?` · <b class="mono">${S.ingr.length}/5</b>`:""}</span></h2>
-    <div class="row">${frigo.map(x=>`<button class="chip ingr" type="button" data-add="ingr" data-v="${esc(x)}" ${S.ingr.length>=MAX_FRIGO?"disabled":""}>+ ${esc(x)}</button>`).join("")}</div>
-  </div>
-
-  <details class="more" ${S.dureeMax||S.complet||S.prepMax!=null||S.cuisMax!=null?"open":""}>
-    <summary>Temps de préparation et de cuisson, plus de filtres</summary>
-    <div class="more-grid">
-      <div><span class="lbl">Préparation max</span><div class="row">${[[null,"Peu importe"],[15,"15 min"],[30,"30 min"],[45,"45 min"]].map(([v,l])=>`<button class="chip" type="button" data-fprep="${v??""}" aria-pressed="${S.prepMax===v}">${l}</button>`).join("")}</div></div>
-      <div><span class="lbl">Cuisson max</span><div class="row">${[[null,"Peu importe"],[0,"Sans cuisson"],[15,"15 min"],[30,"30 min"],[60,"1 h"]].map(([v,l])=>`<button class="chip" type="button" data-fcuis="${v??""}" aria-pressed="${S.cuisMax===v}">${l}</button>`).join("")}</div></div>
-      <label class="switch" style="align-self:end"><input type="checkbox" id="f-complet" ${S.complet?"checked":""}> Seulement si j'ai tous les ingrédients choisis</label>
-    </div>
-  </details>
 
   <div class="results-head" id="resultats">
     <h2>${S.ingr.length?"Du plus au moins correspondant":S.auteur&&!(S.q||S.types.length||S.styles.length||S.principal.length||S.dureeMax)?(S.auteur==="Les deux"?"Nos recettes à deux":S.auteur==="inv"?"Les recettes de nos invités":"Les recettes de "+esc(S.auteur)):filtresActifs()?"Résultats":"Toutes nos recettes"}</h2>
@@ -1039,7 +1082,54 @@ function vueListe(){
    : res.length===0?`<div class="empty"><span>Aucune recette avec tout ça.</span>${S.ingr.length||S.styles.length||S.types.length||S.principal.length?`<div class="row" style="justify-content:center">${[...S.ingr.map(x=>["ingr",x]),...S.principal.map(x=>["principal",x]),...S.styles.map(x=>["styles",x]),...S.types.map(x=>["types",x])].map(([k,x])=>`<button class="chip" type="button" data-rm="${k}" data-v="${esc(x)}">Essayer sans ${esc(x)}</button>`).join("")}</div>`:""}</div>`
    : `<div class="cards">${res.map(({r,hits})=>carte(r,hits)).join("")}</div>`}
   ${S.selMode?barreSelection(res):""}
-  ${filtresActifs()&&charge&&!S.selMode?`<button class="btn primary voir-res" id="voir-res" type="button">${ic("arrow_downward")}Voir ${res.length} recette${res.length>1?"s":""}</button>`:""}`;
+  ${S.sheet==="filtres"?panneauFiltres(res):S.sheet==="frigo"?panneauFrigo(res):""}`;
+}
+function panneau(titre, corps, pied){
+  return `<div class="voile" data-fermer-sheet></div>
+  <section class="sheet" role="dialog" aria-modal="true" aria-label="${esc(titre)}">
+    <div class="sheet-grab" data-fermer-sheet aria-hidden="true"></div>
+    <div class="sheet-tete"><h2>${esc(titre)}</h2><button class="x" type="button" data-fermer-sheet aria-label="Fermer">×</button></div>
+    <div class="sheet-corps" id="sheet-corps">${corps}</div>
+    <div class="sheet-pied">${pied}</div>
+  </section>`;
+}
+function panneauFiltres(res){
+  const chips=(k,liste,icones)=>`<div class="row">${liste.map(x=>`<button class="chip" type="button" data-toggle="${k}" data-v="${esc(x)}" aria-pressed="${S[k].includes(x)}">${icones&&icones[x]?ic(icones[x]):""}${esc(x)}</button>`).join("")}</div>`;
+  const corps=`
+    <div class="sec"><span class="lbl">Type de plat</span>${chips("types",TYPES,ICON_TYPE)}</div>
+    <div class="sec"><span class="lbl">Ingrédient principal</span>${chips("principal",Object.keys(PRINCIPAUX))}</div>
+    <div class="sec"><span class="lbl">Style</span>${chips("styles",STYLES,ICON_STYLE)}</div>
+    <div class="sec"><span class="lbl">Préparation max</span><div class="row">${[[null,"Peu importe"],[15,"15 min"],[30,"30 min"],[45,"45 min"]].map(([v,l])=>`<button class="chip" type="button" data-fprep="${v??""}" aria-pressed="${S.prepMax===v}">${l}</button>`).join("")}</div></div>
+    <div class="sec"><span class="lbl">Cuisson max</span><div class="row">${[[null,"Peu importe"],[0,"Sans cuisson"],[15,"15 min"],[30,"30 min"],[60,"1 h"]].map(([v,l])=>`<button class="chip" type="button" data-fcuis="${v??""}" aria-pressed="${S.cuisMax===v}">${l}</button>`).join("")}</div></div>`;
+  const pied=`<button class="btn" type="button" id="reset-filtres">Tout effacer</button><button class="btn primary" type="button" data-fermer-sheet>Voir ${res.length} recette${res.length>1?"s":""}</button>`;
+  return panneau("Filtres", corps, pied);
+}
+function panneauFrigo(res){
+  const q=S.frigoQ||"";
+  const sugg = q ? tousIngredientsConnus().filter(n=>norm(n).includes(norm(q))&&!S.ingr.includes(n)).slice(0,10)
+                 : [...new Set([...ingredientsFrequents(),"Tomate","Œufs","Pâtes","Poulet","Crème fraîche","Courgette","Riz","Fromage blanc","Oignon","Pomme de terre"])].filter(x=>!S.ingr.includes(x)).slice(0,12);
+  const plein=S.ingr.length>=MAX_FRIGO;
+  const cases=Array.from({length:MAX_FRIGO},(_,k)=>{ const x=S.ingr[k];
+    return x ? `<button class="case on" type="button" data-rm="ingr" data-v="${esc(x)}" aria-label="Retirer ${esc(x)}"><span class="case-ico">${icoIngr(x)}</span><span class="case-nom">${esc(x)}</span><span class="case-x" aria-hidden="true">×</span></button>`
+             : `<span class="case" aria-hidden="true">+</span>`; }).join("");
+  const corps=`
+    <p class="hint" style="margin:0 0 10px">Les recettes qui utilisent le plus de vos ingrédients passent en premier.</p>
+    <div class="cases">${cases}</div>
+    <div class="hero-search" style="margin-top:14px"><span class="ms ico" aria-hidden="true">search</span>
+      <input class="input" id="frigo-q" type="search" autocomplete="off" placeholder="${plein?"5 ingrédients maximum":"Ajouter un ingrédient…"}" value="${esc(q)}" ${plein?"disabled":""} aria-label="Ajouter un ingrédient"></div>
+    <div class="row" style="margin-top:10px">${sugg.map(x=>`<button class="chip ingr" type="button" data-add="ingr" data-v="${esc(x)}" ${plein?"disabled":""}><span class="mini-ico">${icoIngr(x)}</span>${esc(x)}</button>`).join("")||`<span class="hint">Aucun ingrédient connu pour « ${esc(q)} ».</span>`}</div>
+    ${S.ingr.length>1?`<label class="switch" style="margin-top:14px"><input type="checkbox" id="f-complet" ${S.complet?"checked":""}> Seulement les recettes qui ont tous mes ingrédients</label>`:""}`;
+  const pied=`<button class="btn" type="button" id="vider-frigo">Vider</button><button class="btn primary" type="button" data-fermer-sheet>Voir ${res.length} recette${res.length>1?"s":""}</button>`;
+  return panneau("Qu'avez-vous sous la main ?", corps, pied);
+}
+function visionneuse(){
+  const v=S.viewer; if(!v) return "";
+  return `<div class="viewer" role="dialog" aria-modal="true" aria-label="Photos du plat">
+    <div class="viewer-haut"><span class="mono" id="viewer-n">${v.i+1} / ${v.photos.length}</span><button class="viewer-x" type="button" data-viewer-fermer aria-label="Fermer">×</button></div>
+    <div class="viewer-piste" id="viewer-piste">${v.photos.map((ph,i)=>`<div class="viewer-slide"><img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} sur ${v.photos.length}"></div>`).join("")}</div>
+    ${v.photos.length>1?`<div class="viewer-points">${v.photos.map((_,i)=>`<i class="${i===v.i?"on":""}"></i>`).join("")}</div>`:""}
+    <p class="viewer-aide">Glissez pour voir les autres photos · vers le bas pour fermer</p>
+  </div>`;
 }
 function carte(r,hits){
   const ings=r.ingredients||[];
@@ -1145,7 +1235,7 @@ function vueFiche(){
   </div>
   ${S.confirmSuppr?`<div class="confirm"><span>Supprimer « ${esc(r.titre)} » du carnet ?</span><button class="btn danger" type="button" id="suppr-ok">Oui, supprimer</button><button class="btn" type="button" id="suppr-non">Annuler</button></div>`:""}
   <div class="fiche-tete">
-    ${(r.photos||[]).length>1?`<div class="galerie">${r.photos.map((ph,i)=>`<img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} du plat" loading="lazy">`).join("")}</div><span class="hint">${r.photos.length} photos : faites glisser pour les voir.</span>`:r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
+    ${(r.photos||[]).length>1?`<div class="galerie">${r.photos.map((ph,i)=>`<button class="galerie-btn" type="button" data-voir="${i}" aria-label="Voir la photo ${i+1} en plein écran"><img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} du plat" loading="lazy"></button>`).join("")}</div><span class="hint">${r.photos.length} photos · touchez pour agrandir.</span>`:r.photo?`<button class="thumb big photo photo-btn" type="button" data-voir="0" aria-label="Voir la photo en plein écran" style="background-image:url('${esc(photoUrl(r))}')"></button>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
     ${MOI?.admin&&!ap?blocPhoto("fiche",!!r.photo):""}
     <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
     <h2>${esc(r.titre||"Sans titre")}</h2>
@@ -1290,6 +1380,7 @@ function vueForm(){
 /* ---------- Rendu ---------- */
 function render(garderFocus){
   const a=document.activeElement, fid=a&&a.id, sel=a&&a.selectionStart;
+  const corpsSheet=document.getElementById("sheet-corps"), sheetY=corpsSheet?corpsSheet.scrollTop:0;
   app.innerHTML = S.vue==="attente"?`<div class="empty">${ic("skillet")}<span>Ouverture du carnet…</span></div>`:S.vue==="login"?vueLogin():S.vue==="fiche"||S.vue==="apercu"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():S.vue==="miennes"?vueMiennes():S.vue==="valider"?vueValider():vueListe();
   document.getElementById("hdr-avs").innerHTML = MOI ? avatar(monAvatarNom(),"sm") : "";
   const enAttente = PROPS.filter(p=>p.statut==="en_attente").length;
@@ -1303,14 +1394,18 @@ function render(garderFocus){
   document.getElementById("nav-hasard").hidden = !MOI;
   document.getElementById("nav-profils").hidden = !MOI;
   const tb=document.getElementById("tabbar");
-  tb.hidden = ["form","login","attente"].includes(S.vue) || S.selMode;
+  tb.hidden = ["form","login","attente"].includes(S.vue) || S.selMode || !!S.sheet || !!S.viewer;
   tb.querySelector('[data-tab="home"]').setAttribute("aria-current", S.vue==="liste"?"page":"false");
   tb.querySelector('[data-tab="add"]').hidden = !peutEcrire;
   document.getElementById("nav-ajout").hidden = S.vue==="form" || !peutEcrire;
+  if(S.viewer) app.insertAdjacentHTML("beforeend", visionneuse());
+  document.body.style.overflow = (S.sheet||S.viewer) ? "hidden" : "";
+  const cs=document.getElementById("sheet-corps"); if(cs) cs.scrollTop=sheetY;
+  if(S.viewer) initVisionneuse();
   majStatus(); majVoirRes();
   if(garderFocus&&fid){ const el=document.getElementById(fid); if(el){ el.focus(); try{ if(sel!=null) el.setSelectionRange(sel,sel);}catch{} } }
 }
-function aller(vue){ if(vue!=="liste") quitterSelection(); S.vue=vue; S.confirmSuppr=false; render(); window.scrollTo({top:0}); }
+function aller(vue){ if(vue!=="liste") quitterSelection(); S.sheet=null; S.viewer=null; S.vue=vue; S.confirmSuppr=false; render(); window.scrollTo({top:0}); }
 function focusId(id){ requestAnimationFrame(()=>{ const el=document.getElementById(id); if(el){ el.focus(); el.scrollIntoView({block:"nearest"}); } }); }
 function ouvrirAjout(){ B=nouveauBrouillon(); W.etape=0; W.msg=""; W.impMsg=""; W.ingQ=""; aller("form"); }
 function allerEtape(k){
@@ -1360,6 +1455,12 @@ app.addEventListener("click", async e=>{
   const t=e.target.closest("button"); if(!t) return;
   const d=t.dataset;
   /* accueil */
+  if(d.sheet){ S.sheet=d.sheet; S.frigoQ=""; render(); if(d.sheet==="frigo" && S.ingr.length<MAX_FRIGO) focusId("frigo-q"); return; }
+  if("fermerSheet" in d){ S.sheet=null; render(); document.getElementById("resultats")?.scrollIntoView({block:"start"}); return; }
+  if(t.id==="reset-filtres"){ Object.assign(S,{types:[],styles:[],principal:[],prepMax:null,cuisMax:null}); render(); return; }
+  if(t.id==="vider-frigo"){ S.ingr=[]; S.complet=false; render(); return; }
+  if(d.voir!=null && "voir" in d){ const r=recettes.find(x=>x.id===S.ficheId)||(S.vue==="apercu"?apercuRec():null); const ph=(r?.photos?.length?r.photos:(r?.photo?[r.photo]:[])); if(ph.length){ S.viewer={photos:ph,i:+d.voir}; render(); } return; }
+  if("viewerFermer" in d){ S.viewer=null; render(); return; }
   if("det" in d){ const k=+d.det; S.detOuvert.has(k)?S.detOuvert.delete(k):S.detOuvert.add(k); const y=scrollY; render(); scrollTo({top:y}); return; }
   if(d.ck!=null && "ck" in d){ const k=+d.ck; S.coches.has(k)?S.coches.delete(k):S.coches.add(k); const y=scrollY; render(); scrollTo({top:y}); return; }
   if(S.lpFired && d.open){ S.lpFired=false; return; }
@@ -1377,7 +1478,7 @@ app.addEventListener("click", async e=>{
   if(d.open){ S.detOuvert=new Set(); S.coches=new Set(); S.ficheId=d.open; S.personnes=null; aller("fiche"); return; }
   if("back" in d){ aller("liste"); return; }
   if("goAjout" in d){ ouvrirAjout(); return; }
-  if(d.add){ if(d.add==="ingr" && !S.ingr.includes(d.v) && S.ingr.length>=MAX_FRIGO){ return; } if(!S[d.add].includes(d.v)) S[d.add].push(d.v); S.q=""; S.sugMasque=false; render(); return; }
+  if(d.add){ if(d.add==="ingr" && !S.ingr.includes(d.v) && S.ingr.length>=MAX_FRIGO){ return; } if(S.sheet==="frigo") S.frigoQ=""; if(!S[d.add].includes(d.v)) S[d.add].push(d.v); S.q=""; S.sugMasque=false; render(); return; }
   if(d.rm){ S[d.rm]=S[d.rm].filter(x=>x!==d.v); render(); return; }
   if(d.toggle){ const L=S[d.toggle]; S[d.toggle]=L.includes(d.v)?L.filter(x=>x!==d.v):[...L,d.v]; render(); return; }
   if(t.id==="reset"){ Object.assign(S,{q:"",prepMax:null,cuisMax:null,ingr:[],styles:[],types:[],principal:[],dureeMax:0,auteur:"",complet:false}); render(); return; }
@@ -1436,12 +1537,14 @@ app.addEventListener("click", async e=>{
   if(t.id==="save"){ await sauver(); return; }
 });
 
+app.addEventListener("click", e=>{ const v=e.target.closest(".voile[data-fermer-sheet], .sheet-grab"); if(v){ S.sheet=null; render(); } });
 app.addEventListener("input", e=>{
   const t=e.target;
   if(t.id==="login-email"){ L.email=t.value.trim(); return; }
   if(t.id==="login-mdp"){ L.mdp=t.value; return; }
   if(t.id==="moi-prenom" && MOI){ MOI.prenom=t.value; return; }
   if(t.id==="q"){ S.q=t.value; S.sugMasque=false; render(true); return; }
+  if(t.id==="frigo-q"){ S.frigoQ=t.value; render(true); return; }
   if(!B) return;
   if(t.id==="ing-add"){ W.ingQ=t.value; render(true); return; }
   if(t.dataset.b){ B[t.dataset.b]=t.value; if(t.id==="d") {} garderBrouillon(); return; }
@@ -1475,6 +1578,9 @@ app.addEventListener("dragleave", e=>{ const z=e.target.closest("[data-drop]"); 
 app.addEventListener("drop", e=>{ const z=e.target.closest("[data-drop]"); if(!z) return; e.preventDefault(); z.classList.remove("over"); const f=e.dataTransfer?.files?.[0]; if(f) traiterPhoto(z.dataset.drop, f); });
 app.addEventListener("keydown", e=>{
   const t=e.target;
+  if(t.id==="frigo-q" && e.key==="Enter"){ e.preventDefault(); const b=app.querySelector('.sheet [data-add="ingr"]'); if(b) b.click(); return; }
+  if(e.key==="Escape" && (S.sheet||S.viewer)){ S.sheet=null; S.viewer=null; render(); return; }
+  if(S.viewer && (e.key==="ArrowRight"||e.key==="ArrowLeft")){ const p=document.getElementById("viewer-piste"); if(p) p.scrollBy({left:(e.key==="ArrowRight"?1:-1)*p.clientWidth,behavior:"smooth"}); return; }
   if(t.id==="login-email" && e.key==="Enter"){ e.preventDefault(); focusId("login-mdp"); return; }
   if(t.id==="login-mdp" && e.key==="Enter"){ e.preventDefault(); connexion(); return; }
   if(t.id==="q" && e.key==="Enter"){
@@ -1611,6 +1717,14 @@ app.addEventListener("pointerup", lpStop); app.addEventListener("pointercancel",
 app.addEventListener("pointermove", e=>{ if(Math.abs(e.clientX-lpX)>10||Math.abs(e.clientY-lpY)>10) lpStop(); });
 app.addEventListener("contextmenu", e=>{ if(e.target.closest(".card")) e.preventDefault(); });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && S.selMode){ quitterSelection(); render(); } });
+function initVisionneuse(){
+  const p=document.getElementById("viewer-piste"); if(!p) return;
+  requestAnimationFrame(()=>{ p.scrollLeft=S.viewer.i*p.clientWidth; });
+  p.addEventListener("scroll",()=>{ const i=Math.round(p.scrollLeft/p.clientWidth); if(S.viewer && i!==S.viewer.i){ S.viewer.i=i; const n=document.getElementById("viewer-n"); if(n) n.textContent=`${i+1} / ${S.viewer.photos.length}`; document.querySelectorAll(".viewer-points i").forEach((el,k)=>el.classList.toggle("on",k===i)); } },{passive:true});
+  let x0=0,y0=0,t0=0;
+  p.addEventListener("touchstart",e=>{ if(e.touches.length!==1) return; x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=Date.now(); },{passive:true});
+  p.addEventListener("touchend",e=>{ const t=e.changedTouches[0]; const dx=t.clientX-x0, dy=t.clientY-y0; if(Math.abs(dy)>90 && Math.abs(dx)<70 && Date.now()-t0<800){ S.viewer=null; render(); } },{passive:true});
+}
 function majVoirRes(){
   const b=document.getElementById("voir-res"), h=document.getElementById("resultats");
   if(b&&h) b.classList.toggle("cache", h.getBoundingClientRect().top < innerHeight-140);
