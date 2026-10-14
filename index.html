@@ -326,6 +326,16 @@ button.ing{cursor:pointer}
 .q > label,.q > .lbl{font-size:16px;font-weight:800;letter-spacing:0;text-transform:none;color:var(--ink);margin:0}
 .big{font-size:20px;padding:14px 16px;font-family:var(--f-display);font-weight:500}
 .choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.bandeau-ok{margin:0;display:flex;gap:10px;align-items:flex-start;background:var(--green-soft);color:var(--on-green-soft);border-radius:14px;padding:12px 14px;font-weight:700;font-size:14px}
+.bandeau-ok .ms{flex:none;vertical-align:0}
+.voix{display:grid;gap:14px;margin-top:14px}
+.voix-haut{display:flex;align-items:center;gap:16px}
+.micro{width:76px;height:76px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;flex:none;box-shadow:0 6px 16px rgba(180,73,106,.3);cursor:pointer}
+.micro .ms{font-size:36px;width:auto;vertical-align:0}
+.micro.on{background:var(--green);box-shadow:0 0 0 0 rgba(92,140,57,.5)}
+@media (prefers-reduced-motion:no-preference){.micro.on{animation:ecoute 1.4s ease-out infinite}@keyframes ecoute{0%{box-shadow:0 0 0 0 rgba(92,140,57,.55)}100%{box-shadow:0 0 0 18px rgba(92,140,57,0)}}}
+.voix-etat{display:grid;gap:2px}
+.voix-txt{min-height:150px;font-size:16px;line-height:1.5}
 .choice{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:6px}
 .choice:hover{border-color:var(--green)}
 .choice .ms{font-size:32px;width:auto;color:var(--accent)}
@@ -909,7 +919,7 @@ function blocInvite(){
     ${blocPhoto("moi",!!MOI.photo)}
     <span class="hint">Votre recette sera visible après validation par Fanie ou Michaël.</span></div>`;
 }
-const CAT_MOTS=[["Dessert",/dessert|g[aâ]teau|tarte sucr|patisser|pâtisser/i],["Entrée",/entr[ée]e/i],["Apéritif",/ap[ée]ritif|amuse/i],["Soupe",/soupe|velout/i],["Salade",/salade/i],["Accompagnement",/accompagnement/i],["Petit-déjeuner",/petit.d[ée]jeuner|brunch/i],["Goûter",/go[uû]ter/i],["Boisson",/boisson|cocktail/i],["Sauce",/sauce/i],["Plat",/plat/i]];
+const CAT_MOTS=[["Dessert",/dessert|g[aâ]teau|tarte sucr|tarte (?:aux|au) (?:pomme|fraise|poire|citron|chocolat|framboise|abricot)|patisser|pâtisser|cr[êe]pe|gaufre|cookie|brownie|tiramisu|clafoutis|fondant|crumble|compote|madeleine|muffin|mousse au chocolat|panna cotta/i],["Entrée",/entr[ée]e/i],["Apéritif",/ap[ée]ritif|amuse/i],["Soupe",/soupe|velout/i],["Salade",/salade/i],["Accompagnement",/accompagnement/i],["Petit-déjeuner",/petit.d[ée]jeuner|brunch/i],["Goûter",/go[uû]ter/i],["Boisson",/boisson|cocktail/i],["Sauce",/sauce/i],["Plat",/plat/i]];
 async function importLien(){
   const url=(B.source||"").trim();
   if(!/^https?:\/\/\S+\.\S+/.test(url)){ W.impMsg="Collez d'abord le lien complet de la recette (il commence par https://)."; W.impOk=false; render(); focusId("imp-url"); return; }
@@ -953,6 +963,169 @@ function importSimple(){
   if(et.length) B.etapes=et;
   garderBrouillon();
   W.etape=4; W.msg="Fiche pré-remplie : vérifiez chaque partie, puis enregistrez."; W.msgOk=true; render(); scrollTo({top:0});
+}
+/* ---------- Dictée vocale : le micro écrit, l'appli range dans les cases (gratuit, sans IA) ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let REC=null;
+function ponctuer(t){ return t.replace(/\s*\bvirgule\b\s*/gi,", ").replace(/\s*\b(point à la ligne|à la ligne|nouvelle ligne)\b\s*/gi,".\n"); }
+function majZoneDictee(interim=""){
+  const z=document.getElementById("voix-txt"); if(!z) return;
+  const base=B._dict||""; z.value = interim ? base+(base&&!/\s$/.test(base)?" ":"")+interim : base; z.scrollTop=z.scrollHeight;
+}
+function couperMicro(){ W.ecoute=false; try{ REC&&REC.stop(); }catch{} REC=null; }
+function demarrerDictee(){
+  if(W.ecoute){ couperMicro(); render(); return; }
+  if(!SR){ W.voixOk=false; W.voixMsg="Le micro de l'appli n'est pas disponible ici. Touchez la zone de texte, puis le petit micro de votre clavier pour dicter."; render(); focusId("voix-txt"); return; }
+  REC=new SR(); REC.lang="fr-FR"; REC.continuous=true; REC.interimResults=true;
+  REC.onresult=e=>{
+    let interim="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const r=e.results[i], t=r[0].transcript.trim();
+      if(!t) continue;
+      if(r.isFinal){ const b=(B._dict||""); B._dict=b+(b&&!/\s$/.test(b)?" ":"")+ponctuer(t); }
+      else interim+=(interim?" ":"")+t;
+    }
+    majZoneDictee(interim); garderBrouillon();
+  };
+  REC.onerror=e=>{
+    if(e.error==="no-speech"||e.error==="aborted") return;
+    W.ecoute=false; W.voixOk=false;
+    W.voixMsg = /not-allowed|service-not-allowed/.test(e.error) ? "Le micro est bloqué. Autorisez le micro pour ce site dans les réglages du téléphone, ou utilisez le micro du clavier." : "La dictée s'est arrêtée. Touchez le micro pour reprendre.";
+    render();
+  };
+  REC.onend=()=>{ if(W.ecoute && REC){ try{ REC.start(); }catch{ W.ecoute=false; render(); } } };
+  try{ REC.start(); W.ecoute=true; W.voixMsg=""; render(); }
+  catch{ W.voixOk=false; W.voixMsg="Le micro n'a pas pu démarrer. Utilisez le micro du clavier."; render(); }
+}
+
+// Nombres dits en toutes lettres → chiffres ("deux cent cinquante" → 250, "un et demi" → 1,5)
+const NB_MOTS={zero:0,un:1,une:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7,huit:8,neuf:9,dix:10,onze:11,douze:12,treize:13,quatorze:14,quinze:15,seize:16,vingt:20,vingts:20,trente:30,quarante:40,cinquante:50,soixante:60,cent:100,cents:100,mille:1000};
+const basDe = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+function motsEnChiffres(s){
+  s=String(s).replace(/\b(une?\s+)?demi(e)?[\s-]+/gi,"0,5 ").replace(/(\p{L}+)-(\p{L}+)/gu,(m,a,b)=> (basDe(a) in NB_MOTS && (basDe(b) in NB_MOTS||basDe(b)==="et")) ? a+" "+b : m);
+  const w=s.split(/\s+/).filter(Boolean), out=[];
+  const cle=x=>basDe(x||"").replace(/[^a-z]/g,"");
+  for(let i=0;i<w.length;){
+    let j=i, cur=0, tot=0, vu=false, frac="", fin="";
+    while(j<w.length){
+      const k=cle(w[j]);
+      if(k in NB_MOTS){
+        const v=NB_MOTS[k];
+        if(v===100) cur=(cur||1)*100; else if(v===1000){ tot+=(cur||1)*1000; cur=0; } else if(v===20&&cur===4) cur=80; else cur+=v;
+        vu=true; j++;
+        const p=w[j-1].match(/[,.;:!?]+$/); if(p){ fin=p[0]; break; }
+        continue;
+      }
+      if(vu && k==="et" && j+1<w.length){
+        const k2=cle(w[j+1]);
+        if(/^demie?$/.test(k2)){ frac=",5"; fin=(w[j+1].match(/[,.;:!?]+$/)||[""])[0]; j+=2; break; }
+        if(k2 in NB_MOTS){ j++; continue; }
+      }
+      break;
+    }
+    if(vu){ out.push(String(tot+cur)+frac+fin); i=j; } else { out.push(w[i]); i++; }
+  }
+  return out.join(" ");
+}
+function duree(txt){
+  const m=String(txt).match(/(\d+(?:[.,]\d+)?)\s*(h|heures?|min|minutes?|mn)\b(?:\s*(?:et\s*)?(\d+)\s*(?:min|minutes?|mn)?\b)?/i);
+  if(!m) return null;
+  const n=parseFloat(m[1].replace(",",".")); const h=/^h/i.test(m[2]);
+  return Math.round(h ? n*60+(+m[3]||0) : n);
+}
+// Coupe un texte selon des repères (motif sur la version sans accents, même longueur)
+function decouper(txt, motif){
+  const bas=basDe(txt), parts=[]; let dern=0, m; const re=new RegExp(motif.source, "gi");
+  while((m=re.exec(bas))){ if(m.index>dern){ parts.push(txt.slice(dern,m.index)); dern=m.index; } if(m[0].length===0) re.lastIndex++; }
+  parts.push(txt.slice(dern)); return parts;
+}
+function phrasePropre(s){
+  s=s.replace(/\s+/g," ").replace(/^[\s,;:.\-–]+|[\s,;:\-–]+$/g,"");
+  if(!s) return "";
+  s=s.charAt(0).toUpperCase()+s.slice(1);
+  return /[.!?…]$/.test(s) ? s : s+".";
+}
+const VERBES_IRR={fais:"faire",faites:"faire",fait:"faire",mets:"mettre",mettez:"mettre",met:"mettre",prends:"prendre",prenez:"prendre",prend:"prendre",cuis:"cuire",cuisez:"cuire",cuit:"cuire",sers:"servir",servez:"servir",sert:"servir",rajoutes:"rajouter",vas:"aller",allez:"aller",va:"aller",peux:"pouvoir",dois:"devoir"};
+function infinitif(v){
+  const k=v.toLowerCase(); if(VERBES_IRR[k]) return VERBES_IRR[k];
+  if(/(es|ez)$/.test(k) && k.length>4) return v.replace(/(es|ez)$/i,"er");
+  if(/e$/.test(k) && k.length>3) return v+"r";
+  return v;
+}
+// "tu coupes l'oignon et tu le fais revenir" → "couper l'oignon et le faire revenir"
+function aLInfinitif(s){
+  return s.replace(/(^|[,;]\s*|\bet\s+)(?:tu|vous|on)\s+((?:les|leur|lui|le|la|y|en)\s+|l['’])?([a-zàâäéèêëîïôöùûüç]+)/gi,(m,a,pr,v)=>a+(pr||"")+infinitif(v))
+          .replace(/(^|[,;]\s*|\bet\s+)([a-zàâäéèêëîïôöùûüç]{3,}ez)\b/gi,(m,a,v)=>/^(assez|chez)$/i.test(v)?m:a+infinitif(v));
+}
+function rangerDictee(){
+  let txt=(B._dict||"").replace(/\s+/g," ").trim();
+  if(txt.length<15){ W.voixOk=false; W.voixMsg="Dictez d'abord la recette (au moins le titre et quelques ingrédients)."; render(); return; }
+  txt=ponctuer(txt);
+  const bas=basDe(txt);
+  const chercher=(re,depuis=0)=>{ const r=new RegExp(re.source,"gi"); r.lastIndex=depuis; const m=r.exec(bas); return m?{i:m.index,f:m.index+m[0].length}:null; };
+  const NB="(?:\\d+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|douze|quinze|vingt|trente|quarante|cinquante|soixante)";
+  const RE_ING=/\b(?:les? )?ingredients?\b\s*:?|\bil (?:te |vous |nous |me )?faut\b|\b(?:tu as|vous avez|on a) besoin d[e']/;
+  const RE_ETA=new RegExp("\\b(?:les )?etapes?\\b\\s*:?|\\bpour la preparation\\b|\\bpreparation\\b(?!\\s*:?\\s*(?:de\\s+)?"+NB+")\\s*:?|\\b(?:tout )?d'abord\\b|\\bpour commencer\\b|\\bcommencez? par\\b|\\bon commence\\b|\\bpremiere etape\\b");
+  const RE_NOTE=/\b(?:petite? )?(?:astuces?|conseils?|secrets?|remarques?)\b\s*:?|\ba noter\b\s*:?/;
+  const ing=chercher(RE_ING), eta=chercher(RE_ETA, ing?ing.f:0), note=chercher(RE_NOTE, eta?eta.f:(ing?ing.f:0));
+  const fins=[eta&&eta.i, note&&note.i, txt.length].filter(x=>x!=null);
+  // En-tête : titre, personnes, temps
+  const RE_PERS=new RegExp("\\bpour\\s+"+NB+"\\s+(?:personnes?|pers|parts?|couverts?|gourmands?)|\\b"+NB+"\\s+(?:personnes|parts|couverts)\\b");
+  const RE_TEMPS=/\b(?:temps de )?(?:preparation|cuisson)\b\s*:?\s*(?:de\s+)?\S+\s*(?:h|heures?|min|minutes?|mn)\b/;
+  const pers=chercher(RE_PERS), tps=chercher(RE_TEMPS);
+  const finTitre=Math.min(...[pers&&pers.i, tps&&tps.i, ing&&ing.i, eta&&eta.i, note&&note.i, txt.length].filter(x=>x!=null));
+  let titre=txt.slice(0,finTitre).replace(/^(?:alors|bon|bonjour|ok|voici|voila|c'est)\b[\s,]*/i,"").replace(/^(?:la |une )?recette (?:de la |de l'|des |du |de |d')/i,"").replace(/[\s,;:.]+$/,"").trim();
+  if(titre.split(" ").length>10) titre=titre.split(" ").slice(0,8).join(" ");
+  const tete=motsEnChiffres(txt.slice(0, ing?ing.i:(eta?eta.i:txt.length)) + " " + (pers?txt.slice(pers.i,pers.f+5):""));
+  const mp=basDe(tete).match(/\bpour\s+(\d+)\s+(?:personnes?|pers|parts?|couverts?|gourmands?)|\b(\d+)\s+(?:personnes|parts|couverts)\b/);
+  const tTxt=basDe(motsEnChiffres(txt));
+  const mprep=tTxt.match(/\b(?:temps de )?preparation\b\s*:?\s*(?:de\s+)?(\d[^,;.]*)/), mcui=tTxt.match(/\b(?:temps de )?cuisson\b\s*:?\s*(?:de\s+)?(\d[^,;.]*)/);
+  // Ingrédients
+  let zoneIng = ing ? txt.slice(ing.f, Math.min(...fins.filter(x=>x>ing.f))) : (eta ? txt.slice(finTitre, eta.i) : "");
+  zoneIng=zoneIng.replace(RE_PERS,"").replace(/\b(?:temps de )?(?:pr[ée]paration|cuisson)\b\s*:?\s*(?:de\s+)?\S+\s*(?:h|heures?|min|minutes?|mn)\b/gi,"");
+  const ingredients=[];
+  const bouts=zoneIng.split(/\s*(?:[,;.\n]|\bet\b|\bpuis\b|\bavec\b|\bplus\b|\bainsi que\b)\s*/i)
+    .flatMap(c=>motsEnChiffres(c.replace(/\bun peu d[e']\s*/gi,"")).split(/\s+(?=\d+(?:[.,]\d+)?\s)/));   // sans ponctuation : on coupe avant chaque quantité
+  for(let c of bouts){
+    c=c.trim().replace(/^(?:aussi|également|egalement|il (?:te |vous |nous |me )?faut|il faut)\s+/i,"").replace(/^(?:un peu d[e']\s*|quelques\s+|du\s+|de la\s+|de l['’]\s*|des\s+)/i,"");
+    if(!c || c.length>60) continue;
+    const a=analyserLigne(motsEnChiffres(c));
+    if(!a||!a.nom||a.nom.length<2||a.nom.split(" ").length>6) continue;
+    if(!ing && !a.qte && !nomConnu(a.nom)) continue;
+    ingredients.push(nettoyerIngr(a));
+  }
+  // Étapes
+  let etapes=[];
+  if(eta){
+    let zone=txt.slice(eta.i, note&&note.i>eta.i?note.i:txt.length);
+    zone=zone.replace(/^(?:les )?[ée]tapes?\s*:?\s*|^pour la pr[ée]paration\s*:?\s*|^pr[ée]paration\s*:?\s*/i,"");
+    const morceaux=decouper(zone,/[.!?;\n]\s*|\b(?:ensuite|et enfin|enfin|pour finir|pour terminer|apres (?:ca|cela)|une fois que|quand c'est|(?:tout )?d'abord|premierement|deuxiemement|troisiemement|etape (?:\d+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix))\b/);
+    for(let m of morceaux){
+      m=m.replace(/^[\s.!?;,]+/,"").replace(/^(?:et\s+)?(?:ensuite|et enfin|enfin|pour finir|pour terminer|apr[èe]s (?:ça|ca|cela)|(?:tout )?d'abord|premièrement|deuxièmement|troisièmement|étape \S+|alors|puis)\s*,?\s*/i,"").replace(/^(?:et|alors|puis)\s+/i,"");
+      m=phrasePropre(aLInfinitif(m.trim()));
+      if(!m) continue;
+      if(m.length<18 && etapes.length){ etapes[etapes.length-1]=etapes[etapes.length-1].replace(/\.$/,"")+", "+m.charAt(0).toLowerCase()+m.slice(1); continue; }
+      etapes.push(m);
+    }
+  }
+  const astuce = note ? phrasePropre(txt.slice(note.f)) : "";
+  // Remplissage de la fiche
+  if(titre) B.titre=cap(titre);
+  const np=mp&&(+mp[1]||+mp[2]); if(np) B.personnes=np;
+  const dp=mprep&&duree(mprep[1]), dc=mcui&&duree(mcui[1]);
+  if(dp!=null) B.prep=dp; if(dc!=null) B.cuisson=dc;
+  const cat=CAT_MOTS.find(([,re])=>re.test(B.titre||"")); if(cat) B.categorie=cat[0];
+  if(/one.?pot|tout.en.un/i.test(txt) && !B.tags.includes("One-pot")) B.tags=[...B.tags,"One-pot"];
+  if(ingredients.length) B.ingredients=ingredients;
+  if(etapes.length) B.etapes=etapes;
+  if(astuce) B.notes=B.notes ? B.notes+"\n"+astuce : astuce;
+  if(!ingredients.length && !etapes.length){ B.notes=(B.notes?B.notes+"\n":"")+phrasePropre(txt); }
+  couperMicro(); garderBrouillon();
+  W.etape=4; W.msgOk=true;
+  W.msg = ingredients.length||etapes.length
+    ? `Dictée rangée : ${ingredients.length} ingrédient${ingredients.length>1?"s":""} et ${etapes.length} étape${etapes.length>1?"s":""}. Vérifiez chaque partie, corrigez si besoin, puis enregistrez.`
+    : "Je n'ai pas réussi à reconnaître les ingrédients et les étapes : votre dictée est dans les astuces. Dites « ingrédients » puis « étapes » pour un meilleur rangement.";
+  render(); scrollTo({top:0});
 }
 async function demarrerSession(){
   const {data:{session}} = await sb.auth.getSession();
@@ -1287,7 +1460,20 @@ function etape0(){
     <div class="choices">
       <button class="choice" type="button" id="mode-main">${ic("edit_note")}<strong>Je l'écris</strong><span>Titre, ingrédients avec quantités, puis les étapes. Guidé pas à pas.</span></button>
       <button class="choice" type="button" id="mode-web" ${B._web?'style="border-color:var(--accent)"':""}>${ic("language")}<strong>Je l'ai trouvée sur internet</strong><span>Collez simplement le lien : l'appli récupère la recette et ses photos, vous vérifiez.</span></button>
+      <button class="choice" type="button" id="mode-voix" ${B._voix?'style="border-color:var(--accent)"':""}>${ic("mic")}<strong>Je la dicte</strong><span>Touchez le micro et racontez la recette : l'appli range tout dans les bonnes cases.</span></button>
     </div>
+    ${B._voix?`<div class="panel voix">
+      <div class="voix-haut">
+        <button class="micro ${W.ecoute?"on":""}" type="button" id="micro" aria-pressed="${!!W.ecoute}" aria-label="${W.ecoute?"Arrêter la dictée":"Commencer la dictée"}">${ic(W.ecoute?"stop":"mic")}</button>
+        <div class="voix-etat"><strong>${W.ecoute?"Je vous écoute…":"Touchez le micro et parlez"}</strong><span class="hint">${W.ecoute?"Touchez à nouveau quand vous avez fini.":"Parlez naturellement, vous pourrez corriger ensuite."}</span></div>
+      </div>
+      <textarea class="input voix-txt" id="voix-txt" placeholder="Votre dictée s'écrit ici. Vous pouvez aussi la taper ou la corriger.">${esc(B._dict||"")}</textarea>
+      <details class="more"><summary>Exemple de ce qu'on peut dire</summary>
+        <p class="hint" style="margin:8px 0 0">« Curry de poulet pour 4 personnes. Préparation 15 minutes, cuisson 30 minutes. Ingrédients : 500 grammes de poulet, un oignon, deux cuillères à soupe de curry, 40 centilitres de lait de coco, sel et poivre. Étapes : d'abord tu fais revenir l'oignon. Ensuite tu ajoutes le poulet et le curry. Enfin tu verses le lait de coco et tu laisses mijoter 20 minutes. Astuce : c'est encore meilleur le lendemain. »</p>
+        <p class="hint" style="margin:8px 0 0">Les mots « ingrédients », « étapes » et « astuce » aident l'appli à bien ranger.</p></details>
+      <div class="row"><button class="btn primary" type="button" id="voix-ranger">${ic("auto_awesome")}Ranger dans les cases</button><button class="btn ghost" type="button" id="voix-effacer">Effacer</button></div>
+      <span class="${W.voixOk?"ok":"err"}" aria-live="polite">${esc(W.voixMsg||"")}</span>
+    </div>`:""}
     ${B._web?`<div class="panel" style="display:grid;gap:14px">
       <div class="q"><label for="imp-url">Le lien de la recette</label>
         <input class="input" id="imp-url" type="url" inputmode="url" autocomplete="off" placeholder="https://www.marmiton.org/recettes/…" value="${esc(B.source)}">
@@ -1368,6 +1554,7 @@ function etape4(){
   const manque=[]; if(!B.titre.trim()) manque.push("un titre"); if(!B.ingredients.length) manque.push("des ingrédients");
   return `<div class="wz review">
     ${(B.photos||[]).length>1?`<div class="galerie">${B.photos.map(ph=>`<img src="${esc(blobUrl(ph))}" alt="">`).join("")}</div>`:B.photo?`<div class="thumb big photo" style="background-image:url('${esc(photoUrl(B))}')"></div>`:""}
+    ${W.msg&&W.msgOk?`<p class="bandeau-ok">${ic("task_alt")}<span>${esc(W.msg)}</span></p>`:""}
     <h2>${esc(B.titre||"Recette sans titre")}</h2>
     ${MOI&&MOI.admin?`<div class="q"><span class="lbl">Qui ajoute cette recette ?</span>${choixAuteur()}</div>`:blocInvite()}
     ${manque.length?`<p class="err" style="margin:0">Il manque ${manque.join(" et ")}.</p>`:`<p class="ok" style="margin:0">Tout est prêt.</p>`}
@@ -1388,7 +1575,7 @@ function vueForm(){
   ${corps}
   ${W.etape===0?"":`<div class="wzbar">
     ${first?"<span></span>":`<button class="btn" type="button" id="prec">Précédent</button>`}
-    <span class="msg ${W.msgOk?"ok":"err"}" aria-live="polite">${esc(W.msg)}</span>
+    <span class="msg ${W.msgOk?"ok":"err"}" aria-live="polite">${W.msgOk?"":esc(W.msg)}</span>
     ${last?`<button class="btn primary" type="button" id="save" ${peutEcrire?"":"disabled"}>${MOI&&!MOI.admin?"Envoyer pour validation":"Enregistrer"}</button>`:`<button class="btn primary" type="button" id="suiv">Suivant</button>`}
   </div>`}`;
 }
@@ -1421,7 +1608,7 @@ function render(garderFocus){
   majStatus(); majVoirRes();
   if(garderFocus&&fid){ const el=document.getElementById(fid); if(el){ el.focus(); try{ if(sel!=null) el.setSelectionRange(sel,sel);}catch{} } }
 }
-function aller(vue){ if(vue!=="liste") quitterSelection(); S.sheet=null; S.viewer=null; S.vue=vue; S.confirmSuppr=false; render(); window.scrollTo({top:0}); }
+function aller(vue){ couperMicro(); if(vue!=="liste") quitterSelection(); S.sheet=null; S.viewer=null; S.vue=vue; S.confirmSuppr=false; render(); window.scrollTo({top:0}); }
 function focusId(id){ requestAnimationFrame(()=>{ const el=document.getElementById(id); if(el){ el.focus(); el.scrollIntoView({block:"nearest"}); } }); }
 function ouvrirAjout(){ B=nouveauBrouillon(); W.etape=0; W.msg=""; W.impMsg=""; W.ingQ=""; aller("form"); }
 function allerEtape(k){
@@ -1509,8 +1696,12 @@ app.addEventListener("click", async e=>{
   /* assistant */
   if(t.id==="annuler"){ if(!B.id) lsSet(LS_DRAFT,null); B=null; aller("liste"); return; }
   if(t.id==="reprendre"){ B={...nouveauBrouillon(),...lsGet(LS_DRAFT,{})}; if(!B.etapes?.length) B.etapes=[""]; allerEtape(1); return; }
-  if(t.id==="mode-main"){ B._web=false; allerEtape(1); return; }
-  if(t.id==="mode-web"){ B._web=true; render(); focusId("imp-url"); return; }
+  if(t.id==="mode-main"){ B._web=false; B._voix=false; couperMicro(); allerEtape(1); return; }
+  if(t.id==="mode-web"){ B._web=true; B._voix=false; couperMicro(); render(); focusId("imp-url"); return; }
+  if(t.id==="mode-voix"){ B._voix=true; B._web=false; W.voixMsg=""; render(); return; }
+  if(t.id==="micro"){ demarrerDictee(); return; }
+  if(t.id==="voix-ranger"){ rangerDictee(); return; }
+  if(t.id==="voix-effacer"){ couperMicro(); B._dict=""; W.voixMsg=""; garderBrouillon(); render(); focusId("voix-txt"); return; }
   if(t.id==="imp-go"){ await importer(); return; }
   if(d.step){ allerEtape(+d.step); return; }
   if(t.id==="suiv"){ allerEtape(W.etape+1); return; }
@@ -1570,6 +1761,7 @@ app.addEventListener("input", e=>{
   if(t.dataset.stepTxt!=null){ B.etapes[+t.dataset.stepTxt]=t.value; garderBrouillon(); return; }
   if(t.id==="imp-url"){ B.source=t.value.trim(); return; }
   if(t.id==="imp-txt"){ B._imp=t.value; return; }
+  if(t.id==="voix-txt"){ B._dict=t.value; garderBrouillon(); return; }
 });
 app.addEventListener("change", async e=>{
   const t=e.target;
