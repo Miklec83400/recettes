@@ -184,6 +184,8 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .citation{margin:4px 0 18px;text-align:center;display:grid;gap:4px;padding:14px 20px 16px;background:#FFF6E3;border:1px solid #EADBB8;border-radius:8px;box-shadow:inset 0 0 0 5px #FFF6E3,inset 0 0 0 6px #EADBB8,0 2px 8px rgba(120,90,30,.06)}
 .cit-gm{font-family:Georgia,"Times New Roman",serif;font-size:34px;line-height:.6;height:16px;color:var(--accent)}
 .citation blockquote{margin:0;font-family:var(--f-display);font-weight:500;font-style:italic;font-size:17px;line-height:1.4;color:#3B3226;text-wrap:balance}
+.cit-jp{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP","Noto Serif CJK JP",serif;font-size:27px;line-height:1.3;color:var(--accent);letter-spacing:.14em;margin-right:-.14em}
+.cit-lecture{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A8762;margin-bottom:4px}
 .citation figcaption{font-size:12.5px;color:#7A6A50}
 .fiche-tete{display:grid;gap:10px;margin-top:12px}
 .fiche-tete h2{font-size:clamp(28px,6vw,40px)}
@@ -406,7 +408,7 @@ const CATALOGUE = {
   "Herbes & épices":["Sel","Poivre","Basilic","Persil","Coriandre","Ciboulette","Thym","Romarin","Laurier","Menthe","Origan","Herbes de Provence","Paprika","Cumin","Curry","Curcuma","Gingembre","Cannelle","Muscade","Piment"]
 };
 const UNITES = ["g","kg","ml","cl","L","c. à soupe","c. à café","pièce","gousse","tranche","pincée","poignée","brin","feuille","botte","sachet","boîte","au goût"];
-const TYPES = ["Plat","Entrée","Dessert","Apéritif","Soupe","Salade","Accompagnement","Petit-déjeuner","Goûter","Boisson","Sauce"];
+const TYPES = ["Apéritif","Entrée","Soupe","Salade","Plat","Accompagnement","Sauce","Dessert","Goûter","Petit-déjeuner","Boisson"];   // dans l'ordre du repas
 const STYLES = ["One-pot","Pâtes","Riz","Végétarien","Rapide","Au four","Mijoté","Léger","Gourmand","Enfants","Batch cooking","Été","Hiver","Fête"];
 const AUTEURS = ["Fanie","Michael","Les deux"];
 const AFF = n => n==="Michael" ? "Michaël" : n;  // nom affiché
@@ -615,8 +617,8 @@ function pastilleQte(i,f){
   return (q+" "+u).trim();
 }
 
-/* ---------- Phrase du jour : change toutes les 2 h de 7 h à 22 h ---------- */
-const CITATIONS = [
+/* ---------- Phrase du jour : une par jour, change à minuit ---------- */
+const CITATIONS_FR = [
   ["La découverte d'un mets nouveau fait plus pour le bonheur du genre humain que la découverte d'une étoile.","Brillat-Savarin","Physiologie du goût"],
   ["Il faut cultiver notre jardin.","Voltaire","Candide"],
   ["On ne peut pas bien penser, bien aimer, bien dormir, si l'on n'a pas bien dîné.","Virginia Woolf","Une chambre à soi"],
@@ -656,14 +658,29 @@ const CITATIONS = [
   ["Il faut être toujours ivre. Tout est là.","Charles Baudelaire","Enivrez-vous"],
   ["Ventre affamé n'a point d'oreilles.","Jean de La Fontaine","Le Milan et le Rossignol"]
 ];
+// [traduction, auteur, précision, écriture japonaise, lecture]
+const CITATIONS_JP = [
+  ["Une fois, une rencontre : chaque moment partagé ne se vivra qu'une fois, savourez-le.","Proverbe japonais","issu de la cérémonie du thé","一期一会","Ichigo ichie"],
+  ["Le bonheur entre dans la maison où l'on rit.","Proverbe japonais","","笑う門には福来る","Warau kado ni wa fuku kitaru"],
+  ["Mange jusqu'à huit dixièmes de ta faim, et tu n'auras pas besoin de médecin.","Proverbe japonais","","腹八分目に医者いらず","Hara hachibunme ni isha irazu"],
+  ["Pour un ventre affamé, rien n'est mauvais.","Proverbe japonais","","空腹にまずいものなし","Kūfuku ni mazui mono nashi"],
+  ["Les dango plutôt que les fleurs : le plaisir du goût avant celui des yeux.","Proverbe japonais","les dango sont des boulettes de riz sucrées","花より団子","Hana yori dango"],
+  ["Tomber sept fois, se relever huit.","Proverbe japonais","","七転び八起き","Nana korobi ya oki"],
+  ["Si tu es pressé, fais un détour.","Proverbe japonais","","急がば回れ","Isogaba maware"],
+  ["Se nourrir et se soigner ont la même source.","Expression japonaise","","医食同源","Ishoku dōgen"],
+  ["Goûter le premier fruit de la saison, c'est gagner soixante-quinze jours de vie.","Dicton japonais","","初物七十五日","Hatsumono shichijūgo nichi"]
+];
+// Un proverbe japonais toutes les 4 citations, en commençant par celui du 14 octobre 2026
+const CITATIONS = (()=>{ const out=[]; let j=0; CITATIONS_FR.forEach((c,i)=>{ if(i%4===0 && j<CITATIONS_JP.length) out.push(CITATIONS_JP[j++]); out.push(c); }); while(j<CITATIONS_JP.length) out.push(CITATIONS_JP[j++]); return out; })();
+const JOUR0 = Date.UTC(2026,9,14)/86400000;
 function citationDuMoment(d=new Date()){
-  let jour=Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000), h=d.getHours(), slot;
-  if(h<7){ jour-=1; slot=7; } else slot=Math.min(7,Math.floor((h-7)/2));
-  const cle=jour*8+slot;
-  return {cle, c:CITATIONS[((cle%CITATIONS.length)+CITATIONS.length)%CITATIONS.length]};
+  const cle=Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000);   // le jour, à l'heure du téléphone
+  const n=CITATIONS.length;
+  return {cle, c:CITATIONS[(((cle-JOUR0)%n)+n)%n]};
 }
 function citationHtml(){
   const {cle,c}=citationDuMoment(); S.citCle=cle;
+  if(c[3]) return `<figure class="citation"><span class="cit-jp" lang="ja">${esc(c[3])}</span><span class="cit-lecture">${esc(c[4])}</span><blockquote>${esc(c[0])}</blockquote><figcaption>— ${esc(c[1])}${c[2]?`, <i>${esc(c[2])}</i>`:""}</figcaption></figure>`;
   return `<figure class="citation"><span class="cit-gm" aria-hidden="true">“</span><blockquote>${esc(c[0])}</blockquote><figcaption>— ${esc(c[1])}${c[2]?`, <i>${esc(c[2])}</i>`:""}</figcaption></figure>`;
 }
 setInterval(()=>{ if(S.vue==="liste" && citationDuMoment().cle!==S.citCle && !document.activeElement?.matches?.("input,textarea")) render(); }, 60000);
@@ -1214,7 +1231,7 @@ function suggestions(q){
 const filtresActifs=()=>S.q||S.ingr.length||S.styles.length||S.types.length||S.principal.length||S.dureeMax||S.auteur||S.prepMax!=null||S.cuisMax!=null;
 
 /* ---------- Vue : accueil + recherche ---------- */
-const RACCOURCIS=[["Plats","types","Plat"],["Desserts","types","Dessert"],["Entrées","types","Entrée"],["One-pot","styles","One-pot"],["Rapide","styles","Rapide"],["Végétarien","styles","Végétarien"],["Pâtes","styles","Pâtes"],["Soupes","types","Soupe"],["Salades","types","Salade"],["Apéritif","types","Apéritif"],["Accompagnements","types","Accompagnement"]];
+const RACCOURCIS=[["Apéritif","types","Apéritif"],["Entrées","types","Entrée"],["Soupes","types","Soupe"],["Salades","types","Salade"],["Plats","types","Plat"],["Accompagnements","types","Accompagnement"],["Desserts","types","Dessert"],["One-pot","styles","One-pot"],["Pâtes","styles","Pâtes"],["Végétarien","styles","Végétarien"],["Rapide","styles","Rapide"]];   // ordre du repas, puis les styles
 function illuRaccourci(k,v){
   const r = k==="types" ? {categorie:v, tags:[], ingredients:[]} : v==="One-pot" ? {tags:["One-pot"],categorie:"Plat"} : v==="Pâtes" ? {categorie:"Plat",tags:[],ingredients:[{nom:"Spaghetti"}]} : v==="Végétarien" ? {categorie:"Salade",tags:[]} : v==="Rapide" ? {categorie:"Entrée",tags:[]} : {categorie:"Plat",tags:[]};
   return illu(r);
