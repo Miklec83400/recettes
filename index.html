@@ -173,6 +173,10 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .pp.bub[aria-pressed="true"]{box-shadow:0 0 0 2px var(--green)}
 .block h2 .sub{font-family:var(--f-body);font-size:13px;font-weight:600;color:var(--muted)}
 .block h2 .sub b{color:var(--accent)}
+.galerie{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:14px;scrollbar-width:none}
+.galerie::-webkit-scrollbar{display:none}
+.galerie img{flex:0 0 100%;height:min(60vw,320px);object-fit:cover;border-radius:14px;scroll-snap-align:center;background:var(--sunk)}
+.galerie.petite img{flex:0 0 46%;height:120px}
 .sublbl{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:10px 0 6px}
 .thumb.big .ms{font-size:64px}
 .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);align-items:center}
@@ -389,7 +393,7 @@ let PROFILS = {};   // {Fanie:{photo}, Michael:{photo}}
 const LS_MOI="recettes-fm-moi", LS_PROFILS="recettes-fm-profils";
 const S = { vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
 let B = null;           // brouillon de recette
-const W = { etape:1, msg:"", msgOk:false, impMsg:"", impEnCours:false, ingQ:"" };
+const W = { impOk:false, etape:1, msg:"", msgOk:false, impMsg:"", impEnCours:false, ingQ:"" };
 const ETAPES = ["Départ","L'essentiel","Ingrédients","Préparation","Vérifier"];
 
 const app=document.getElementById("app"), statusEl=document.getElementById("status");
@@ -402,9 +406,9 @@ let draftTimer=null;
 function garderBrouillon(){ clearTimeout(draftTimer); draftTimer=setTimeout(()=>{ if(B && !B.id) lsSet(LS_DRAFT,B); },400); }
 
 const rowToRec = r => ({ id:r.id, titre:r.titre, categorie:r.categorie, personnes:r.personnes??"", duree:r.duree??"", prep:r.prep??"", cuisson:r.cuisson??"", auteur:r.auteur,
-  tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:r.photo||"", creeLe:r.cree_le });
+  tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:r.photo||"", photos:(r.photos&&r.photos.length)?r.photos:(r.photo?[r.photo]:[]), creeLe:r.cree_le });
 const recToRow = r => ({ ...(r.id?{id:r.id}:{}), titre:r.titre, categorie:r.categorie, personnes:+r.personnes||null, duree:tempsTotal(r)||null, prep:aVal(r.prep)?+r.prep:null, cuisson:aVal(r.cuisson)?+r.cuisson:null, auteur:r.auteur,
-  tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:r.photo||"", modifie_le:new Date().toISOString() });
+  tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:(r.photos&&r.photos[0])||r.photo||"", photos:(r.photos&&r.photos.length)?r.photos:(r.photo?[r.photo]:[]), modifie_le:new Date().toISOString() });
 async function chargerTout(){
   const [r, pa, pr, pp] = await Promise.all([
     sb.from("recettes").select("*"),
@@ -626,6 +630,34 @@ function blocInvite(){
     ${blocPhoto("moi",!!MOI.photo)}
     <span class="hint">Votre recette sera visible après validation par Fanie ou Michael.</span></div>`;
 }
+const CAT_MOTS=[["Dessert",/dessert|g[aâ]teau|tarte sucr|patisser|pâtisser/i],["Entrée",/entr[ée]e/i],["Apéritif",/ap[ée]ritif|amuse/i],["Soupe",/soupe|velout/i],["Salade",/salade/i],["Accompagnement",/accompagnement/i],["Petit-déjeuner",/petit.d[ée]jeuner|brunch/i],["Goûter",/go[uû]ter/i],["Boisson",/boisson|cocktail/i],["Sauce",/sauce/i],["Plat",/plat/i]];
+async function importLien(){
+  const url=(B.source||"").trim();
+  if(!/^https?:\/\/\S+\.\S+/.test(url)){ W.impMsg="Collez d'abord le lien complet de la recette (il commence par https://)."; W.impOk=false; render(); focusId("imp-url"); return; }
+  W.impEnCours=true; W.impMsg="Lecture de la recette et copie des photos…"; W.impOk=true; render();
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const r=await fetch("/.netlify/functions/import-recette?url="+encodeURIComponent(url),{headers:{authorization:"Bearer "+(session?.access_token||"")}});
+    const j=await r.json().catch(()=>({erreur:"Réponse illisible."}));
+    if(!r.ok) throw new Error(j.erreur||"La recette n'a pas pu être récupérée.");
+    if(j.titre) B.titre=j.titre;
+    if(j.personnes) B.personnes=j.personnes;
+    if(j.prep!=null) B.prep=j.prep;
+    if(j.cuisson!=null) B.cuisson=j.cuisson;
+    else if(j.total!=null && j.prep!=null) B.cuisson=Math.max(0,j.total-j.prep);
+    if(j.prep==null && j.cuisson==null && j.total) B.duree=j.total;
+    const cat=CAT_MOTS.find(([,re])=>re.test(j.categorie||"")); if(cat) B.categorie=cat[0];
+    if(j.ingredients?.length) B.ingredients=j.ingredients.map(analyserLigne).filter(x=>x&&x.nom);
+    if(j.etapes?.length) B.etapes=j.etapes;
+    if(j.photos?.length){ B.photos=j.photos; B.photo=j.photos[0]; }
+    B.source=j.source||url;
+    W.impEnCours=false; W.impMsg=""; garderBrouillon();
+    W.etape=4; W.msg=`Recette récupérée${j.photos?.length?` avec ${j.photos.length} photo${j.photos.length>1?"s":""}`:""} : vérifiez, puis enregistrez.`; W.msgOk=true;
+    render(); scrollTo({top:0});
+  }catch(e){
+    W.impEnCours=false; W.impOk=false; W.impMsg=(e&&e.message)||"La recette n'a pas pu être récupérée. Essayez le copier-coller."; render();
+  }
+}
 function importSimple(){
   const txt=(B._imp||"").trim();
   if(txt.length<20){ W.impMsg="Collez d'abord le texte de la recette."; render(); return; }
@@ -677,16 +709,17 @@ async function traiterPhoto(cible, file){
   try{
     const id=await envoyerPhoto(file);
     if(cible==="moi"){ const {error}=await sb.from("profils").update({photo:id}).eq("id",MOI.id); if(error) throw error; MOI.photo=id; await chargerTout(); render(); }
-    else if(cible==="wz"){ B.photo=id; garderBrouillon(); render(); }
-    else { const r=recettes.find(x=>x.id===S.ficheId); if(!r) return; const {error}=await sb.from("recettes").update({photo:id}).eq("id",r.id); if(error) throw error; await chargerTout(); render(); }
+    else if(cible==="wz"){ B.photo=id; B.photos=[id,...(B.photos||[]).filter(x=>x!==id)]; garderBrouillon(); render(); }
+    else { const r=recettes.find(x=>x.id===S.ficheId); if(!r) return; const {error}=await sb.from("recettes").update({photo:id, photos:[id,...(r.photos||[]).filter(x=>x!==id)]}).eq("id",r.id); if(error) throw error; await chargerTout(); render(); }
   }catch(err){ if(msg) msg.textContent="La photo n'a pas pu être envoyée. Essayez une image plus légère (moins de 20 Mo)."; }
 }
 async function retirerPhoto(cible){
   try{
     if(cible==="moi"){ await sb.from("profils").update({photo:""}).eq("id",MOI.id); MOI.photo=""; await chargerTout(); render(); return; }
-    if(cible==="wz"){ B.photo=""; garderBrouillon(); render(); return; }
+    if(cible==="wz"){ B.photos=(B.photos||[]).filter(x=>x!==B.photo); B.photo=B.photos[0]||""; garderBrouillon(); render(); return; }
     const r=recettes.find(x=>x.id===S.ficheId); if(!r) return;
-    await sb.from("recettes").update({photo:""}).eq("id",r.id); await chargerTout(); render();
+    const reste=(r.photos||[]).filter(x=>x!==r.photo);
+    await sb.from("recettes").update({photo:reste[0]||"", photos:reste}).eq("id",r.id); await chargerTout(); render();
   }catch{}
 }
 async function envoyerPhoto(file){
@@ -838,7 +871,7 @@ function vueFiche(){
       ${listeIngredients(r,f)}
     </aside>
     <article style="display:grid;gap:16px;align-content:start;min-width:0">
-      ${r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
+      ${(r.photos||[]).length>1?`<div class="galerie">${r.photos.map((ph,i)=>`<img src="${esc(blobUrl(ph))}" alt="Photo ${i+1} du plat" loading="lazy">`).join("")}</div><span class="hint" style="margin-top:-8px">${r.photos.length} photos : faites glisser pour les voir.</span>`:r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
       ${MOI?.admin&&!ap?blocPhoto("fiche",!!r.photo):""}
       <div style="display:grid;gap:10px">
         <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
@@ -854,7 +887,7 @@ function vueFiche(){
 }
 
 /* ---------- Vue : assistant d'ajout ---------- */
-function nouveauBrouillon(){ return {titre:"",categorie:"Plat",personnes:4,duree:"",prep:"",cuisson:"",auteur:(MOI&&MOI.admin&&["Fanie","Michael"].includes(MOI.prenom))?MOI.prenom:"Les deux",tags:[],principal:[],photo:"",ingredients:[],etapes:[""],notes:"",source:"",_imp:""}; }
+function nouveauBrouillon(){ return {titre:"",categorie:"Plat",personnes:4,duree:"",prep:"",cuisson:"",auteur:(MOI&&MOI.admin&&["Fanie","Michael"].includes(MOI.prenom))?MOI.prenom:"Les deux", photos:[],tags:[],principal:[],photo:"",ingredients:[],etapes:[""],notes:"",source:"",_imp:""}; }
 function stepNav(){
   const debut = (B.id||B._propId) ? 1 : 0;
   return `<nav class="steps-nav" aria-label="Étapes">${ETAPES.map((l,k)=>k<debut?"":`<button type="button" data-step="${k}" ${W.etape===k?'aria-current="step"':""} class="${k<W.etape?"done":""}"><b>${k-debut+1}</b>${l}</button>`).join("")}</nav>`;
@@ -867,15 +900,20 @@ function etape0(){
     ${reprise?`<div class="resume"><span>Vous aviez commencé <strong>${esc(ancien.titre||"une recette")}</strong>.</span><button class="btn primary" type="button" id="reprendre">Reprendre</button></div>`:""}
     <div class="choices">
       <button class="choice" type="button" id="mode-main">${ic("edit_note")}<strong>Je l'écris</strong><span>Titre, ingrédients avec quantités, puis les étapes. Guidé pas à pas.</span></button>
-      <button class="choice" type="button" id="mode-web" ${B._web?'style="border-color:var(--accent)"':""}>${ic("language")}<strong>Je l'ai trouvée sur internet</strong><span>Collez le lien et le texte de la recette : l'appli pré-remplit la fiche, vous vérifiez.</span></button>
+      <button class="choice" type="button" id="mode-web" ${B._web?'style="border-color:var(--accent)"':""}>${ic("language")}<strong>Je l'ai trouvée sur internet</strong><span>Collez simplement le lien : l'appli récupère la recette et ses photos, vous vérifiez.</span></button>
     </div>
     ${B._web?`<div class="panel" style="display:grid;gap:14px">
-      <div class="q"><label for="imp-url">1. Le lien de la page</label><input class="input" id="imp-url" type="url" inputmode="url" placeholder="https://www.marmiton.org/…" value="${esc(B.source)}"></div>
-      <div class="q"><label for="imp-txt">2. Le texte de la recette</label>
-        <span class="hint">Sur le site, sélectionnez le titre, les ingrédients et les étapes, copiez, puis collez ici.</span>
-        <textarea class="input" id="imp-txt" placeholder="Collez ici…">${esc(B._imp||"")}</textarea></div>
-      <div class="row"><button class="btn primary" type="button" id="imp-simple">Pré-remplir la fiche</button>
-        <span class="hint" aria-live="polite">${esc(W.impMsg)}</span></div>
+      <div class="q"><label for="imp-url">Le lien de la recette</label>
+        <input class="input" id="imp-url" type="url" inputmode="url" autocomplete="off" placeholder="https://www.marmiton.org/recettes/…" value="${esc(B.source)}">
+        <span class="hint">Sur le site de la recette, touchez Partager puis « Copier le lien », et collez-le ici.</span></div>
+      <div class="row"><button class="btn primary" type="button" id="imp-lien" ${W.impEnCours?"disabled":""}>${ic("download")}${W.impEnCours?"Récupération…":"Récupérer la recette"}</button></div>
+      <span class="${W.impOk?"ok":"err"}" aria-live="polite">${esc(W.impMsg)}</span>
+      <details class="more"><summary>Ça ne marche pas avec ce site ? Copier-coller le texte</summary>
+        <div class="q" style="margin-top:10px"><label for="imp-txt">Le texte de la recette</label>
+          <span class="hint">Sélectionnez le titre, les ingrédients et les étapes sur le site, copiez, puis collez ici.</span>
+          <textarea class="input" id="imp-txt" placeholder="Collez ici…">${esc(B._imp||"")}</textarea></div>
+        <div class="row" style="margin-top:8px"><button class="btn" type="button" id="imp-simple">Pré-remplir la fiche</button></div>
+      </details>
     </div>`:""}
   </div>`;
 }
@@ -885,7 +923,7 @@ function etape1(){
     <div class="q"><span class="lbl">C'est…</span><div class="row">${TYPES.map(x=>`<button class="chip" type="button" data-type="${esc(x)}" aria-pressed="${B.categorie===x}">${ic(ICON_TYPE[x])}${esc(x)}</button>`).join("")}</div></div>
     <div class="q"><span class="lbl">Ingrédient principal</span><div class="row">${Object.keys(PRINCIPAUX).map(x=>`<button class="chip" type="button" data-princ="${esc(x)}" aria-pressed="${(B.principal||[]).includes(x)}">${esc(x)}</button>`).join("")}</div></div>
     ${assets?`<div class="q"><span class="lbl">Photo du plat <span class="hint">(facultatif)</span></span>
-      ${B.photo?`<div class="thumb photo" style="background-image:url('${esc(photoUrl(B))}');height:140px;max-width:320px"></div>`:""}
+      ${(B.photos||[]).length>1?`<div class="galerie petite">${B.photos.map(ph=>`<img src="${esc(blobUrl(ph))}" alt="">`).join("")}</div>`:B.photo?`<div class="thumb photo" style="background-image:url('${esc(photoUrl(B))}');height:140px;max-width:320px"></div>`:""}
       ${blocPhoto("wz",!!B.photo)}</div>`:""}
     <div class="q"><span class="lbl">Son style <span class="hint">(plusieurs choix possibles)</span></span><div class="row">${STYLES.map(x=>`<button class="chip" type="button" data-style="${esc(x)}" aria-pressed="${B.tags.includes(x)}">${ic(ICON_STYLE[x])}${esc(x)}</button>`).join("")}</div></div>
     <div class="more-grid" style="margin:0">
@@ -943,7 +981,7 @@ function etape4(){
   const etapes=B.etapes.map(s=>s.trim()).filter(Boolean);
   const manque=[]; if(!B.titre.trim()) manque.push("un titre"); if(!B.ingredients.length) manque.push("des ingrédients");
   return `<div class="wz review">
-    ${B.photo?`<div class="thumb big photo" style="background-image:url('${esc(photoUrl(B))}')"></div>`:""}
+    ${(B.photos||[]).length>1?`<div class="galerie">${B.photos.map(ph=>`<img src="${esc(blobUrl(ph))}" alt="">`).join("")}</div>`:B.photo?`<div class="thumb big photo" style="background-image:url('${esc(photoUrl(B))}')"></div>`:""}
     <h2>${esc(B.titre||"Recette sans titre")}</h2>
     ${MOI&&MOI.admin?`<div class="q"><span class="lbl">Qui ajoute cette recette ?</span>${choixAuteur()}</div>`:blocInvite()}
     ${manque.length?`<p class="err" style="margin:0">Il manque ${manque.join(" et ")}.</p>`:`<p class="ok" style="margin:0">Tout est prêt.</p>`}
@@ -1077,6 +1115,7 @@ app.addEventListener("click", async e=>{
   if(t.id==="logout"){ await sb.auth.signOut(); MOI=null; PROPS=[]; recettes=[]; charge=false; S.vue="login"; render(); return; }
   if(t.id==="moi-save"){ const v=(MOI.prenom||"").trim(); const m=document.getElementById("moi-msg"); if(!v){ if(m) m.textContent="Indiquez votre prénom."; return; } const {error}=await sb.from("profils").update({prenom:v}).eq("id",MOI.id); if(m) m.textContent=error?"Le prénom n'a pas pu être enregistré.":"Prénom enregistré."; if(!error){ await chargerTout(); } return; }
   if(t.id==="imp-simple"){ importSimple(); return; }
+  if(t.id==="imp-lien"){ await importLien(); return; }
   if(d.apercu){ S.propId=d.apercu; S.retourVue=S.vue; S.personnes=null; aller("apercu"); return; }
   if("retourProps" in d){ aller(S.retourVue||"liste"); return; }
   if(d.pedit){ const p=PROPS.find(x=>x.id===d.pedit); if(!p) return; B={...nouveauBrouillon(),...JSON.parse(JSON.stringify(p.donnees||{})),_propId:p.id}; if(!B.etapes||!B.etapes.length) B.etapes=[""]; W.etape=1; W.msg=""; W.ingQ=""; aller("form"); return; }
@@ -1114,7 +1153,7 @@ app.addEventListener("input", e=>{
   if(t.dataset.b){ B[t.dataset.b]=t.value; if(t.id==="d") {} garderBrouillon(); return; }
   if(t.dataset.qte!=null){ B.ingredients[+t.dataset.qte].qte=t.value; garderBrouillon(); return; }
   if(t.dataset.stepTxt!=null){ B.etapes[+t.dataset.stepTxt]=t.value; garderBrouillon(); return; }
-  if(t.id==="imp-url"){ B.source=t.value; return; }
+  if(t.id==="imp-url"){ B.source=t.value.trim(); return; }
   if(t.id==="imp-txt"){ B._imp=t.value; return; }
 });
 app.addEventListener("change", async e=>{
@@ -1201,7 +1240,7 @@ async function sauver(){
     await sb.from("profils").update({prenom:pre}).eq("id",MOI.id);
   }
   const rec={ id:B.id, titre:B.titre.trim(), categorie:B.categorie, personnes:+B.personnes||"", duree:tempsTotal(B)||"", prep:aVal(B.prep)?+B.prep:"", cuisson:aVal(B.cuisson)?+B.cuisson:"",
-    auteur:B.auteur, tags:B.tags, principal:B.principal||[], photo:B.photo||"", ingredients:B.ingredients.map(i=>({nom:i.nom,qte:String(i.qte||"").trim(),unite:i.unite})),
+    auteur:B.auteur, tags:B.tags, principal:B.principal||[], photo:B.photo||"", photos:B.photos&&B.photos.length?B.photos:(B.photo?[B.photo]:[]), ingredients:B.ingredients.map(i=>({nom:i.nom,qte:String(i.qte||"").trim(),unite:i.unite})),
     etapes:B.etapes.map(s=>String(s).replace(/^\s*\d+[.)]\s*/,"").trim()).filter(Boolean),
     notes:B.notes||"", source:(B.source||"").trim(), creeLe:B.creeLe };
   const btn=document.getElementById("save"); if(btn){ btn.disabled=true; btn.textContent="Enregistrement…"; }

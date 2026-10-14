@@ -1,5 +1,5 @@
 // Garde l'appli disponible même sans réseau
-const V = "recettes-fm-v4";
+const V = "recettes-fm-v5";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
@@ -9,6 +9,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   const u = new URL(e.request.url);
+  if (u.origin === location.origin && u.pathname.startsWith("/.netlify/")) return;
   if (u.origin === location.origin) {
     // Réseau d'abord pour recevoir les mises à jour, cache si hors ligne
     e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(x => x.put(e.request, c)); return r; })
