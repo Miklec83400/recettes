@@ -27,7 +27,7 @@ img{max-width:100%}
 <style>
 /* Layout : appli mobile de cuisine — barre d'appli en haut, une vue à la fois, barre d'onglets fixe en bas sur téléphone */
 :root{
-  --bg:#F3F8EE; --head:#D5EAC3; --surface:#FFFFFF; --sunk:#E9F2E1; --line:#D9E6CE; --ink:#2C3826; --muted:#62705A;
+  --bg:#FAFCF7; --head:#D5EAC3; --surface:#FFFFFF; --sunk:#E9F2E1; --line:#D9E6CE; --ink:#2C3826; --muted:#62705A;
   --accent:#B4496A; --on-accent:#FFFFFF; --green:#5C8C39; --on-green:#FFFFFF; --green-soft:#D5EAC3; --on-green-soft:#2F4A1C;
   --hl:#F8D3DD; --on-hl:#6A2238; --danger:#B3261E;
   --f-display:"Fredoka",ui-rounded,system-ui,-apple-system,sans-serif;
@@ -71,6 +71,7 @@ header.top .wrap{padding-block:12px;display:flex;gap:12px;align-items:center;jus
 .btn.danger{color:var(--danger);border-color:var(--danger);background:transparent}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
 .status{font-size:13px;color:var(--muted);padding-block:10px 0;margin:0}
+.status:empty{display:none}
 main{padding-block:12px 90px}
 @media (max-width:720px){main{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}}
 .input{width:100%;box-sizing:border-box;border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:11px 13px}
@@ -78,13 +79,13 @@ main{padding-block:12px 90px}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 
 /* Barre d'onglets (téléphone) */
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--head);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
   padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
 @media (min-width:721px){.tabbar{display:none}}
-.tabbar button{border:0;background:none;display:grid;justify-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--muted);padding:4px 0;border-radius:12px}
+.tabbar button{border:0;background:none;display:grid;justify-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--on-green-soft);padding:4px 0;border-radius:12px}
 .tabbar button .ms{font-size:24px;vertical-align:0}
-.tabbar button[aria-current="page"]{color:var(--green)}
-.tabbar button.add .ms{background:var(--accent);color:var(--on-accent);border-radius:50%;width:44px;height:44px;display:grid;place-items:center;margin-top:-18px;border:4px solid var(--surface);box-sizing:content-box}
+.tabbar button[aria-current="page"]{color:var(--accent)}
+.tabbar button.add .ms{background:var(--accent);color:var(--on-accent);border-radius:50%;width:44px;height:44px;display:grid;place-items:center;margin-top:-18px;border:4px solid var(--head);box-sizing:content-box}
 .tabbar button.add{color:var(--accent)}
 
 /* Chips : rose = ingrédient, vert = type ou style */
@@ -170,6 +171,16 @@ details.more summary{cursor:pointer;font-weight:800;color:var(--green)}
 .pill.s-en_attente{background:var(--hl);color:var(--on-hl)}
 .pill.s-validee{background:var(--green-soft);color:var(--on-green-soft)}
 .pill.s-refusee{background:transparent;border:1.5px solid var(--danger);color:var(--danger)}
+.thumb .illu{height:92%;width:auto;max-width:94%}
+.count-line{margin-top:12px;font-size:15px;color:var(--ink)}
+.count-line strong{font-size:18px;color:var(--accent);margin-right:2px}
+.voir-res{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:7;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+@media (min-width:721px){.voir-res{bottom:calc(24px + env(safe-area-inset-bottom,0px))}}
+.voir-res.cache{display:none}
+.pp.bub{padding:3px;border-radius:999px}
+.pp.bub[aria-pressed="true"]{box-shadow:0 0 0 2px var(--green)}
+.block h2 .sub{font-family:var(--f-body);font-size:13px;font-weight:600;color:var(--muted)}
+.block h2 .sub b{color:var(--accent)}
 .sublbl{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:10px 0 6px}
 .thumb.big .ms{font-size:64px}
 .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);align-items:center}
@@ -296,6 +307,32 @@ const ICON_TYPE = {"Plat":"restaurant","Entrée":"tapas","Dessert":"cake","Apér
 const ICON_STYLE = {"Pâtes":"ramen_dining","Riz":"rice_bowl","Végétarien":"eco","Rapide":"bolt","Au four":"local_fire_department","One-pot":"cooking","Mijoté":"skillet","Léger":"spa","Gourmand":"icecream","Enfants":"child_care","Batch cooking":"kitchen","Été":"sunny","Hiver":"ac_unit","Fête":"celebration"};
 const ic = (n)=>`<span class="ms" aria-hidden="true">${n}</span>`;
 const ton = r => (TYPES.indexOf(r.categorie)%2) ? "t-green" : "t-rose";
+// Illustrations des plats (viewBox 200x120), couleurs fixes adaptées aux deux thèmes
+const PL='<ellipse cx="100" cy="108" rx="74" ry="7" fill="#000" opacity=".07"/><ellipse cx="100" cy="76" rx="80" ry="34" fill="#fff"/><ellipse cx="100" cy="76" rx="62" ry="24" fill="#F4EFE6"/>';
+const LEAF=(x,y,r)=>`<ellipse cx="${x}" cy="${y}" rx="9" ry="4.5" fill="#5C9A33" transform="rotate(${r} ${x} ${y})"/>`;
+const BOWL=(fill)=>`<ellipse cx="100" cy="108" rx="64" ry="7" fill="#000" opacity=".07"/><path d="M36 58h128c0 30-28 48-64 48S36 88 36 58z" fill="${fill}"/><rect x="78" y="100" width="44" height="7" rx="3" fill="${fill}"/>`;
+const ILLU = {
+  pot:`<ellipse cx="100" cy="108" rx="70" ry="7" fill="#000" opacity=".07"/><path d="M80 34c-6-7 6-11 0-18M100 30c-6-7 6-11 0-18M120 34c-6-7 6-11 0-18" stroke="#8DBF5A" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="42" y="54" width="116" height="50" rx="18" fill="#B4496A"/><rect x="28" y="60" width="24" height="10" rx="5" fill="#B4496A"/><rect x="148" y="60" width="24" height="10" rx="5" fill="#B4496A"/><rect x="36" y="44" width="128" height="13" rx="6.5" fill="#8E3553"/><rect x="89" y="36" width="22" height="10" rx="5" fill="#8E3553"/><rect x="56" y="72" width="88" height="6" rx="3" fill="#fff" opacity=".22"/>`,
+  pates:PL+`<g fill="none" stroke="#F2C14E" stroke-width="6" stroke-linecap="round"><path d="M56 70q8-10 16 0t16 0 16 0 16 0 16 0 16 0"/><path d="M60 80q8-10 16 0t16 0 16 0 16 0 16 0 16 0"/><path d="M68 89q8-9 16 0t16 0 16 0 16 0"/></g><circle cx="100" cy="72" r="13" fill="#E0533D"/><circle cx="96" cy="69" r="4" fill="#F27A63"/>`+LEAF(86,60,-25)+LEAF(110,61,20)+`<circle cx="120" cy="80" r="2.5" fill="#FFF4DC"/><circle cx="82" cy="83" r="2.5" fill="#FFF4DC"/>`,
+  plat:PL+`<path d="M62 74c0-12 14-20 30-18 14 2 22 10 20 20-2 9-16 12-30 11s-20-5-20-13z" fill="#C98545"/><path d="M70 70c8-6 22-7 32-2" stroke="#E2A867" stroke-width="4" fill="none" stroke-linecap="round"/><g stroke="#5C9A33" stroke-width="5" stroke-linecap="round"><path d="M118 66l22 8"/><path d="M116 74l24 6"/><path d="M118 82l20 4"/></g><circle cx="122" cy="94" r="6" fill="#E9894A"/><circle cx="136" cy="92" r="6" fill="#E9894A"/><circle cx="122" cy="94" r="2" fill="#F6B37E"/><circle cx="136" cy="92" r="2" fill="#F6B37E"/>`,
+  entree:PL+`<g><circle cx="66" cy="74" r="13" fill="#E0533D"/><circle cx="66" cy="74" r="6" fill="#F27A63"/><circle cx="90" cy="70" r="12" fill="#FFFDF6" stroke="#EDE3D2" stroke-width="2"/><circle cx="114" cy="74" r="13" fill="#E0533D"/><circle cx="114" cy="74" r="6" fill="#F27A63"/><circle cx="138" cy="70" r="12" fill="#FFFDF6" stroke="#EDE3D2" stroke-width="2"/></g>`+LEAF(78,86,10)+LEAF(126,86,-10)+LEAF(102,60,-30),
+  dessert:`<ellipse cx="100" cy="108" rx="70" ry="7" fill="#000" opacity=".07"/><ellipse cx="100" cy="98" rx="74" ry="14" fill="#fff"/><path d="M50 94l20-52h70l10 52z" fill="#FFE8B8"/><path d="M58 74h88l3 10H54z" fill="#F3A9BE"/><path d="M66 52h76l2 6H64z" fill="#F3A9BE"/><path d="M68 42h72c4 0 6 4 4 8H66c-2-4 0-8 2-8z" fill="#FFFDF6"/><path d="M102 30c-10 0-14 10-8 16 4 4 10 4 14 0 6-6 2-16-6-16z" fill="#E0533D"/><path d="M98 28l4 4 4-4-4-6z" fill="#5C9A33"/><circle cx="100" cy="38" r="1.3" fill="#FFE8B8"/><circle cx="106" cy="40" r="1.3" fill="#FFE8B8"/>`,
+  apero:`<ellipse cx="100" cy="108" rx="72" ry="7" fill="#000" opacity=".07"/><g><path d="M52 24h32c0 22-6 34-16 34s-16-12-16-34z" fill="#F3A9BE" opacity=".9"/><path d="M53 36h30c-1 12-6 20-15 20s-14-8-15-20z" fill="#B4496A"/><rect x="66" y="58" width="4" height="34" fill="#DCCFC4"/><ellipse cx="68" cy="94" rx="14" ry="4" fill="#DCCFC4"/></g><g><path d="M90 30h28c0 20-5 30-14 30s-14-10-14-30z" fill="#FFF4DC" opacity=".95"/><path d="M91 40h26c-1 10-5 18-13 18s-12-8-13-18z" fill="#F2C14E"/><rect x="102" y="60" width="4" height="32" fill="#DCCFC4"/><ellipse cx="104" cy="94" rx="13" ry="4" fill="#DCCFC4"/></g><ellipse cx="148" cy="92" rx="26" ry="9" fill="#fff"/><path d="M122 88h52c0 8-12 14-26 14s-26-6-26-14z" fill="#fff"/><circle cx="138" cy="84" r="6" fill="#6E8F2E"/><circle cx="150" cy="82" r="6" fill="#4E6B1E"/><circle cx="160" cy="86" r="6" fill="#6E8F2E"/><circle cx="146" cy="88" r="6" fill="#4E6B1E"/>`,
+  soupe:BOWL("#B4496A")+`<ellipse cx="100" cy="58" rx="64" ry="10" fill="#E9894A"/><ellipse cx="86" cy="56" rx="10" ry="3" fill="#F6B37E"/><circle cx="116" cy="57" r="3" fill="#5C9A33"/><circle cx="124" cy="60" r="2.5" fill="#5C9A33"/><path d="M80 40c-5-6 5-9 0-15M100 36c-5-6 5-9 0-15M120 40c-5-6 5-9 0-15" stroke="#8DBF5A" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="132" y="26" width="8" height="40" rx="4" fill="#DCCFC4" transform="rotate(30 136 46)"/>`,
+  salade:BOWL("#8DBF5A")+`<g><circle cx="70" cy="54" r="14" fill="#5C9A33"/><circle cx="92" cy="46" r="16" fill="#7DB648"/><circle cx="116" cy="48" r="15" fill="#5C9A33"/><circle cx="134" cy="56" r="12" fill="#7DB648"/><circle cx="104" cy="56" r="12" fill="#A6D06A"/></g><circle cx="84" cy="58" r="7" fill="#E0533D"/><circle cx="122" cy="60" r="7" fill="#E0533D"/><circle cx="106" cy="44" r="5" fill="#F2C14E"/><ellipse cx="70" cy="46" rx="6" ry="3" fill="#FFFDF6"/>`,
+  accomp:BOWL("#F2C14E")+`<path d="M44 58c6-22 30-30 56-30s50 8 56 30z" fill="#FFFDF6"/><g fill="#EDE3D2"><ellipse cx="70" cy="48" rx="3" ry="1.6"/><ellipse cx="90" cy="40" rx="3" ry="1.6"/><ellipse cx="110" cy="38" rx="3" ry="1.6"/><ellipse cx="128" cy="46" rx="3" ry="1.6"/><ellipse cx="100" cy="50" rx="3" ry="1.6"/><ellipse cx="80" cy="54" rx="3" ry="1.6"/><ellipse cx="120" cy="54" rx="3" ry="1.6"/></g>`+LEAF(104,32,-20)+LEAF(116,34,25),
+  petitdej:`<ellipse cx="100" cy="108" rx="74" ry="7" fill="#000" opacity=".07"/><path d="M34 86c4-26 24-40 46-40 20 0 34 12 38 30-10-10-22-14-34-12-18 2-34 12-50 22z" fill="#E2A867"/><path d="M46 78c8-12 20-20 34-20M58 72c6-8 14-12 24-12" stroke="#C98545" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="118" y="50" width="46" height="46" rx="10" fill="#B4496A"/><path d="M164 60c14 0 14 24 0 24" stroke="#B4496A" stroke-width="7" fill="none"/><ellipse cx="141" cy="52" rx="21" ry="5" fill="#6B4430"/><path d="M134 40c-4-5 4-8 0-13M148 40c-4-5 4-8 0-13" stroke="#8DBF5A" stroke-width="3.5" fill="none" stroke-linecap="round"/>`,
+  gouter:`<ellipse cx="100" cy="108" rx="70" ry="7" fill="#000" opacity=".07"/><g><circle cx="70" cy="76" r="26" fill="#D9A066"/><circle cx="62" cy="70" r="4" fill="#5B3A29"/><circle cx="78" cy="82" r="4" fill="#5B3A29"/><circle cx="72" cy="64" r="3" fill="#5B3A29"/><circle cx="60" cy="86" r="3" fill="#5B3A29"/></g><g><circle cx="128" cy="70" r="24" fill="#E2B57A"/><circle cx="120" cy="66" r="4" fill="#5B3A29"/><circle cx="136" cy="76" r="4" fill="#5B3A29"/><circle cx="132" cy="58" r="3" fill="#5B3A29"/><circle cx="118" cy="80" r="3" fill="#5B3A29"/></g><circle cx="100" cy="96" r="14" fill="#D9A066"/><circle cx="96" cy="94" r="3" fill="#5B3A29"/><circle cx="104" cy="100" r="3" fill="#5B3A29"/>`,
+  boisson:`<ellipse cx="100" cy="108" rx="50" ry="7" fill="#000" opacity=".07"/><path d="M72 22h56l-8 82H80z" fill="#E8F3F1"/><path d="M75 50h50l-6 52H81z" fill="#F3A9BE"/><rect x="88" y="56" width="12" height="12" rx="2" fill="#fff" opacity=".7"/><rect x="104" y="64" width="11" height="11" rx="2" fill="#fff" opacity=".7"/><path d="M110 8l-8 60" stroke="#5C9A33" stroke-width="5" stroke-linecap="round"/><circle cx="128" cy="26" r="13" fill="#F2C14E"/><circle cx="128" cy="26" r="9" fill="#FFE59A"/><path d="M128 17v18M119 26h18" stroke="#F2C14E" stroke-width="1.5"/>`+LEAF(70,26,-30),
+  sauce:`<ellipse cx="100" cy="108" rx="68" ry="7" fill="#000" opacity=".07"/><path d="M48 60h104c0 24-22 42-52 42S48 84 48 60z" fill="#fff"/><ellipse cx="100" cy="60" rx="52" ry="11" fill="#E0533D"/><ellipse cx="88" cy="58" rx="12" ry="3.5" fill="#F27A63"/>`+LEAF(112,58,15)+`<rect x="122" y="16" width="9" height="52" rx="4.5" fill="#C98545" transform="rotate(28 126 42)"/><ellipse cx="114" cy="64" rx="10" ry="6" fill="#C98545" transform="rotate(28 114 64)"/>`
+};
+const ILLU_TYPE={"Plat":"plat","Entrée":"entree","Dessert":"dessert","Apéritif":"apero","Soupe":"soupe","Salade":"salade","Accompagnement":"accomp","Petit-déjeuner":"petitdej","Goûter":"gouter","Boisson":"boisson","Sauce":"sauce"};
+function illu(r){
+  const t=r.tags||[];
+  const k = t.includes("One-pot") ? "pot" : (r.categorie==="Plat"||!r.categorie) && aStyle(r,"Pâtes") ? "pates" : (ILLU_TYPE[r.categorie]||"plat");
+  return `<svg class="illu" viewBox="0 0 200 120" role="img" aria-label="${esc(r.categorie||"Plat")}">${ILLU[k]}</svg>`;
+}
+
 
 const norm = s => String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/œ/g,"oe").replace(/æ/g,"ae").trim();
 const sing = s => norm(s).replace(/(s|x)$/,"");
@@ -358,7 +395,7 @@ let PROFILS_ID={};     // id -> {prenom, photo}
 const L={email:"",mdp:"",mode:"connexion",voir:false,msg:"",ok:false};
 let PROFILS = {};   // {Fanie:{photo}, Michael:{photo}}
 const LS_MOI="recettes-fm-moi", LS_PROFILS="recettes-fm-profils";
-const S = { vue:"attente", propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
+const S = { vue:"attente", prepMax:null, cuisMax:null, propId:null, refusId:null, q:"", sugMasque:false, ingr:[], styles:[], types:[], principal:[], dureeMax:0, auteur:"", complet:false, ficheId:null, personnes:null, confirmSuppr:false };
 let B = null;           // brouillon de recette
 const W = { etape:1, msg:"", msgOk:false, impMsg:"", impEnCours:false, ingQ:"" };
 const ETAPES = ["Départ","L'essentiel","Ingrédients","Préparation","Vérifier"];
@@ -372,9 +409,9 @@ const lsSet=(k,v)=>{ try{ v==null?localStorage.removeItem(k):localStorage.setIte
 let draftTimer=null;
 function garderBrouillon(){ clearTimeout(draftTimer); draftTimer=setTimeout(()=>{ if(B && !B.id) lsSet(LS_DRAFT,B); },400); }
 
-const rowToRec = r => ({ id:r.id, titre:r.titre, categorie:r.categorie, personnes:r.personnes??"", duree:r.duree??"", auteur:r.auteur,
+const rowToRec = r => ({ id:r.id, titre:r.titre, categorie:r.categorie, personnes:r.personnes??"", duree:r.duree??"", prep:r.prep??"", cuisson:r.cuisson??"", auteur:r.auteur,
   tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:r.photo||"", creeLe:r.cree_le });
-const recToRow = r => ({ ...(r.id?{id:r.id}:{}), titre:r.titre, categorie:r.categorie, personnes:+r.personnes||null, duree:+r.duree||null, auteur:r.auteur,
+const recToRow = r => ({ ...(r.id?{id:r.id}:{}), titre:r.titre, categorie:r.categorie, personnes:+r.personnes||null, duree:tempsTotal(r)||null, prep:aVal(r.prep)?+r.prep:null, cuisson:aVal(r.cuisson)?+r.cuisson:null, auteur:r.auteur,
   tags:r.tags||[], principal:r.principal||[], ingredients:r.ingredients||[], etapes:r.etapes||[], notes:r.notes||"", source:r.source||"", photo:r.photo||"", modifie_le:new Date().toISOString() });
 async function chargerTout(){
   const [r, pa, pr, pp] = await Promise.all([
@@ -407,11 +444,16 @@ async function supprimer(id){
   await chargerTout();
 }
 function majStatus(){
-  if(S.vue==="login"||S.vue==="attente"){ statusEl.textContent=""; return; }
-  if(!charge){ statusEl.textContent="Chargement du carnet…"; return; }
-  const n=recettes.length;
-  const base = n===0?"Le carnet est vide.":`${n} recette${n>1?"s":""} dans le carnet.`;
-  statusEl.textContent = base + (!MOI?" Hors connexion : lecture seule." : MOI.admin?" Partagé entre Fanie et Michael.":" Vos propositions passent par Fanie ou Michael.");
+  statusEl.textContent = (charge && !MOI && !["login","attente"].includes(S.vue)) ? "Hors connexion : lecture seule." : "";
+}
+const fmtMin = t => t<60 ? t+" min" : (t/60|0)+" h"+(t%60?" "+t%60:"");
+const aVal = v => v!=="" && v!=null && !isNaN(+v);
+const tempsTotal = r => ((aVal(r.prep)?+r.prep:0)+(aVal(r.cuisson)?+r.cuisson:0)) || (+r.duree||0);
+function tempsHtml(r, long){
+  const p=aVal(r.prep)?+r.prep:null, c=aVal(r.cuisson)?+r.cuisson:null;
+  if(p==null && c==null) return r.duree ? `<span>${ic("schedule")} ${fmtMin(+r.duree)}</span>` : "";
+  const parts=[]; if(p!=null) parts.push("Prépa "+fmtMin(p)); if(c!=null) parts.push(c===0?"Sans cuisson":"Cuisson "+fmtMin(c));
+  return `<span>${ic("schedule")} ${parts.join(" · ")}${long&&p!=null&&c?` · ${fmtMin(p+c)} au total`:""}</span>`;
 }
 function nomAuteur(a){
   if(a==="Les deux") return "Fanie & Michael";
@@ -674,6 +716,8 @@ function resultats(){
   if(S.principal.length) out=out.filter(({r})=>S.principal.some(p=>aPrincipal(r,p)));
   if(S.auteur) out=out.filter(({r})=>filtreAuteur(r,S.auteur));
   if(S.dureeMax) out=out.filter(({r})=>+r.duree>0 && +r.duree<=S.dureeMax);
+  if(S.prepMax!=null) out=out.filter(({r})=>aVal(r.prep) && +r.prep<=S.prepMax);
+  if(S.cuisMax!=null) out=out.filter(({r})=>aVal(r.cuisson) && +r.cuisson<=S.cuisMax);
   if(S.ingr.length){
     out=out.filter(o=>S.complet? o.hits.length===S.ingr.length : o.hits.length>0);
     out.sort((a,b)=>b.hits.length-a.hits.length || (a.r.ingredients||[]).length-(b.r.ingredients||[]).length);
@@ -690,7 +734,7 @@ function suggestions(q){
     rec:recettes.filter(r=>norm(r.titre).includes(n)).slice(0,4)
   };
 }
-const filtresActifs=()=>S.q||S.ingr.length||S.styles.length||S.types.length||S.principal.length||S.dureeMax||S.auteur;
+const filtresActifs=()=>S.q||S.ingr.length||S.styles.length||S.types.length||S.principal.length||S.dureeMax||S.auteur||S.prepMax!=null||S.cuisMax!=null;
 
 /* ---------- Vue : accueil + recherche ---------- */
 function vueListe(){
@@ -713,14 +757,18 @@ function vueListe(){
     ${[["","Toutes",null],["Fanie","Fanie","Fanie"],["Michael","Michael","Michael"],["Les deux","Ensemble","Les deux"],["inv","Invités",null]].map(([v,l,a])=>{
       const n = recettes.filter(r=>filtreAuteur(r,v)).length;
       if(v==="inv" && !n) return "";
-      return `<button class="pp" type="button" data-qui="${esc(v)}" aria-pressed="${S.auteur===v}">${a?avatar(a,"sm"):`<span class="av all">${ic(v==="inv"?"group":"menu_book")}</span>`}<span>${l}</span><span class="mono n">${n}</span></button>`;}).join("")}
+      return v==="" ? `<button class="pp" type="button" data-qui="" aria-pressed="${S.auteur===""}"><span>Toutes</span></button>`
+        : `<button class="pp bub" type="button" data-qui="${esc(v)}" aria-pressed="${S.auteur===v}" aria-label="Recettes : ${esc(l)}" title="${esc(l)}">${a?avatar(a,"sm"):`<span class="av all">${ic("group")}</span>`}</button>`;}).join("")}
   </div>
-  ${S.ingr.length||S.types.length||S.styles.length||S.principal.length?`<div class="active" aria-label="Filtres choisis">
+  ${S.ingr.length||S.types.length||S.styles.length||S.principal.length||S.prepMax!=null||S.cuisMax!=null?`<div class="active" aria-label="Filtres choisis">
     ${S.ingr.map(x=>`<button class="chip on-ingr" type="button" data-rm="ingr" data-v="${esc(x)}" aria-label="Retirer ${esc(x)}">${esc(x)}<span class="x-in" aria-hidden="true">×</span></button>`).join("")}
     ${[...S.types.map(x=>["types",x]),...S.principal.map(x=>["principal",x]),...S.styles.map(x=>["styles",x])].map(([k,x])=>`<button class="chip on-style" type="button" data-rm="${k}" data-v="${esc(x)}" aria-label="Retirer ${esc(x)}">${esc(x)}<span class="x-in" aria-hidden="true">×</span></button>`).join("")}
+    ${S.prepMax!=null?`<button class="chip on-style" type="button" data-rmtemps="prep">Prépa ≤ ${fmtMin(S.prepMax)}<span class="x-in" aria-hidden="true">×</span></button>`:""}
+    ${S.cuisMax!=null?`<button class="chip on-style" type="button" data-rmtemps="cuis">${S.cuisMax===0?"Sans cuisson":"Cuisson ≤ "+fmtMin(S.cuisMax)}<span class="x-in" aria-hidden="true">×</span></button>`:""}
     <button class="btn ghost" type="button" id="reset">Tout effacer</button>
   </div>`:""}
 
+  ${filtresActifs()&&charge?`<div class="count-line"><strong class="mono">${res.length}</strong> recette${res.length>1?"s":""} ${res.length?(res.length>1?"correspondent":"correspond"):"ne correspond"}</div>`:""}
   <div class="block">
     <h2>${ic("restaurant_menu")}Envie de…</h2>
     <span class="sublbl">Type de plat</span>
@@ -732,37 +780,37 @@ function vueListe(){
   </div>
 
   <div class="block" id="frigo">
-    <h2>${ic("kitchen")}Dans mon frigo</h2>
-    <p class="hint" style="margin:-4px 0 10px">${S.ingr.length>=MAX_FRIGO?`<strong>${MAX_FRIGO} ingrédients choisis, c'est le maximum.</strong> Retirez-en un pour en ajouter un autre.`:`Choisissez jusqu'à ${MAX_FRIGO} ingrédients <span class="mono">(${S.ingr.length}/${MAX_FRIGO})</span>. Les recettes qui en utilisent le plus passent en premier.`}</p>
+    <h2>${ic("kitchen")}Dans mon frigo <span class="sub">jusqu'à 5 ingrédients${S.ingr.length?` · <b class="mono">${S.ingr.length}/5</b>`:""}</span></h2>
     <div class="row">${frigo.map(x=>`<button class="chip ingr" type="button" data-add="ingr" data-v="${esc(x)}" ${S.ingr.length>=MAX_FRIGO?"disabled":""}>+ ${esc(x)}</button>`).join("")}</div>
   </div>
 
-  <details class="more" ${S.dureeMax||S.complet?"open":""}>
-    <summary>Plus de filtres</summary>
+  <details class="more" ${S.dureeMax||S.complet||S.prepMax!=null||S.cuisMax!=null?"open":""}>
+    <summary>Temps de préparation et de cuisson, plus de filtres</summary>
     <div class="more-grid">
-      <div><label class="lbl" for="f-duree">Temps maximum</label>
-        <select class="input" id="f-duree">${[[0,"Peu importe"],[20,"20 min"],[30,"30 min"],[45,"45 min"],[60,"1 h"],[90,"1 h 30"]].map(([v,l])=>`<option value="${v}" ${S.dureeMax==v?"selected":""}>${l}</option>`).join("")}</select></div>
+      <div><span class="lbl">Préparation max</span><div class="row">${[[null,"Peu importe"],[15,"15 min"],[30,"30 min"],[45,"45 min"]].map(([v,l])=>`<button class="chip" type="button" data-fprep="${v??""}" aria-pressed="${S.prepMax===v}">${l}</button>`).join("")}</div></div>
+      <div><span class="lbl">Cuisson max</span><div class="row">${[[null,"Peu importe"],[0,"Sans cuisson"],[15,"15 min"],[30,"30 min"],[60,"1 h"]].map(([v,l])=>`<button class="chip" type="button" data-fcuis="${v??""}" aria-pressed="${S.cuisMax===v}">${l}</button>`).join("")}</div></div>
       <label class="switch" style="align-self:end"><input type="checkbox" id="f-complet" ${S.complet?"checked":""}> Seulement si j'ai tous les ingrédients choisis</label>
     </div>
   </details>
 
-  <div class="results-head">
+  <div class="results-head" id="resultats">
     <h2>${S.ingr.length?"Du plus au moins correspondant":S.auteur&&!(S.q||S.types.length||S.styles.length||S.principal.length||S.dureeMax)?(S.auteur==="Les deux"?"Nos recettes à deux":S.auteur==="inv"?"Les recettes de nos invités":"Les recettes de "+esc(S.auteur)):filtresActifs()?"Résultats":"Toutes nos recettes"}</h2>
     <span class="hint mono">${res.length} recette${res.length>1?"s":""}</span>
   </div>
   ${!charge?`<div class="empty">Chargement…</div>`
    : recettes.length===0?`<div class="empty">${ic("menu_book")}<strong>Le carnet est vide.</strong><span>Ajoutez votre première recette, ça prend deux minutes.</span><button class="btn primary" type="button" data-go-ajout>+ Ajouter une recette</button></div>`
    : res.length===0?`<div class="empty"><span>Aucune recette avec tout ça.</span>${S.ingr.length||S.styles.length||S.types.length||S.principal.length?`<div class="row" style="justify-content:center">${[...S.ingr.map(x=>["ingr",x]),...S.principal.map(x=>["principal",x]),...S.styles.map(x=>["styles",x]),...S.types.map(x=>["types",x])].map(([k,x])=>`<button class="chip" type="button" data-rm="${k}" data-v="${esc(x)}">Essayer sans ${esc(x)}</button>`).join("")}</div>`:""}</div>`
-   : `<div class="cards">${res.map(({r,hits})=>carte(r,hits)).join("")}</div>`}`;
+   : `<div class="cards">${res.map(({r,hits})=>carte(r,hits)).join("")}</div>`}
+  ${filtresActifs()&&charge?`<button class="btn primary voir-res" id="voir-res" type="button">${ic("arrow_downward")}Voir ${res.length} recette${res.length>1?"s":""}</button>`:""}`;
 }
 function carte(r,hits){
   const ings=r.ingredients||[];
   const ing=ings.slice(0,7).map(i=>S.ingr.some(x=>ingrMatch(i.nom,x))?`<mark>${esc(i.nom)}</mark>`:esc(i.nom)).join(", ");
   const manque=S.ingr.filter(x=>!hits.includes(x));
   return `<button class="card" type="button" data-open="${esc(r.id)}">
-    ${r.photo?`<div class="thumb photo" style="background-image:url('${esc(photoUrl(r))}')">`:`<div class="thumb ${ton(r)}">${ic(ICON_TYPE[r.categorie]||"restaurant")}`}${r.categorie?`<span class="badge">${esc(r.categorie)}</span>`:""}${(r.tags||[]).includes("Exemple")?`<span class="badge ex">Exemple</span>`:""}</div>
+    ${r.photo?`<div class="thumb photo" style="background-image:url('${esc(photoUrl(r))}')">`:`<div class="thumb ${ton(r)}">${illu(r)}`}${r.categorie?`<span class="badge">${esc(r.categorie)}</span>`:""}${(r.tags||[]).includes("Exemple")?`<span class="badge ex">Exemple</span>`:""}</div>
     <h3>${esc(r.titre||"Sans titre")}</h3>
-    <div class="meta">${r.duree?`<span>${ic("schedule")} ${esc(r.duree)} min</span>`:""}${r.personnes?`<span>${ic("group")} ${esc(r.personnes)}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}${esc(nomAuteur(r.auteur))}</span>`:""}</div>
+    <div class="meta">${tempsHtml(r)}${r.personnes?`<span>${ic("group")} ${esc(r.personnes)}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}${esc(nomAuteur(r.auteur))}</span>`:""}</div>
     <p class="ingr-preview">${ing}${ings.length>7?` +${ings.length-7}`:""}</p>
     ${S.ingr.length?`<div class="bar" aria-hidden="true"><i style="width:${Math.round(hits.length/S.ingr.length*100)}%"></i></div>
       <span class="match">${hits.length===S.ingr.length?"Utilise tout ce que vous avez choisi":`${hits.length} sur ${S.ingr.length}`}${manque.length&&hits.length<S.ingr.length?` <span class="miss">· sans ${esc(manque.join(", "))}</span>`:""}</span>`:""}
@@ -798,12 +846,12 @@ function vueFiche(){
       ${listeIngredients(r,f)}
     </aside>
     <article style="display:grid;gap:16px;align-content:start;min-width:0">
-      ${r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${ic(ICON_TYPE[r.categorie]||"restaurant")}</div>`}
+      ${r.photo?`<div class="thumb big photo" role="img" aria-label="Photo du plat" style="background-image:url('${esc(photoUrl(r))}')"></div>`:`<div class="thumb big ${ton(r)}">${illu(r)}</div>`}
       ${MOI?.admin&&!ap?blocPhoto("fiche",!!r.photo):""}
       <div style="display:grid;gap:10px">
         <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
         <h2>${esc(r.titre||"Sans titre")}</h2>
-        <div class="meta" style="font-size:14px">${r.duree?`<span>${ic("schedule")} ${esc(r.duree)} min</span>`:""}${base?`<span>${ic("group")} pour ${base}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(nomAuteur(r.auteur))}</span>`:""}</div>
+        <div class="meta" style="font-size:14px">${tempsHtml(r,true)}${base?`<span>${ic("group")} pour ${base}</span>`:""}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(nomAuteur(r.auteur))}</span>`:""}</div>
       </div>
       <div class="panel"><span class="lbl">Préparation</span>
         ${(r.etapes||[]).length?`<ol class="steps">${r.etapes.map(e=>`<li>${esc(e)}</li>`).join("")}</ol>`:`<p class="hint" style="margin:0">Pas encore d'étapes.</p>`}</div>
@@ -814,7 +862,7 @@ function vueFiche(){
 }
 
 /* ---------- Vue : assistant d'ajout ---------- */
-function nouveauBrouillon(){ return {titre:"",categorie:"Plat",personnes:4,duree:"",auteur:(MOI&&MOI.admin&&["Fanie","Michael"].includes(MOI.prenom))?MOI.prenom:"Les deux",tags:[],principal:[],photo:"",ingredients:[],etapes:[""],notes:"",source:"",_imp:""}; }
+function nouveauBrouillon(){ return {titre:"",categorie:"Plat",personnes:4,duree:"",prep:"",cuisson:"",auteur:(MOI&&MOI.admin&&["Fanie","Michael"].includes(MOI.prenom))?MOI.prenom:"Les deux",tags:[],principal:[],photo:"",ingredients:[],etapes:[""],notes:"",source:"",_imp:""}; }
 function stepNav(){
   const debut = (B.id||B._propId) ? 1 : 0;
   return `<nav class="steps-nav" aria-label="Étapes">${ETAPES.map((l,k)=>k<debut?"":`<button type="button" data-step="${k}" ${W.etape===k?'aria-current="step"':""} class="${k<W.etape?"done":""}"><b>${k-debut+1}</b>${l}</button>`).join("")}</nav>`;
@@ -852,9 +900,11 @@ function etape1(){
       <div class="q"><span class="lbl">Pour combien ?</span><div class="stepper-n"><button class="round" type="button" data-bp="-1" aria-label="Une personne de moins">−</button><span class="mono" style="min-width:64px;text-align:center">${B.personnes||1} pers.</span><button class="round" type="button" data-bp="1" aria-label="Une personne de plus">+</button></div></div>
 
     </div>
-    <div class="q"><span class="lbl">Temps total (préparation + cuisson)</span>
-      <div class="row">${TEMPS.map(t=>`<button class="chip mono" type="button" data-temps="${t}" aria-pressed="${+B.duree===t}">${t<60?t+" min":(t/60|0)+" h"+(t%60?" "+t%60:"")}</button>`).join("")}
-      <input class="input mono" id="d" type="number" min="0" step="5" data-b="duree" value="${esc(B.duree)}" placeholder="autre" style="width:100px" aria-label="Autre durée en minutes"></div></div>
+    <div class="q"><span class="lbl">Préparation</span><div class="row">${[5,10,15,20,30,45,60].map(t=>`<button class="chip mono" type="button" data-bprep="${t}" aria-pressed="${aVal(B.prep)&&+B.prep===t}">${fmtMin(t)}</button>`).join("")}
+      <input class="input mono" id="dp" type="number" min="0" step="5" data-b="prep" value="${esc(B.prep)}" placeholder="autre" style="width:96px" aria-label="Autre temps de préparation en minutes"></div></div>
+    <div class="q"><span class="lbl">Cuisson</span><div class="row">${[0,10,15,20,30,45,60,90,120].map(t=>`<button class="chip mono" type="button" data-bcuis="${t}" aria-pressed="${aVal(B.cuisson)&&+B.cuisson===t}">${t===0?"Sans cuisson":fmtMin(t)}</button>`).join("")}
+      <input class="input mono" id="dc" type="number" min="0" step="5" data-b="cuisson" value="${esc(B.cuisson)}" placeholder="autre" style="width:96px" aria-label="Autre temps de cuisson en minutes"></div>
+      ${tempsTotal(B)?`<span class="hint">Temps total : ${fmtMin(tempsTotal(B))}</span>`:""}</div>
   </div>`;
 }
 function etape2(){
@@ -906,7 +956,7 @@ function etape4(){
     ${MOI&&MOI.admin?`<div class="q"><span class="lbl">Qui ajoute cette recette ?</span>${choixAuteur()}</div>`:blocInvite()}
     ${manque.length?`<p class="err" style="margin:0">Il manque ${manque.join(" et ")}.</p>`:`<p class="ok" style="margin:0">Tout est prêt.</p>`}
     <div class="panel"><div class="head"><span class="lbl" style="margin:0">L'essentiel</span><button class="linkbtn" type="button" data-step="1">Modifier</button></div>
-      <div class="meta" style="font-size:14px"><span>${esc(B.categorie)}</span><span>${B.personnes||"?"} pers.</span><span class="mono">${B.duree?B.duree+" min":"durée ?"}</span></div>
+      <div class="meta" style="font-size:14px"><span>${esc(B.categorie)}</span><span>${B.personnes||"?"} pers.</span>${tempsHtml(B,true)||`<span>durée ?</span>`}</div>
       ${B.tags.length||(B.principal||[]).length?`<div class="row">${[...(B.principal||[]),...B.tags].map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div>
     <div class="panel"><div class="head"><span class="lbl" style="margin:0">Ingrédients (${B.ingredients.length})</span><button class="linkbtn" type="button" data-step="2">Modifier</button></div>${listeIngredients(B,1)}</div>
     <div class="panel"><div class="head"><span class="lbl" style="margin:0">Préparation (${etapes.length})</span><button class="linkbtn" type="button" data-step="3">Modifier</button></div>
@@ -947,7 +997,7 @@ function render(garderFocus){
   tb.querySelector('[data-tab="home"]').setAttribute("aria-current", S.vue==="liste"?"page":"false");
   tb.querySelector('[data-tab="add"]').hidden = !peutEcrire;
   document.getElementById("nav-ajout").hidden = S.vue==="form" || !peutEcrire;
-  majStatus();
+  majStatus(); majVoirRes();
   if(garderFocus&&fid){ const el=document.getElementById(fid); if(el){ el.focus(); try{ if(sel!=null) el.setSelectionRange(sel,sel);}catch{} } }
 }
 function aller(vue){ S.vue=vue; S.confirmSuppr=false; render(); window.scrollTo({top:0}); }
@@ -1006,7 +1056,7 @@ app.addEventListener("click", async e=>{
   if(d.add){ if(d.add==="ingr" && !S.ingr.includes(d.v) && S.ingr.length>=MAX_FRIGO){ return; } if(!S[d.add].includes(d.v)) S[d.add].push(d.v); S.q=""; S.sugMasque=false; render(); return; }
   if(d.rm){ S[d.rm]=S[d.rm].filter(x=>x!==d.v); render(); return; }
   if(d.toggle){ const L=S[d.toggle]; S[d.toggle]=L.includes(d.v)?L.filter(x=>x!==d.v):[...L,d.v]; render(); return; }
-  if(t.id==="reset"){ Object.assign(S,{q:"",ingr:[],styles:[],types:[],principal:[],dureeMax:0,auteur:"",complet:false}); render(); return; }
+  if(t.id==="reset"){ Object.assign(S,{q:"",prepMax:null,cuisMax:null,ingr:[],styles:[],types:[],principal:[],dureeMax:0,auteur:"",complet:false}); render(); return; }
   /* fiche */
   if(d.pers){ const r=recettes.find(x=>x.id===S.ficheId); S.personnes=Math.max(1,(S.personnes??(+r.personnes||1))+(+d.pers)); render(); return; }
   if(d.edit){ const r=recettes.find(x=>x.id===d.edit); B={...nouveauBrouillon(),...JSON.parse(JSON.stringify(r))}; if(!B.etapes.length) B.etapes=[""]; W.etape=1; W.msg=""; W.ingQ=""; aller("form"); return; }
@@ -1042,12 +1092,17 @@ app.addEventListener("click", async e=>{
   if(d.refuser){ S.refusId=d.refuser; render(); focusId("motif"); return; }
   if("refusNon" in d){ S.refusId=null; render(); return; }
   if(d.refusOk){ const motif=(document.getElementById("motif")?.value||"").trim(); const {error}=await sb.from("propositions").update({statut:"refusee",motif,traite_le:new Date().toISOString()}).eq("id",d.refusOk); if(error){ alertMsg("Le refus n'a pas abouti. Réessayez."); return; } S.refusId=null; await chargerTout(); W.msg="Proposition refusée."; W.msgOk=true; aller("valider"); return; }
+  if("fprep" in d){ S.prepMax = d.fprep===""?null:+d.fprep; render(); return; }
+  if("fcuis" in d){ S.cuisMax = d.fcuis===""?null:+d.fcuis; render(); return; }
+  if(d.rmtemps){ if(d.rmtemps==="prep") S.prepMax=null; else S.cuisMax=null; render(); return; }
+  if(t.id==="voir-res"){ document.getElementById("resultats")?.scrollIntoView({behavior:"smooth",block:"start"}); return; }
   if(d.moi){ const cur=lsGet(LS_MOI,""); lsSet(LS_MOI, cur===d.moi?null:d.moi); render(); return; }
   if(d.photoRm){ await retirerPhoto(d.photoRm); return; }
   if(d.princ){ const L=B.principal||[]; B.principal=L.includes(d.princ)?L.filter(x=>x!==d.princ):[...L,d.princ]; garderBrouillon(); render(); return; }
   if(d.aut){ B.auteur=d.aut; garderBrouillon(); render(); return; }
   if(d.bp){ B.personnes=Math.max(1,(+B.personnes||1)+(+d.bp)); garderBrouillon(); render(); return; }
-  if(d.temps){ B.duree=+d.temps; garderBrouillon(); render(); return; }
+  if(d.bprep){ B.prep=+d.bprep; garderBrouillon(); render(); return; }
+  if(d.bcuis!=null && d.bcuis!==undefined && "bcuis" in d){ B.cuisson=+d.bcuis; garderBrouillon(); render(); return; }
   if(d.ingadd){ ajouterIngr(d.ingadd, true); return; }
   if(d.pick){ const k=B.ingredients.findIndex(i=>sing(i.nom)===sing(d.pick)); if(k>=0){ B.ingredients.splice(k,1); garderBrouillon(); const y=scrollY; render(); scrollTo({top:y}); } else { const y=scrollY; B.ingredients.push({nom:d.pick,qte:"",unite:uniteParDefaut(d.pick)}); garderBrouillon(); render(); scrollTo({top:y}); } return; }
   if(d.irm){ B.ingredients.splice(+d.irm,1); garderBrouillon(); render(); return; }
@@ -1088,7 +1143,7 @@ app.addEventListener("change", async e=>{
   if(t.id==="f-aut"){ S.auteur=t.value; render(); return; }
   if(t.id==="f-complet"){ S.complet=t.checked; render(); return; }
   if(B && t.dataset.unite!=null){ B.ingredients[+t.dataset.unite].unite=t.value; garderBrouillon(); return; }
-  if(B && t.id==="d"){ render(); }
+  if(B && ["d","dp","dc"].includes(t.id)){ render(); }
 });
 app.addEventListener("dragover", e=>{ const z=e.target.closest("[data-drop]"); if(z){ e.preventDefault(); z.classList.add("over"); } });
 app.addEventListener("dragleave", e=>{ const z=e.target.closest("[data-drop]"); if(z) z.classList.remove("over"); });
@@ -1153,7 +1208,7 @@ async function sauver(){
     if(!pre){ W.msg="Indiquez votre prénom, juste en dessous."; W.msgOk=false; render(); focusId("moi-prenom"); return; }
     await sb.from("profils").update({prenom:pre}).eq("id",MOI.id);
   }
-  const rec={ id:B.id, titre:B.titre.trim(), categorie:B.categorie, personnes:+B.personnes||"", duree:+B.duree||"",
+  const rec={ id:B.id, titre:B.titre.trim(), categorie:B.categorie, personnes:+B.personnes||"", duree:tempsTotal(B)||"", prep:aVal(B.prep)?+B.prep:"", cuisson:aVal(B.cuisson)?+B.cuisson:"",
     auteur:B.auteur, tags:B.tags, principal:B.principal||[], photo:B.photo||"", ingredients:B.ingredients.map(i=>({nom:i.nom,qte:String(i.qte||"").trim(),unite:i.unite})),
     etapes:B.etapes.map(s=>String(s).replace(/^\s*\d+[.)]\s*/,"").trim()).filter(Boolean),
     notes:B.notes||"", source:(B.source||"").trim(), creeLe:B.creeLe };
@@ -1214,6 +1269,11 @@ ${txt.slice(0,12000)}
   }
 }
 
+function majVoirRes(){
+  const b=document.getElementById("voir-res"), h=document.getElementById("resultats");
+  if(b&&h) b.classList.toggle("cache", h.getBoundingClientRect().top < innerHeight-140);
+}
+addEventListener("scroll", majVoirRes, {passive:true});
 /* ---------- Démarrage ---------- */
 render();
 (async()=>{
