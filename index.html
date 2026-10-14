@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Le carnet de recettes de Fanie et Michael">
-<meta name="theme-color" content="#D5EAC3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#22301B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#D5EAC3">
+<meta name="color-scheme" content="only light">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Recettes F&amp;M">
@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <style>
-:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{color-scheme:only light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 img{max-width:100%}
 [hidden]{display:none!important}
@@ -35,14 +35,6 @@ img{max-width:100%}
   --f-mono:"DM Mono",ui-monospace,"SF Mono",Menlo,monospace;
   --r:18px;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#141A12; --head:#22301B; --surface:#1C2419; --sunk:#252F20; --line:#33422B; --ink:#E7EFE0; --muted:#A3B198;
-  --accent:#EC9BB5; --on-accent:#3A0F1F; --green:#A5D27F; --on-green:#15220B; --green-soft:#2C3F22; --on-green-soft:#CFE8B8;
-  --hl:#5A2638; --on-hl:#FBD9E3; --danger:#F2867E; color-scheme:dark }}
-:root[data-theme="dark"]{
-  --bg:#141A12; --head:#22301B; --surface:#1C2419; --sunk:#252F20; --line:#33422B; --ink:#E7EFE0; --muted:#A3B198;
-  --accent:#EC9BB5; --on-accent:#3A0F1F; --green:#A5D27F; --on-green:#15220B; --green-soft:#2C3F22; --on-green-soft:#CFE8B8;
-  --hl:#5A2638; --on-hl:#FBD9E3; --danger:#F2867E; color-scheme:dark }
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
 .wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--f-display);font-weight:600;text-wrap:balance;margin:0;line-height:1.15}
