@@ -996,6 +996,9 @@ function vueProfils(){
       <span class="hint">Chacun change sa photo depuis son propre compte.</span></div>`
       :`<p class="hint" style="margin:0">Vous pouvez proposer des recettes. Elles sont visibles après validation par Fanie ou Michaël.</p>`}
     <p class="hint" style="margin:0">Connecté avec ${esc(MOI.email)}.</p>
+    <div class="q"><label for="mdp-nouveau">Changer mon mot de passe</label>
+      <div class="row"><input class="input" id="mdp-nouveau" type="password" autocomplete="new-password" placeholder="Nouveau mot de passe (6 caractères min.)" style="max-width:300px"><button class="btn" type="button" id="mdp-save">Enregistrer</button></div>
+      <span class="hint" id="mdp-msg" aria-live="polite"></span></div>
     <div><button class="btn" type="button" id="logout">${ic("logout")}Se déconnecter</button></div>
   </div>`;
 }
@@ -2270,6 +2273,11 @@ app.addEventListener("click", async e=>{
   if(d.lmode){ L.mode=d.lmode; L.msg=""; render(); return; }
   if(t.id==="login-voir"){ L.voir=!L.voir; render(); focusId("login-mdp"); return; }
   if(t.id==="login-go"){ await connexion(); return; }
+  if(t.id==="mdp-save"){ const el=document.getElementById("mdp-nouveau"), m=document.getElementById("mdp-msg"), v=(el?.value||"");
+    if(v.length<6){ m.textContent="Au moins 6 caractères."; m.className="hint err"; return; }
+    t.disabled=true; const {error}=await sb.auth.updateUser({password:v}); t.disabled=false;
+    if(error){ m.textContent="Le mot de passe n'a pas pu être changé. Réessayez."; m.className="hint err"; return; }
+    el.value=""; m.textContent="Mot de passe changé. Utilisez-le à votre prochaine connexion."; m.className="hint ok"; return; }
   if(t.id==="logout"){ await sb.auth.signOut(); MOI=null; PROPS=[]; recettes=[]; charge=false; S.vue="login"; render(); return; }
   if(t.id==="moi-save"){ const v=(MOI.prenom||"").trim(); const m=document.getElementById("moi-msg"); if(!v){ if(m) m.textContent="Indiquez votre prénom."; return; } const {error}=await sb.from("profils").update({prenom:v}).eq("id",MOI.id); if(m) m.textContent=error?"Le prénom n'a pas pu être enregistré.":"Prénom enregistré."; if(!error){ await chargerTout(); } return; }
   if(t.id==="imp-simple"){ importSimple(); return; }
