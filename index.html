@@ -326,7 +326,14 @@ button.ing{cursor:pointer}
 .progres .bar{flex:1;height:8px;border-radius:999px;background:var(--sunk);overflow:hidden}
 .progres .bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .25s}
 .progres .mono{font-size:13px;color:var(--muted)}
+.ajout-zone{position:relative}
 .ajout-art{display:flex;gap:8px}
+.art-sug{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:12;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.12);padding:4px;display:grid;gap:2px;max-height:min(60vh,360px);overflow-y:auto}
+.art-sug-b{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;border-radius:10px;padding:8px 10px;text-align:left;color:var(--ink);cursor:pointer;min-height:44px}
+.art-sug-b:hover,.art-sug-b:focus-visible{background:var(--bg)}
+.art-sug-b b{flex:1;min-width:0;font-weight:800;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.art-sug-b small{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:48%;flex:0 1 auto}
+.art-sug-b[disabled]{opacity:.5;cursor:default}
 .ajout-art .btn{padding:0 14px;flex:none}
 .rayons{display:grid;gap:12px;margin-top:14px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));align-items:start}
 .rayon{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:10px;min-width:0}
@@ -1804,13 +1811,27 @@ function vueForm(){
 let MENU=[], EXTRAS=[], COCHES=new Set(), FOYER={personnes:2, placard:["sel","poivre","eau","huile d'olive","huile de tournesol"]};
 let ETAT={note:"",fini_par:"",fini_le:""}, noteTimer=null;
 const monFoyer=()=>MOI?.admin?"fanie-michael":(MOI?.id||"");   // Fanie et Michaël partagent le même foyer
-S.semaine=0; S.slot=null; S.rempl="soir"; S.pickQ=""; S.ajmSem=0;
+S.artQ=""; S.semaine=0; S.slot=null; S.rempl="soir"; S.pickQ=""; S.ajmSem=0;
 const JOURS=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 const MOIS_C=["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
-const RAYONS=[["fl","Fruits & légumes","nutrition"],["vp","Viandes & poissons","set_meal"],["co","Crèmerie & œufs","egg"],["fe","Pâtes, riz & féculents","rice_bowl"],["ep","Épicerie","shopping_basket"],["he","Herbes & épices","eco"],["dv","Divers","category"]];
+const RAYONS=[["fl","Fruits & légumes","nutrition"],["vp","Viandes & poissons","set_meal"],["co","Crèmerie & œufs","egg"],["fe","Pâtes, riz & féculents","rice_bowl"],["ep","Épicerie","shopping_basket"],["bo","Boissons","local_drink"],["he","Herbes & épices","eco"],["hy","Hygiène & beauté","soap"],["en","Entretien & maison","cleaning_services"],["an","Animaux","pets"],["dv","Divers","category"]];
+// Produits courants hors recettes, proposés pendant la saisie
+const PRODUITS={
+  hy:["Papier toilette","Mouchoirs","Gel douche","Shampoing","Après-shampoing","Dentifrice","Brosse à dents","Fil dentaire","Bain de bouche","Déodorant","Savon","Savon liquide","Coton","Cotons-tiges","Rasoirs","Mousse à raser","Crème hydratante","Crème solaire","Serviettes hygiéniques","Tampons","Protège-slips","Couches","Lingettes","Maquillage","Démaquillant","Pansements","Paracétamol"],
+  en:["Lessive","Adoucissant","Liquide vaisselle","Tablettes lave-vaisselle","Sel lave-vaisselle","Liquide de rinçage","Éponges","Sacs poubelle","Essuie-tout","Papier aluminium","Film alimentaire","Papier cuisson","Sacs congélation","Nettoyant multi-surfaces","Nettoyant WC","Javel","Vinaigre ménager","Produit vitres","Désodorisant","Ampoules","Piles","Allumettes","Bougies","Gants de ménage","Serpillière","Détachant"],
+  an:["Croquettes chat","Croquettes chien","Pâtée chat","Pâtée chien","Litière","Friandises animaux"],
+  bo:["Eau","Eau gazeuse","Jus d'orange","Jus de pomme","Café","Café en dosettes","Thé","Tisane","Chocolat en poudre","Soda","Sirop","Bière","Vin rouge","Vin blanc","Vin rosé","Lait végétal"],
+  dv:["Pain","Baguette","Croissants","Céréales","Biscuits","Chips","Glaces","Surgelés","Pizza","Compotes","Yaourts","Beurre","Lait","Fromage râpé","Jambon","Œufs","Confiture","Pâte à tartiner","Riz","Pâtes","Fruits","Légumes"]
+};
+const PRODUITS_RAYON=new Map(); for(const [r,l] of Object.entries(PRODUITS)) for(const n of l) PRODUITS_RAYON.set(sing(n), r==="dv"?null:r);
 const RAYON_CAT={"Légumes":"fl","Fruits":"fl","Viandes & poissons":"vp","Crèmerie & œufs":"co","Pâtes, riz & féculents":"fe","Épicerie & pâtisserie":"ep","Herbes & épices":"he"};
 function rayonDe(nom){
   const s=sing(nom), n=norm(nom);
+  if(PRODUITS_RAYON.get(s)) return PRODUITS_RAYON.get(s);
+  if(/papier toilette|mouchoir|shampo|dentifrice|deodorant|savon|gel douche|coton|rasoir|creme (hydratante|solaire)|hygien|tampon|couche|lingette|pansement|maquillage/.test(n)) return "hy";
+  if(/lessive|adoucissant|vaisselle|eponge|poubelle|essuie|aluminium|film alimentaire|papier cuisson|nettoyant|javel|menager|vitre|desodorisant|ampoule|\bpile|allumette|bougie|serpilliere|detachant/.test(n)) return "en";
+  if(/croquette|patee|litiere|chat\b|chien\b|animaux/.test(n)) return "an";
+  if(/^eau\b|jus |soda|sirop|biere|^vin |cafe|the\b|tisane/.test(n)) return "bo";
   for(const [cat,liste] of Object.entries(CATALOGUE)) if(liste.some(x=>sing(x)===s)) return RAYON_CAT[cat]||"dv";
   if(/pomme de terre|pomme-de-terre/.test(n)) return "fe";
   if(/poulet|boeuf|porc|veau|agneau|dinde|lardon|jambon|saucisse|chorizo|steak|bacon|poitrine|poisson|saumon|thon|cabillaud|crevette|moule|merguez|canard|viande/.test(n)) return "vp";
@@ -1927,7 +1948,7 @@ function vueCourses(){
       ${total?`<button class="btn" type="button" id="courses-envoyer">${ic("share")}Envoyer le lien</button><button class="btn" type="button" id="courses-texte">${ic("notes")}En texte</button>`:""}
       ${faits?`<button class="btn ghost" type="button" id="courses-decocher">Tout décocher</button>`:""}
     </div>
-    <div class="ajout-art"><input class="input" id="ajout-art" placeholder="Ajouter un article : lessive, pain…" autocomplete="off" enterkeyhint="done" aria-label="Ajouter un article"><button class="btn primary" type="button" id="ajout-art-ok" aria-label="Ajouter">${ic("add")}</button></div>
+    <div class="ajout-zone"><div class="ajout-art"><input class="input" id="ajout-art" value="${esc(S.artQ||"")}" placeholder="Ajouter un article : lessive, pain…" autocomplete="off" enterkeyhint="done" aria-label="Ajouter un article" aria-autocomplete="list" aria-controls="art-sug"><button class="btn primary" type="button" id="ajout-art-ok" aria-label="Ajouter">${ic("add")}</button></div>${suggestionsArticle()}</div>
     <textarea class="input note-courses" id="note-courses" rows="${Math.min(4,Math.max(1,Math.ceil((ETAT.note||"").length/38)))}" placeholder="📝 Une note pour les courses ? (pain chez Paul, promo yaourts…)" aria-label="Note pour les courses">${esc(ETAT.note||"")}</textarea>
     ${W.coursesMsg?`<p class="ok" style="margin:8px 0 0">${esc(W.coursesMsg)}</p>`:""}
     ${total?`<div class="rayons">${rayons}</div>`
@@ -2011,7 +2032,7 @@ async function remplirSemaine(){
 async function majFoyer(){ await sb.from("reglages").upsert({foyer:monFoyer(), cle:"foyer", valeur:FOYER, modifie_le:new Date().toISOString()}); }
 async function majEtat(){ await sb.from("reglages").upsert({foyer:monFoyer(), cle:"courses", valeur:ETAT, modifie_le:new Date().toISOString()}); }
 const quand=iso=>{ const d=new Date(iso); return isNaN(d)?"":d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"short"})+" à "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}).replace(":"," h "); };
-const RAYON_EMOJI={fl:"🥕",vp:"🥩",co:"🧀",fe:"🍝",ep:"🥫",he:"🌿",dv:"🧺"};
+const RAYON_EMOJI={fl:"🥕",vp:"🥩",co:"🧀",fe:"🍝",ep:"🥫",bo:"🥤",he:"🌿",hy:"🧴",en:"🧽",an:"🐾",dv:"🧺"};
 function resteAPrendre(){ return listeCourses().filter(i=>!i.placard&&!COCHES.has(cleCoche(i.k))).length+EXTRAS.filter(e=>!e.coche).length; }
 function texteCourses(){
   const items=listeCourses().filter(i=>!i.placard&&!COCHES.has(cleCoche(i.k))), j=joursSemaine();
@@ -2055,6 +2076,7 @@ async function clicSemaine(t,d){
   if(d.extra){ const e=EXTRAS.find(x=>x.id===d.extra); if(!e) return true; garde(()=>{ e.coche=!e.coche; }); await sb.from("courses_extra").update({coche:e.coche}).eq("id",e.id); return true; }
   if(d.xrm){ garde(()=>{ EXTRAS=EXTRAS.filter(x=>x.id!==d.xrm); }); await sb.from("courses_extra").delete().eq("id",d.xrm); return true; }
   if(t.id==="ajout-art-ok"){ await ajouterArticle(); return true; }
+  if(d.artsug){ await ajouterArticle(d.artsug); return true; }
   if(t.id==="courses-decocher"){ const sk=isoJour(joursSemaine()[0])+"|", cles=[...COCHES].filter(c=>c.startsWith(sk)); garde(()=>{ cles.forEach(c=>COCHES.delete(c)); EXTRAS.forEach(e=>e.coche=false); });
     if(cles.length) await sb.from("courses_coches").delete().in("cle",cles); await sb.from("courses_extra").update({coche:false}).eq("coche",true); return true; }
   if(t.id==="courses-envoyer"||t.id==="courses-texte"){
@@ -2079,11 +2101,22 @@ async function clicSemaine(t,d){
     render(); return true; }
   return false;
 }
-async function ajouterArticle(){
-  const el=document.getElementById("ajout-art"), nom=(el?.value||"").trim(); if(!nom) { focusId("ajout-art"); return; }
+function suggestionsArticle(){
+  const q=norm(S.artQ||""); if(q.length<2) return "";
+  const deja=new Set(EXTRAS.map(e=>sing(e.nom))), vus=new Set(), out=[];
+  const pousser=(nom,ray)=>{ const k=sing(nom); if(vus.has(k)) return; vus.add(k); out.push([nom,ray||rayonDe(nom),deja.has(k)]); };
+  const tous=[...Object.values(PRODUITS).flat(), ...tousIngredientsConnus()];
+  tous.filter(n=>norm(n).startsWith(q)).sort((a,b)=>a.length-b.length).forEach(n=>pousser(n));
+  tous.filter(n=>!norm(n).startsWith(q)&&norm(n).includes(q)).sort((a,b)=>a.length-b.length).forEach(n=>pousser(n));
+  const liste=out.slice(0,7); if(!liste.length) return "";
+  const nomR=Object.fromEntries(RAYONS.map(([k,l])=>[k,l]));
+  return `<div class="art-sug" id="art-sug" role="listbox">${liste.map(([n,r,d])=>`<button class="art-sug-b" type="button" role="option" data-artsug="${esc(n)}" ${d?"disabled":""}><span class="art-ico">${icoIngr(n)}</span><b>${esc(n)}</b><small>${d?"déjà dans la liste":esc(nomR[r]||"Divers")}</small></button>`).join("")}</div>`;
+}
+async function ajouterArticle(nomChoisi){
+  const el=document.getElementById("ajout-art"), nom=(nomChoisi||el?.value||"").trim(); if(!nom) { focusId("ajout-art"); return; }
   const {data,error}=await sb.from("courses_extra").insert({nom:cap(nom).slice(0,80), rayon:rayonDe(nom)}).select("*").single();
   if(error){ statusEl.textContent="L'article n'a pas pu être ajouté."; return; }
-  EXTRAS.push(data); W.coursesMsg=""; const y=scrollY; render(); scrollTo({top:y}); focusId("ajout-art");
+  EXTRAS.push(data); S.artQ=""; W.coursesMsg=""; const y=scrollY; render(); scrollTo({top:y}); focusId("ajout-art");
 }
 
 function render(garderFocus){
@@ -2276,6 +2309,7 @@ app.addEventListener("input", e=>{
   if(t.id==="q"){ S.q=t.value; S.sugMasque=false; render(true); return; }
   if(t.id==="frigo-q"){ S.frigoQ=t.value; render(true); return; }
   if(t.id==="pick-q"){ S.pickQ=t.value; render(true); return; }
+  if(t.id==="ajout-art"){ S.artQ=t.value; const y=scrollY; render(true); scrollTo({top:y}); return; }
   if(t.id==="note-courses"){ ETAT.note=t.value.slice(0,300); t.style.height="auto"; t.style.height=t.scrollHeight+"px"; clearTimeout(noteTimer); noteTimer=setTimeout(majEtat,900); return; }
   if(!B) return;
   if(t.id==="ing-add"){ W.ingQ=t.value; render(true); return; }
