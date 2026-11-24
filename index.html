@@ -347,6 +347,12 @@ button.ing{cursor:pointer}
 .art-t b{font-weight:800;font-size:14px;line-height:1.25}
 .art-t small{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .placard{margin-top:14px}
+textarea.input.note-courses{margin-top:8px;resize:none;min-height:46px;height:auto;line-height:1.4;overflow:hidden}
+.fini-btn{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;border:0;border-radius:16px;background:var(--green);color:var(--on-green);padding:14px 16px;text-align:left;cursor:pointer}
+.fini-btn>.ms{font-size:28px;vertical-align:0}
+.fini-btn span{display:grid}
+.fini-btn b{font-size:16px;font-weight:800}
+.fini-btn small{font-size:12.5px;opacity:.9}
 .placard summary .ms{vertical-align:-4px;margin-right:6px}
 .voile{position:fixed;inset:0;background:rgba(28,40,24,.42);z-index:20}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--surface);border-radius:22px 22px 0 0;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 -10px 30px rgba(0,0,0,.15);max-width:720px;margin:0 auto}
@@ -1260,6 +1266,8 @@ function rangerDictee(){
     : "Je n'ai pas réussi à reconnaître les ingrédients et les étapes : votre dictée est dans les astuces. Dites « ingrédients » puis « étapes » pour un meilleur rangement.";
   render(); scrollTo({top:0});
 }
+// Lien « ?courses » envoyé par WhatsApp : ouvre directement la liste à cocher
+let OUVRIR_COURSES = (()=>{ try{ const p=new URLSearchParams(location.search); if(!p.has("courses")) return false; history.replaceState(null,"",location.pathname); return true; }catch{ return false; } })();
 // Lien reçu par « Partager » (Android) : ?url=…&text=…&title=…
 let LIEN_PARTAGE = (()=>{ try{
   const p=new URLSearchParams(location.search); if(!p.has("url")&&!p.has("text")) return null;
@@ -1292,6 +1300,7 @@ async function demarrerSession(){
   if(S.vue==="login"||S.vue==="attente") S.vue="liste";
   render();
   ouvrirPartage();
+  if(OUVRIR_COURSES && MOI){ OUVRIR_COURSES=false; W.coursesMsg=""; aller("courses"); }
 }
 function blocPhoto(cible, aUne){
   return `<div class="photobox" data-drop="${cible}">
@@ -1638,7 +1647,7 @@ function vueFiche(){
     <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
     <div class="titre-coeur"><h2>${esc(r.titre||"Sans titre")}</h2>${ap?"":coeurHtml(r.id,true)}</div>
     <div class="meta" style="font-size:14px">${tempsHtml(r,true)}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(nomAuteur(r.auteur))}</span>`:""}</div>
-    ${MOI?.admin&&!ap?`<div class="row"><button class="btn" type="button" data-sheet="ajmenu">${ic("calendar_add_on")}Ajouter au menu</button>${W.ficheMsg?`<span class="ok">${esc(W.ficheMsg)}</span>`:""}</div>`:""}
+    ${MOI&&!ap?`<div class="row"><button class="btn" type="button" data-sheet="ajmenu">${ic("calendar_add_on")}Ajouter au menu</button>${W.ficheMsg?`<span class="ok">${esc(W.ficheMsg)}</span>`:""}</div>`:""}
   </div>
   <div class="fiche">
     <aside class="panel">
@@ -1793,6 +1802,8 @@ function vueForm(){
 /* ---------- Rendu ---------- */
 /* ---------- Ma semaine & liste de courses (Fanie et Michaël) ---------- */
 let MENU=[], EXTRAS=[], COCHES=new Set(), FOYER={personnes:2, placard:["sel","poivre","eau","huile d'olive","huile de tournesol"]};
+let ETAT={note:"",fini_par:"",fini_le:""}, noteTimer=null;
+const monFoyer=()=>MOI?.admin?"fanie-michael":(MOI?.id||"");   // Fanie et Michaël partagent le même foyer
 S.semaine=0; S.slot=null; S.rempl="soir"; S.pickQ=""; S.ajmSem=0;
 const JOURS=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 const MOIS_C=["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
@@ -1821,12 +1832,12 @@ function libSemaine(jours, dec){
   return `${t} · ${a.getDate()}${a.getMonth()!==b.getMonth()?" "+MOIS_C[a.getMonth()]:""} – ${b.getDate()} ${MOIS_C[b.getMonth()]}`;
 }
 async function chargerCourses(){
-  if(!MOI?.admin) return;
+  if(!MOI) return;
   const [m,e,c,g]=await Promise.all([
     sb.from("menu").select("*").order("cree_le"), sb.from("courses_extra").select("*").order("cree_le"),
-    sb.from("courses_coches").select("cle"), sb.from("reglages").select("valeur").eq("cle","foyer").maybeSingle()]);
+    sb.from("courses_coches").select("cle"), sb.from("reglages").select("cle,valeur")]);
   if(!m.error) MENU=m.data||[]; if(!e.error) EXTRAS=e.data||[]; if(!c.error) COCHES=new Set((c.data||[]).map(x=>x.cle));
-  if(g.data?.valeur) FOYER={...FOYER,...g.data.valeur};
+  for(const x of (g.data||[])){ if(x.cle==="foyer") FOYER={...FOYER,...x.valeur}; if(x.cle==="courses") ETAT={...ETAT,...x.valeur}; }
 }
 const nombre=q=>{ const s=String(q||"").replace(",","."); return s.includes("/") ? (()=>{const [a,b]=s.split("/");return +a/+b;})() : parseFloat(s); };
 const UNITES_PIECE=new Set(["","pièce","gousse","tranche","boîte","sachet","botte","feuille","brin","poignée"]);
@@ -1909,19 +1920,22 @@ function vueCourses(){
       <div><h2>Liste de courses</h2><span class="hint">${libSemaine(jours)}</span></div>
       <div class="sem-nav"><button class="x" type="button" data-sem="-1" aria-label="Semaine précédente">‹</button><button class="x" type="button" data-sem="1" aria-label="Semaine suivante">›</button></div>
     </div>
+    ${ETAT.fini_le&&Date.now()-new Date(ETAT.fini_le)<7*864e5?`<p class="bandeau-ok" style="margin-bottom:12px">${ic("task_alt")}<span>Courses faites${ETAT.fini_par?" par "+esc(AFF(ETAT.fini_par)):""}, ${esc(quand(ETAT.fini_le))}</span></p>`:""}
     ${total?`<div class="progres"><div class="bar"><i style="width:${Math.round(faits/total*100)}%"></i></div><span class="mono">${faits}/${total}</span></div>`:""}
     <div class="sem-actions">
       <button class="btn" type="button" data-go-semaine>${ic("calendar_month")}Ma semaine</button>
-      ${total?`<button class="btn" type="button" id="courses-envoyer">${ic("share")}Envoyer</button>`:""}
+      ${total?`<button class="btn" type="button" id="courses-envoyer">${ic("share")}Envoyer le lien</button><button class="btn" type="button" id="courses-texte">${ic("notes")}En texte</button>`:""}
       ${faits?`<button class="btn ghost" type="button" id="courses-decocher">Tout décocher</button>`:""}
     </div>
     <div class="ajout-art"><input class="input" id="ajout-art" placeholder="Ajouter un article : lessive, pain…" autocomplete="off" enterkeyhint="done" aria-label="Ajouter un article"><button class="btn primary" type="button" id="ajout-art-ok" aria-label="Ajouter">${ic("add")}</button></div>
+    <textarea class="input note-courses" id="note-courses" rows="${Math.min(4,Math.max(1,Math.ceil((ETAT.note||"").length/38)))}" placeholder="📝 Une note pour les courses ? (pain chez Paul, promo yaourts…)" aria-label="Note pour les courses">${esc(ETAT.note||"")}</textarea>
     ${W.coursesMsg?`<p class="ok" style="margin:8px 0 0">${esc(W.coursesMsg)}</p>`:""}
     ${total?`<div class="rayons">${rayons}</div>`
       :`<div class="empty">${ic("shopping_cart")}<strong>La liste est vide.</strong><span>Ajoutez des plats à votre semaine : leurs ingrédients arrivent ici tout seuls.</span><button class="btn primary" type="button" data-go-semaine>Remplir ma semaine</button></div>`}
     ${placard.length?`<details class="more placard"><summary>${ic("inventory_2")}Déjà à la maison (${placard.length})</summary>
       <p class="hint" style="margin:8px 0">Touchez un article pour le remettre dans la liste.</p>
-      <div class="row">${placard.map(it=>`<button class="chip" type="button" data-deplacard="${esc(it.k)}">${esc(it.nom)}${it.qte&&it.qte!=="au goût"?` · ${esc(it.qte)}`:""}</button>`).join("")}</div></details>`:""}`;
+      <div class="row">${placard.map(it=>`<button class="chip" type="button" data-deplacard="${esc(it.k)}">${esc(it.nom)}${it.qte&&it.qte!=="au goût"?` · ${esc(it.qte)}`:""}</button>`).join("")}</div></details>`:""}
+    ${total?`<button class="fini-btn" type="button" id="courses-fini">${ic("task_alt")}<span><b>Courses terminées</b><small>Prévient ${MOI?.admin?"l'autre":"le foyer"} et range la liste</small></span></button>`:""}`;
 }
 
 /* --- Panneaux --- */
@@ -1994,22 +2008,27 @@ async function remplirSemaine(){
   if(error){ statusEl.textContent="Le menu n'a pas pu être rempli. Vérifiez votre connexion."; render(); return; }
   MENU.push(...(data||[])); render();
 }
-async function majFoyer(){ await sb.from("reglages").upsert({cle:"foyer", valeur:FOYER, modifie_le:new Date().toISOString()}); }
+async function majFoyer(){ await sb.from("reglages").upsert({foyer:monFoyer(), cle:"foyer", valeur:FOYER, modifie_le:new Date().toISOString()}); }
+async function majEtat(){ await sb.from("reglages").upsert({foyer:monFoyer(), cle:"courses", valeur:ETAT, modifie_le:new Date().toISOString()}); }
+const quand=iso=>{ const d=new Date(iso); return isNaN(d)?"":d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"short"})+" à "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}).replace(":"," h "); };
+const RAYON_EMOJI={fl:"🥕",vp:"🥩",co:"🧀",fe:"🍝",ep:"🥫",he:"🌿",dv:"🧺"};
+function resteAPrendre(){ return listeCourses().filter(i=>!i.placard&&!COCHES.has(cleCoche(i.k))).length+EXTRAS.filter(e=>!e.coche).length; }
 function texteCourses(){
-  const items=listeCourses().filter(i=>!i.placard&&!COCHES.has(cleCoche(i.k)));
-  const lignes=[`Liste de courses – ${libSemaine(joursSemaine())}`];
+  const items=listeCourses().filter(i=>!i.placard&&!COCHES.has(cleCoche(i.k))), j=joursSemaine();
+  const lignes=[`🛒 *Liste de courses* – semaine du ${j[0].getDate()} au ${j[6].getDate()} ${MOIS_C[j[6].getMonth()]}`];
   for(const [k,l] of RAYONS){
-    const a=items.filter(x=>x.rayon===k).map(x=>`• ${x.nom}${x.qte&&x.qte!=="au goût"?" – "+x.qte:""}`), x=EXTRAS.filter(e=>(e.rayon||"dv")===k&&!e.coche).map(e=>`• ${e.nom}`);
-    if(a.length||x.length) lignes.push("", l.toUpperCase(), ...a, ...x);
+    const a=items.filter(x=>x.rayon===k).map(x=>`▫️ ${x.nom}${x.qte&&x.qte!=="au goût"?" – "+x.qte:""}`), x=EXTRAS.filter(e=>(e.rayon||"dv")===k&&!e.coche).map(e=>`▫️ ${e.nom}`);
+    if(a.length||x.length) lignes.push("", `${RAYON_EMOJI[k]} *${l}*`, ...a, ...x);
   }
+  if(ETAT.note) lignes.push("", `📝 ${ETAT.note}`);
   return lignes.join("\n");
 }
 // Synchronisation entre les téléphones (toutes les 8 s sur ces pages)
 let SIG_COURSES="";
 async function rafraichirCourses(){
-  if(!MOI?.admin || !["semaine","courses"].includes(S.vue) || document.hidden || S.sheet || document.activeElement?.matches?.("input,textarea")) return;
+  if(!MOI || !["semaine","courses"].includes(S.vue) || document.hidden || S.sheet || document.activeElement?.matches?.("input,textarea")) return;
   await chargerCourses();
-  const sig=JSON.stringify([MENU.map(m=>m.id+m.recette_id+m.personnes),EXTRAS.map(e=>e.id+e.coche),[...COCHES].sort()]);
+  const sig=JSON.stringify([MENU.map(m=>m.id+m.recette_id+m.personnes),EXTRAS.map(e=>e.id+e.coche),[...COCHES].sort(),ETAT]);
   if(sig!==SIG_COURSES){ SIG_COURSES=sig; const y=scrollY; render(); scrollTo({top:y}); }
 }
 setInterval(rafraichirCourses, 8000);
@@ -2031,16 +2050,28 @@ async function clicSemaine(t,d){
   if(d.placard){ const it=listeCourses().find(x=>x.k===d.placard); FOYER.placard=[...new Set([...(FOYER.placard||[]), (it?it.nom:d.placard).toLowerCase()])]; garde(()=>{}); majFoyer(); return true; }
   if(d.deplacard){ FOYER.placard=(FOYER.placard||[]).filter(p=>sing(p)!==d.deplacard); garde(()=>{}); majFoyer(); return true; }
   if(d.art){ const cle=cleCoche(d.art), avait=COCHES.has(cle); garde(()=>{ avait?COCHES.delete(cle):COCHES.add(cle); });
-    const {error}= avait ? await sb.from("courses_coches").delete().eq("cle",cle) : await sb.from("courses_coches").upsert({cle});
-    if(error){ avait?COCHES.add(cle):COCHES.delete(cle); render(); } return true; }
+    const {error}= avait ? await sb.from("courses_coches").delete().eq("cle",cle) : await sb.from("courses_coches").insert({cle, foyer:monFoyer()});
+    if(error && error.code!=="23505"){ avait?COCHES.add(cle):COCHES.delete(cle); render(); } return true; }
   if(d.extra){ const e=EXTRAS.find(x=>x.id===d.extra); if(!e) return true; garde(()=>{ e.coche=!e.coche; }); await sb.from("courses_extra").update({coche:e.coche}).eq("id",e.id); return true; }
   if(d.xrm){ garde(()=>{ EXTRAS=EXTRAS.filter(x=>x.id!==d.xrm); }); await sb.from("courses_extra").delete().eq("id",d.xrm); return true; }
   if(t.id==="ajout-art-ok"){ await ajouterArticle(); return true; }
   if(t.id==="courses-decocher"){ const sk=isoJour(joursSemaine()[0])+"|", cles=[...COCHES].filter(c=>c.startsWith(sk)); garde(()=>{ cles.forEach(c=>COCHES.delete(c)); EXTRAS.forEach(e=>e.coche=false); });
     if(cles.length) await sb.from("courses_coches").delete().in("cle",cles); await sb.from("courses_extra").update({coche:false}).eq("coche",true); return true; }
-  if(t.id==="courses-envoyer"){ const txt=texteCourses();
-    try{ if(navigator.share){ await navigator.share({title:"Liste de courses", text:txt}); return true; } }catch(e){ if(e&&e.name==="AbortError") return true; }
-    try{ await navigator.clipboard.writeText(txt); W.coursesMsg="Liste copiée : collez-la dans WhatsApp ou un SMS."; }catch{ W.coursesMsg="Impossible de copier la liste sur cet appareil."; } render(); return true; }
+  if(t.id==="courses-envoyer"||t.id==="courses-texte"){
+    const lien=location.origin+location.pathname+"?courses", n=resteAPrendre();
+    const txt = t.id==="courses-texte" ? texteCourses() : `🛒 *Liste de courses* – ${n} article${n>1?"s":""} à prendre\nOuvre la liste pour cocher au fur et à mesure :`;
+    const donnees = t.id==="courses-texte" ? {title:"Liste de courses", text:txt} : {title:"Liste de courses", text:txt, url:lien};
+    try{ if(navigator.share){ await navigator.share(donnees); return true; } }catch(e){ if(e&&e.name==="AbortError") return true; }
+    try{ await navigator.clipboard.writeText(donnees.url?txt+"\n"+lien:txt); W.coursesMsg=donnees.url?"Lien copié : collez-le dans WhatsApp ou un SMS.":"Liste copiée : collez-la dans WhatsApp ou un SMS."; }catch{ W.coursesMsg="Impossible de copier sur cet appareil."; }
+    render(); return true; }
+  if(t.id==="courses-fini"){
+    const n=resteAPrendre(), faits=EXTRAS.filter(e=>e.coche).map(e=>e.id);
+    ETAT={...ETAT, fini_par:MOI?.prenom||"", fini_le:new Date().toISOString()};
+    EXTRAS=EXTRAS.filter(e=>!e.coche);
+    W.coursesMsg = n ? `Bravo ! ${n} article${n>1?"s":""} pas encore pris reste${n>1?"nt":""} dans la liste pour la prochaine fois.` : "Bravo, tout est pris !";
+    render(); scrollTo({top:0,behavior:"smooth"});
+    await majEtat(); if(faits.length) await sb.from("courses_extra").delete().in("id",faits);
+    return true; }
   if(d.ajmsem){ S.ajmSem=Math.max(0,S.ajmSem+(+d.ajmsem)); render(); return true; }
   if(d.ajm){ const [j,rp]=d.ajm.split("|"), r=recettes.find(x=>x.id===S.ficheId); S.sheet=null;
     const pers=S.personnes??FOYER.personnes;
@@ -2058,7 +2089,7 @@ async function ajouterArticle(){
 function render(garderFocus){
   const a=document.activeElement, fid=a&&a.id, sel=a&&a.selectionStart;
   const corpsSheet=document.getElementById("sheet-corps"), sheetY=corpsSheet?corpsSheet.scrollTop:0;
-  app.innerHTML = S.vue==="attente"?`<div class="empty">${ic("skillet")}<span>Ouverture du carnet…</span></div>`:S.vue==="login"?vueLogin():S.vue==="fiche"||S.vue==="apercu"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():S.vue==="miennes"?vueMiennes():S.vue==="valider"?vueValider():S.vue==="semaine"&&MOI?.admin?vueSemaine():S.vue==="courses"&&MOI?.admin?vueCourses():vueListe();
+  app.innerHTML = S.vue==="attente"?`<div class="empty">${ic("skillet")}<span>Ouverture du carnet…</span></div>`:S.vue==="login"?vueLogin():S.vue==="fiche"||S.vue==="apercu"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():S.vue==="miennes"?vueMiennes():S.vue==="valider"?vueValider():S.vue==="semaine"&&MOI?vueSemaine():S.vue==="courses"&&MOI?vueCourses():vueListe();
   if(["remplir","choisir","foyer","ajmenu"].includes(S.sheet)) app.insertAdjacentHTML("beforeend", panneauxSemaine());
   document.getElementById("hdr-avs").innerHTML = MOI ? avatar(monAvatarNom(),"hd") : "";
   const tb=document.getElementById("tabbar");
@@ -2070,7 +2101,7 @@ function render(garderFocus){
   document.getElementById("tab-add-l").textContent = MOI&&!MOI.admin ? "Proposer" : "Ajouter";
   document.getElementById("nav-ajout").lastChild.textContent = MOI&&!MOI.admin ? "Proposer" : "Ajouter";
   document.getElementById("nav-extra").hidden = !MOI || S.vue==="form";
-  const adm=!!MOI?.admin;
+  const adm=!!MOI;   // semaine et courses : pour tout compte connecté (chacun son foyer)
   document.getElementById("nav-hasard").hidden = !MOI || adm;
   for(const id of ["nav-semaine","nav-courses"]) document.getElementById(id).hidden = !adm || S.vue==="form";
   tb.querySelector('[data-tab="frigo"]').hidden = adm; tb.querySelector('[data-tab="hasard"]').hidden = adm;
@@ -2144,7 +2175,7 @@ app.addEventListener("click", async e=>{
   if(coeur){ e.preventDefault(); if(S.lpFired){ S.lpFired=false; return; } basculerCoeur(coeur.dataset.coeur); return; }
   const t=e.target.closest("button"); if(!t) return;
   const d=t.dataset;
-  if(MOI?.admin && await clicSemaine(t,d)) return;
+  if(MOI && await clicSemaine(t,d)) return;
   /* accueil */
   if(d.sheet){ S.sheet=d.sheet; S.frigoQ=""; render(); if(d.sheet==="frigo" && S.ingr.length<MAX_FRIGO) focusId("frigo-q"); return; }
   if("fermerSheet" in d){ S.sheet=null; render(); document.getElementById("resultats")?.scrollIntoView({block:"start"}); return; }
@@ -2245,6 +2276,7 @@ app.addEventListener("input", e=>{
   if(t.id==="q"){ S.q=t.value; S.sugMasque=false; render(true); return; }
   if(t.id==="frigo-q"){ S.frigoQ=t.value; render(true); return; }
   if(t.id==="pick-q"){ S.pickQ=t.value; render(true); return; }
+  if(t.id==="note-courses"){ ETAT.note=t.value.slice(0,300); t.style.height="auto"; t.style.height=t.scrollHeight+"px"; clearTimeout(noteTimer); noteTimer=setTimeout(majEtat,900); return; }
   if(!B) return;
   if(t.id==="ing-add"){ W.ingQ=t.value; render(true); return; }
   if(t.dataset.b){ B[t.dataset.b]=t.value; if(t.id==="d") {} garderBrouillon(); return; }
