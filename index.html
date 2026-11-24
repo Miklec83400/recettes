@@ -60,6 +60,9 @@ header.top .wrap{padding-block:12px;display:flex;gap:12px;align-items:center;jus
 .top-actions .btn{white-space:nowrap}
 @media (min-width:721px){.avbtn{margin-left:6px!important}}
 @media (max-width:720px){.top-actions{display:none}}
+@media (min-width:721px){.brand h1{white-space:nowrap;font-size:clamp(18px,2.2vw,24px)}.top-actions .btn{padding:8px 12px;font-size:14px;gap:4px}.top-actions{gap:6px}}
+@media (min-width:1240px){.wrap{max-width:1180px}}
+@media (min-width:721px) and (max-width:1239px){.top-actions .btn:not(.primary){font-size:0;gap:0;padding:8px 10px}.top-actions .btn:not(.primary) .ms{font-size:22px}.top-actions .btn:not(.primary) .bdg-n{font-size:12px}}
 .btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 18px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn:hover{border-color:var(--accent)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
@@ -273,6 +276,78 @@ button.ing{cursor:pointer}
 .web-import small{font-size:12.5px;opacity:.85}
 @media (min-width:600px){.web-carte .web-sites{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:370px){.web-site{gap:6px;padding:8px;font-size:13px}.web-ini{width:24px;height:24px;font-size:13px;border-radius:7px}.web-carte{padding:12px}}
+/* Ma semaine & courses */
+.sem-tete{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:6px 0 12px}
+.sem-tete h2{font-size:clamp(24px,5vw,32px)}
+.sem-nav{display:flex;gap:8px}
+.sem-nav .x{width:42px;height:42px;font-size:22px}
+.sem-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sem-actions .btn{padding:9px 14px}
+.pastille{background:var(--accent);color:var(--on-accent);border-radius:999px;font-size:12px;padding:1px 7px;margin-left:2px}
+.sem-grille{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(270px,100%),1fr))}
+.jour{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:10px;display:grid;gap:6px;min-width:0;align-content:start}
+.jour.auj{border-color:var(--accent);box-shadow:0 0 0 2px var(--hl)}
+.jour.passe{opacity:.6}
+.jour h3{font-size:16px;display:flex;align-items:baseline;gap:6px}
+.jour h3 span{font-size:13px;color:var(--muted);font-weight:600}
+.jour h3 em{margin-left:auto;font-style:normal;font-size:11px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.plat{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;align-items:center;gap:8px;background:var(--bg);border-radius:12px;padding:6px 4px 6px 6px;min-width:0}
+.plat-img-btn{border:0;padding:0;background:none;cursor:pointer;border-radius:10px}
+.plat-img{width:44px;height:44px;border-radius:10px;flex:none;background-size:cover;background-position:center;display:grid;place-items:center;overflow:hidden}
+.plat-img .illu{width:50px;height:auto}
+.plat-info{display:grid;gap:1px;min-width:0;justify-items:start}
+.plat-rp{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent)}
+.plat-t{border:0;background:none;padding:0;text-align:left;color:var(--ink);font-weight:800;font-size:14px;line-height:1.25;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;cursor:pointer}
+.pers-mini{display:inline-flex;align-items:center;gap:2px;font-size:12px;color:var(--muted);margin-top:2px}
+.pers-mini b{font-weight:800;color:var(--ink);min-width:42px;text-align:center}
+.pers-mini button{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--line);background:var(--surface);font-weight:800;color:var(--ink);padding:0;line-height:1}
+.mini-btn{width:32px;height:32px;border-radius:9px;border:0;background:transparent;color:var(--muted);display:grid;place-items:center;flex:none;padding:0;cursor:pointer}
+.mini-btn:hover{background:var(--sunk);color:var(--ink)}
+.mini-btn .ms{font-size:19px;vertical-align:0}
+.jour-ajout{display:flex;gap:6px}
+.plat-ajout{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 12px 0 8px;border:1.5px dashed var(--line);border-radius:999px;background:transparent;color:var(--muted);font-weight:800;font-size:12.5px;cursor:pointer}
+.plat-ajout:hover{border-color:var(--accent);color:var(--accent)}
+.plat-ajout .ms{font-size:17px;vertical-align:0}
+.pick-liste{display:grid;gap:6px;margin-top:12px}
+.pick{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:6px 10px 6px 6px;color:var(--ink);cursor:pointer}
+.pick:hover{border-color:var(--accent)}
+.pick-t{flex:1;min-width:0;display:grid}
+.pick-t b{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pick-t small{font-size:12px;color:var(--muted)}
+.pick>.ms{color:var(--accent);font-size:24px;vertical-align:0}
+.pers-grand{display:flex;align-items:center;gap:16px;margin:4px 0 6px}
+.pers-grand b{font-size:26px;min-width:30px;text-align:center}
+.ajm-grille{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px 8px;align-items:center}
+.ajm-j{font-weight:800;font-size:14px}
+.ajm-j.auj{color:var(--accent)}
+.ajm-grille .chip{justify-content:center}
+.ajm-grille .chip[disabled]{opacity:.4}
+.progres{display:flex;align-items:center;gap:10px;margin:-4px 0 12px}
+.progres .bar{flex:1;height:8px;border-radius:999px;background:var(--sunk);overflow:hidden}
+.progres .bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .25s}
+.progres .mono{font-size:13px;color:var(--muted)}
+.ajout-art{display:flex;gap:8px}
+.ajout-art .btn{padding:0 14px;flex:none}
+.rayons{display:grid;gap:12px;margin-top:14px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));align-items:start}
+.rayon{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:10px;min-width:0}
+.rayon h3{font-size:15px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.rayon h3 .ms{color:var(--green);vertical-align:0}
+.rayon h3 .mono{margin-left:auto;font-size:12px;color:var(--muted);font-weight:500}
+.rayon ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+.rayon .qte-pill{flex:none;font-size:12px;padding:3px 8px}
+.art-li{display:flex;align-items:center;gap:2px;min-width:0}
+.art{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:0;background:var(--bg);border-radius:12px;padding:6px 10px 6px 8px;text-align:left;color:var(--ink);cursor:pointer;min-height:48px}
+.coche-rond{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;background:var(--surface)}
+.coche-rond .ms{font-size:16px;color:#fff;vertical-align:0;width:auto}
+.art.ok .coche-rond{background:var(--green);border-color:var(--green)}
+.art.ok{opacity:.5}
+.art.ok .art-t b{text-decoration:line-through}
+.art-ico svg{width:26px;height:26px;display:block}
+.art-t{flex:1;min-width:0;display:grid}
+.art-t b{font-weight:800;font-size:14px;line-height:1.25}
+.art-t small{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.placard{margin-top:14px}
+.placard summary .ms{vertical-align:-4px;margin-right:6px}
 .voile{position:fixed;inset:0;background:rgba(28,40,24,.42);z-index:20}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--surface);border-radius:22px 22px 0 0;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 -10px 30px rgba(0,0,0,.15);max-width:720px;margin:0 auto}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:monte .22s ease-out}@keyframes monte{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}}
@@ -410,6 +485,8 @@ textarea.input{min-height:110px;resize:vertical}
       <span><small>Nos recettes</small><h1>Les recettes de <em>Fanie</em> &amp; <em>Michaël</em></h1></span>
     </button>
     <div class="top-actions">
+      <button class="btn" id="nav-semaine" type="button" hidden><span class="ms" aria-hidden="true">calendar_month</span>Semaine</button>
+      <button class="btn" id="nav-courses" type="button" hidden><span class="ms" aria-hidden="true">shopping_cart</span>Courses</button>
       <button class="btn" id="nav-hasard" type="button"><span class="ms" aria-hidden="true">casino</span>Au hasard</button>
       <button class="btn" id="nav-extra" type="button"><span class="ms" aria-hidden="true">fact_check</span><span id="nav-extra-l">À valider</span></button>
       <button class="btn primary" id="nav-ajout" type="button"><span class="ms" aria-hidden="true">add</span>Ajouter</button>
@@ -422,8 +499,10 @@ textarea.input{min-height:110px;resize:vertical}
 <nav class="tabbar" id="tabbar" aria-label="Navigation">
   <button type="button" data-tab="home"><span class="ms" aria-hidden="true">home</span>Accueil</button>
   <button type="button" data-tab="frigo"><span class="ms" aria-hidden="true">kitchen</span>Mon frigo</button>
+  <button type="button" data-tab="semaine" hidden><span class="ms" aria-hidden="true">calendar_month</span>Semaine</button>
   <button type="button" data-tab="add" class="add"><span class="ms" aria-hidden="true">add</span><span id="tab-add-l">Ajouter</span></button>
   <button type="button" data-tab="hasard"><span class="ms" aria-hidden="true">casino</span>Au hasard</button>
+  <button type="button" data-tab="courses" hidden><span class="ms" aria-hidden="true">shopping_cart</span>Courses</button>
   <button type="button" data-tab="extra" id="tab-extra"><span class="ms" aria-hidden="true">fact_check</span><span id="tab-extra-l">À valider</span><b class="badge-n" id="tab-extra-n" hidden></b></button>
 </nav>
 
@@ -764,6 +843,7 @@ async function chargerTout(){
   COEURS=new Map(); MES_COEURS=new Set();
   (co.data||[]).forEach(c=>{ COEURS.set(c.recette_id,(COEURS.get(c.recette_id)||0)+1); if(MOI&&c.user_id===MOI.id) MES_COEURS.add(c.recette_id); });
   if(MOI){ const me=PROFILS_ID[MOI.id]; if(me){ MOI.photo=me.photo||""; if(!MOI.admin) MOI.prenom=MOI.prenom||me.prenom||""; } }
+  await chargerCourses();
   charge=true;
 }
 async function enregistrer(rec){
@@ -1558,6 +1638,7 @@ function vueFiche(){
     <div class="row">${r.categorie?`<span class="tag">${esc(r.categorie)}</span>`:""}${(r.principal||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(r.tags||[]).map(t=>`<span class="tag ${t==="Exemple"?"ex":""}">${esc(t)}</span>`).join("")}</div>
     <div class="titre-coeur"><h2>${esc(r.titre||"Sans titre")}</h2>${ap?"":coeurHtml(r.id,true)}</div>
     <div class="meta" style="font-size:14px">${tempsHtml(r,true)}${r.auteur?`<span class="by">${avatar(r.auteur)}recette de ${esc(nomAuteur(r.auteur))}</span>`:""}</div>
+    ${MOI?.admin&&!ap?`<div class="row"><button class="btn" type="button" data-sheet="ajmenu">${ic("calendar_add_on")}Ajouter au menu</button>${W.ficheMsg?`<span class="ok">${esc(W.ficheMsg)}</span>`:""}</div>`:""}
   </div>
   <div class="fiche">
     <aside class="panel">
@@ -1710,11 +1791,277 @@ function vueForm(){
 }
 
 /* ---------- Rendu ---------- */
+/* ---------- Ma semaine & liste de courses (Fanie et Michaël) ---------- */
+let MENU=[], EXTRAS=[], COCHES=new Set(), FOYER={personnes:2, placard:["sel","poivre","eau","huile d'olive","huile de tournesol"]};
+S.semaine=0; S.slot=null; S.rempl="soir"; S.pickQ=""; S.ajmSem=0;
+const JOURS=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+const MOIS_C=["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+const RAYONS=[["fl","Fruits & légumes","nutrition"],["vp","Viandes & poissons","set_meal"],["co","Crèmerie & œufs","egg"],["fe","Pâtes, riz & féculents","rice_bowl"],["ep","Épicerie","shopping_basket"],["he","Herbes & épices","eco"],["dv","Divers","category"]];
+const RAYON_CAT={"Légumes":"fl","Fruits":"fl","Viandes & poissons":"vp","Crèmerie & œufs":"co","Pâtes, riz & féculents":"fe","Épicerie & pâtisserie":"ep","Herbes & épices":"he"};
+function rayonDe(nom){
+  const s=sing(nom), n=norm(nom);
+  for(const [cat,liste] of Object.entries(CATALOGUE)) if(liste.some(x=>sing(x)===s)) return RAYON_CAT[cat]||"dv";
+  if(/pomme de terre|pomme-de-terre/.test(n)) return "fe";
+  if(/poulet|boeuf|porc|veau|agneau|dinde|lardon|jambon|saucisse|chorizo|steak|bacon|poitrine|poisson|saumon|thon|cabillaud|crevette|moule|merguez|canard|viande/.test(n)) return "vp";
+  if(/lait de coco/.test(n)) return "ep";
+  if(/lait|creme|beurre|fromage|yaourt|oeuf|mozzarella|parmesan|cheddar|gruyere|comte|feta|ricotta|mascarpone|chevre|emmental/.test(n)) return "co";
+  if(/pate|spaghetti|penne|tagliatelle|riz|semoule|quinoa|boulgour|lentille|pois chiche|haricot rouge|pain|nouille|gnocchi|tortilla|farine|lasagne/.test(n)) return "fe";
+  if(/sel|poivre|epice|paprika|cumin|curry|curcuma|cannelle|muscade|piment|thym|romarin|laurier|origan|herbes de provence|gingembre|ras el hanout/.test(n)) return "he";
+  if(/salade|tomate|oignon|\bail\b|carotte|courgette|poivron|champignon|epinard|citron|pomme|banane|echalote|avocat|concombre|persil|coriandre|basilic|menthe|ciboulette|patate|potiron|courge|poireau|brocoli|chou|fruit|legume|cornichon|radis|betterave|aubergine|celeri|fraise|framboise|orange|poire/.test(n)) return "fl";
+  if(/sucre|huile|vinaigre|sauce|moutarde|ketchup|mayonnaise|savora|bouillon|conserve|chocolat|levure|miel|confiture|biscuit|concasse|coulis|boite|cacao|vanille|amande|noix|noisette|olive|capre|vin /.test(n)) return "ep";
+  return "dv";
+}
+const isoJour=d=>{ const x=new Date(d.getFullYear(),d.getMonth(),d.getDate(),12); return x.toISOString().slice(0,10); };
+function lundiDe(d){ const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()); x.setDate(x.getDate()-((x.getDay()+6)%7)); return x; }
+function joursSemaine(dec){ const l=lundiDe(new Date()); l.setDate(l.getDate()+7*(dec??S.semaine)); return Array.from({length:7},(_,i)=>{ const d=new Date(l); d.setDate(l.getDate()+i); return d; }); }
+const libJour=d=>`${JOURS[(d.getDay()+6)%7]} ${d.getDate()}`;
+function libSemaine(jours, dec){
+  const a=jours[0], b=jours[6]; dec=dec??S.semaine;
+  const t=dec===0?"Cette semaine":dec===1?"La semaine prochaine":dec===-1?"La semaine dernière":"Semaine";
+  return `${t} · ${a.getDate()}${a.getMonth()!==b.getMonth()?" "+MOIS_C[a.getMonth()]:""} – ${b.getDate()} ${MOIS_C[b.getMonth()]}`;
+}
+async function chargerCourses(){
+  if(!MOI?.admin) return;
+  const [m,e,c,g]=await Promise.all([
+    sb.from("menu").select("*").order("cree_le"), sb.from("courses_extra").select("*").order("cree_le"),
+    sb.from("courses_coches").select("cle"), sb.from("reglages").select("valeur").eq("cle","foyer").maybeSingle()]);
+  if(!m.error) MENU=m.data||[]; if(!e.error) EXTRAS=e.data||[]; if(!c.error) COCHES=new Set((c.data||[]).map(x=>x.cle));
+  if(g.data?.valeur) FOYER={...FOYER,...g.data.valeur};
+}
+const nombre=q=>{ const s=String(q||"").replace(",","."); return s.includes("/") ? (()=>{const [a,b]=s.split("/");return +a/+b;})() : parseFloat(s); };
+const UNITES_PIECE=new Set(["","pièce","gousse","tranche","boîte","sachet","botte","feuille","brin","poignée"]);
+// Regroupe les ingrédients de tous les plats de la semaine, quantités ajustées au nombre de personnes
+function listeCourses(){
+  const jours=new Set(joursSemaine().map(isoJour)), items=new Map(), placard=new Set((FOYER.placard||[]).map(sing));
+  for(const m of MENU){
+    if(!jours.has(m.jour)) continue;
+    const r=recettes.find(x=>x.id===m.recette_id); if(!r) continue;
+    const base=+r.personnes||m.personnes, f=base?m.personnes/base:1;
+    for(const i0 of (r.ingredients||[])){
+      const i=nettoyerIngr(i0); if(!i||!i.nom) continue;
+      const k=sing(i.nom);
+      if(!items.has(k)) items.set(k,{k, nom:i.nom, parts:[], recs:new Set(), rayon:rayonDe(i.nom)});
+      const it=items.get(k), n=nombre(i.qte);
+      let q="";
+      if(isFinite(n)&&i.qte){ const v=n*f; q=String(UNITES_PIECE.has(i.unite||"") ? Math.max(1,Math.ceil(v-0.05)) : (v>=10?Math.round(v):Math.round(v*10)/10)); }
+      it.parts.push({qte:q, unite:i.unite}); it.recs.add(r.titre);
+    }
+  }
+  return [...items.values()].map(it=>({...it, qte:pastilleGroupe({parts:it.parts},1), recs:[...it.recs], placard:placard.has(it.k)}))
+    .sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
+}
+const cleCoche=k=>isoJour(joursSemaine()[0])+"|"+k;
+const vignette=r=>{ const u=photoUrl(r); return u?`<span class="plat-img" style="background-image:url('${esc(u)}')"></span>`:`<span class="plat-img ${ton(r)}">${illu(r)}</span>`; };
+
+/* --- Vue : Ma semaine --- */
+function platHtml(m){
+  const r=recettes.find(x=>x.id===m.recette_id); if(!r) return "";
+  return `<div class="plat">
+    <button class="plat-img-btn" type="button" data-open="${esc(r.id)}" aria-label="Ouvrir ${esc(r.titre)}">${vignette(r)}</button>
+    <div class="plat-info"><span class="plat-rp">${m.repas==="midi"?"Midi":"Soir"}</span>
+      <button class="plat-t" type="button" data-open="${esc(r.id)}">${esc(r.titre)}</button>
+      <span class="pers-mini"><button type="button" data-mpers="${m.id}|-1" aria-label="Une personne de moins">−</button><b>${m.personnes} pers.</b><button type="button" data-mpers="${m.id}|1" aria-label="Une personne de plus">+</button></span></div>
+    <button class="mini-btn" type="button" data-mchange="${m.id}" aria-label="Proposer un autre plat" title="Autre plat">${ic("autorenew")}</button>
+    <button class="mini-btn" type="button" data-mrm="${m.id}" aria-label="Retirer ce plat" title="Retirer">${ic("close")}</button>
+  </div>`;
+}
+function vueSemaine(){
+  const jours=joursSemaine(), auj=isoJour(new Date()), set=new Set(jours.map(isoJour));
+  const nbPlats=MENU.filter(m=>set.has(m.jour)).length;
+  const nbArt=listeCourses().filter(x=>!x.placard).length+EXTRAS.length;
+  return `<div class="sem-tete">
+      <div><h2>Ma semaine</h2><span class="hint">${libSemaine(jours)} · ${nbPlats} plat${nbPlats>1?"s":""}</span></div>
+      <div class="sem-nav"><button class="x" type="button" data-sem="-1" aria-label="Semaine précédente">‹</button><button class="x" type="button" data-sem="1" aria-label="Semaine suivante">›</button></div>
+    </div>
+    <div class="sem-actions">
+      <button class="btn primary" type="button" data-sheet="remplir">${ic("auto_awesome")}Remplir ma semaine</button>
+      <button class="btn" type="button" data-sheet="foyer">${ic("group")}Foyer : ${FOYER.personnes} pers.</button>
+      <button class="btn courses-go" type="button" data-go-courses>${ic("shopping_cart")}Courses${nbArt?` <b class="pastille">${nbArt}</b>`:""}</button>
+    </div>
+    <div class="sem-grille">${jours.map(d=>{ const j=isoJour(d);
+      return `<section class="jour${j===auj?" auj":""}${j<auj?" passe":""}">
+        <h3>${libJour(d)} <span>${MOIS_C[d.getMonth()]}</span>${j===auj?`<em>Aujourd'hui</em>`:""}</h3>
+        ${MENU.filter(m=>m.jour===j).sort((a,b)=>(a.repas>b.repas?1:-1)||String(a.cree_le).localeCompare(String(b.cree_le))).map(platHtml).join("")}
+        <div class="jour-ajout">${["midi","soir"].map(rp=>`<button class="plat-ajout" type="button" data-choisir="${j}|${rp}" aria-label="Ajouter un plat, ${libJour(d)} ${rp}">${ic("add")}${rp==="midi"?"Midi":"Soir"}</button>`).join("")}</div>
+      </section>`; }).join("")}</div>`;
+}
+
+/* --- Vue : liste de courses --- */
+function vueCourses(){
+  const jours=joursSemaine(), items=listeCourses(), actifs=items.filter(i=>!i.placard), placard=items.filter(i=>i.placard);
+  const ok=it=>COCHES.has(cleCoche(it.k));
+  const total=actifs.length+EXTRAS.length, faits=actifs.filter(ok).length+EXTRAS.filter(e=>e.coche).length;
+  const ligne=it=>{ const c=ok(it);
+    return `<li class="art-li"><button class="art${c?" ok":""}" type="button" data-art="${esc(it.k)}" aria-pressed="${c}">
+      <span class="coche-rond" aria-hidden="true">${c?ic("check"):""}</span><span class="art-ico">${icoIngr(it.nom)}</span>
+      <span class="art-t"><b>${esc(it.nom)}</b><small>${esc(it.recs.join(" · "))}</small></span>${it.qte?`<span class="qte-pill">${esc(it.qte)}</span>`:""}</button>
+      <button class="mini-btn" type="button" data-placard="${esc(it.k)}" aria-label="Je l'ai déjà à la maison" title="Je l'ai déjà">${ic("inventory_2")}</button></li>`; };
+  const ligneX=e=>`<li class="art-li"><button class="art${e.coche?" ok":""}" type="button" data-extra="${e.id}" aria-pressed="${e.coche}">
+      <span class="coche-rond" aria-hidden="true">${e.coche?ic("check"):""}</span><span class="art-ico">${icoIngr(e.nom)}</span>
+      <span class="art-t"><b>${esc(e.nom)}</b><small>Ajouté à la main</small></span></button>
+      <button class="mini-btn" type="button" data-xrm="${e.id}" aria-label="Supprimer ${esc(e.nom)}">${ic("close")}</button></li>`;
+  const rayons=RAYONS.map(([k,l,icon])=>{
+    const a=actifs.filter(x=>x.rayon===k).sort((x,y)=>ok(x)-ok(y)), x=EXTRAS.filter(e=>(e.rayon||"dv")===k).sort((p,q)=>p.coche-q.coche);
+    if(!a.length&&!x.length) return "";
+    return `<section class="rayon"><h3>${ic(icon)}${l}<span class="mono">${a.length+x.length}</span></h3><ul>${a.map(ligne).join("")}${x.map(ligneX).join("")}</ul></section>`;
+  }).join("");
+  return `<div class="sem-tete">
+      <div><h2>Liste de courses</h2><span class="hint">${libSemaine(jours)}</span></div>
+      <div class="sem-nav"><button class="x" type="button" data-sem="-1" aria-label="Semaine précédente">‹</button><button class="x" type="button" data-sem="1" aria-label="Semaine suivante">›</button></div>
+    </div>
+    ${total?`<div class="progres"><div class="bar"><i style="width:${Math.round(faits/total*100)}%"></i></div><span class="mono">${faits}/${total}</span></div>`:""}
+    <div class="sem-actions">
+      <button class="btn" type="button" data-go-semaine>${ic("calendar_month")}Ma semaine</button>
+      ${total?`<button class="btn" type="button" id="courses-envoyer">${ic("share")}Envoyer</button>`:""}
+      ${faits?`<button class="btn ghost" type="button" id="courses-decocher">Tout décocher</button>`:""}
+    </div>
+    <div class="ajout-art"><input class="input" id="ajout-art" placeholder="Ajouter un article : lessive, pain…" autocomplete="off" enterkeyhint="done" aria-label="Ajouter un article"><button class="btn primary" type="button" id="ajout-art-ok" aria-label="Ajouter">${ic("add")}</button></div>
+    ${W.coursesMsg?`<p class="ok" style="margin:8px 0 0">${esc(W.coursesMsg)}</p>`:""}
+    ${total?`<div class="rayons">${rayons}</div>`
+      :`<div class="empty">${ic("shopping_cart")}<strong>La liste est vide.</strong><span>Ajoutez des plats à votre semaine : leurs ingrédients arrivent ici tout seuls.</span><button class="btn primary" type="button" data-go-semaine>Remplir ma semaine</button></div>`}
+    ${placard.length?`<details class="more placard"><summary>${ic("inventory_2")}Déjà à la maison (${placard.length})</summary>
+      <p class="hint" style="margin:8px 0">Touchez un article pour le remettre dans la liste.</p>
+      <div class="row">${placard.map(it=>`<button class="chip" type="button" data-deplacard="${esc(it.k)}">${esc(it.nom)}${it.qte&&it.qte!=="au goût"?` · ${esc(it.qte)}`:""}</button>`).join("")}</div></details>`:""}`;
+}
+
+/* --- Panneaux --- */
+function candidats(){
+  return recettes.filter(r=>["Plat","Soupe","Salade"].includes(r.categorie)||(r.tags||[]).includes("One-pot"));
+}
+function tirerRecette(exclure){
+  const pool=candidats().filter(r=>!exclure.has(r.id));
+  if(!pool.length) return null;
+  const poids=pool.map(r=>1+2*(COEURS.get(r.id)||0));
+  let t=Math.random()*poids.reduce((a,b)=>a+b,0);
+  for(let i=0;i<pool.length;i++){ t-=poids[i]; if(t<=0) return pool[i]; }
+  return pool[pool.length-1];
+}
+function panneauxSemaine(){
+  if(S.sheet==="remplir"){
+    const corps=`<p class="hint" style="margin:0 0 12px">L'appli choisit dans votre carnet des plats variés, en privilégiant ceux qui ont le plus de cœurs. Seules les cases vides sont remplies${S.semaine===0?", à partir d'aujourd'hui":""}.</p>
+      <div class="sec"><span class="lbl">Quels repas ?</span><div class="row">${[["soir","Les soirs"],["midi-soir","Midis et soirs"],["midi","Les midis"]].map(([v,l])=>`<button class="chip" type="button" data-rempl="${v}" aria-pressed="${S.rempl===v}">${l}</button>`).join("")}</div></div>
+      <div class="sec"><span class="lbl">Pour combien ?</span><span>${FOYER.personnes} personnes par repas <span class="hint">(réglable dans Foyer)</span></span></div>`;
+    return panneau("Remplir ma semaine", corps, `<button class="btn" type="button" data-fermer-sheet>Annuler</button><button class="btn primary" type="button" id="remplir-go">${ic("auto_awesome")}Proposer</button>`);
+  }
+  if(S.sheet==="choisir"){
+    const q=norm(S.pickQ), [j,rp]=(S.slot||"|").split("|"), d=new Date(j+"T12:00");
+    const liste=recettes.filter(r=>!q||norm(r.titre+" "+(r.categorie||"")).includes(q)).sort((a,b)=>(COEURS.get(b.id)||0)-(COEURS.get(a.id)||0)||a.titre.localeCompare(b.titre,"fr"));
+    const corps=`<div class="hero-search"><span class="ms ico" aria-hidden="true">search</span><input class="input" id="pick-q" type="search" autocomplete="off" placeholder="Chercher une recette…" value="${esc(S.pickQ)}" aria-label="Chercher une recette"></div>
+      <div class="pick-liste">${liste.map(r=>`<button class="pick" type="button" data-mpick="${esc(r.id)}">${vignette(r)}<span class="pick-t"><b>${esc(r.titre)}</b><small>${esc(r.categorie||"")}${COEURS.get(r.id)?` · ♥ ${COEURS.get(r.id)}`:""}</small></span>${ic("add_circle")}</button>`).join("")||`<p class="hint">Aucune recette pour « ${esc(S.pickQ)} ».</p>`}</div>`;
+    return panneau(`${isNaN(d)?"Ajouter un plat":libJour(d)+" · "+(rp==="midi"?"midi":"soir")}`, corps, `<button class="btn" type="button" data-fermer-sheet>Fermer</button>`);
+  }
+  if(S.sheet==="foyer"){
+    const corps=`<div class="sec"><span class="lbl">Nombre de personnes par repas</span>
+        <div class="pers-grand"><button class="x" type="button" data-foyer="-1" aria-label="Moins">−</button><b class="mono">${FOYER.personnes}</b><button class="x" type="button" data-foyer="1" aria-label="Plus">+</button></div>
+        <span class="hint">Utilisé pour les nouveaux plats ajoutés au menu. Chaque plat reste réglable.</span></div>
+      <div class="sec"><span class="lbl">Toujours à la maison (placard)</span>
+        <p class="hint" style="margin:0 0 8px">Ces ingrédients ne sont pas ajoutés à la liste de courses.</p>
+        <div class="row">${(FOYER.placard||[]).map(p=>`<button class="chip on-style" type="button" data-placard-rm="${esc(p)}">${esc(cap(p))}<span class="x-in" aria-hidden="true">×</span></button>`).join("")||`<span class="hint">Vide.</span>`}</div></div>`;
+    return panneau("Notre foyer", corps, `<button class="btn primary" type="button" data-fermer-sheet>Terminé</button>`);
+  }
+  if(S.sheet==="ajmenu"){
+    const r=recettes.find(x=>x.id===S.ficheId); if(!r) return "";
+    const jours=joursSemaine(S.ajmSem), auj=isoJour(new Date());
+    const corps=`<div class="row" style="justify-content:space-between;margin-bottom:10px"><b>${esc(libSemaine(jours,S.ajmSem))}</b><span class="row"><button class="x" type="button" data-ajmsem="-1" aria-label="Semaine précédente" ${S.ajmSem<=0?"disabled":""}>‹</button><button class="x" type="button" data-ajmsem="1" aria-label="Semaine suivante">›</button></span></div>
+      <div class="ajm-grille">${jours.map(d=>{ const j=isoJour(d), passe=j<auj;
+        return `<span class="ajm-j${j===auj?" auj":""}">${libJour(d)}</span>${["midi","soir"].map(rp=>{ const n=MENU.filter(m=>m.jour===j&&m.repas===rp).length;
+          return `<button class="chip" type="button" data-ajm="${j}|${rp}" ${passe?"disabled":""}>${rp==="midi"?"Midi":"Soir"}${n?` <small>(${n})</small>`:""}</button>`; }).join("")}`; }).join("")}</div>`;
+    return panneau(`Ajouter « ${r.titre} » au menu`, corps, `<button class="btn" type="button" data-fermer-sheet>Annuler</button>`);
+  }
+  return "";
+}
+
+/* --- Actions --- */
+async function ajouterAuMenu(jour, repas, recId, pers){
+  const ligne={jour, repas, recette_id:recId, personnes:pers||FOYER.personnes};
+  const {data,error}=await sb.from("menu").insert(ligne).select("*").single();
+  if(error){ statusEl.textContent="Le plat n'a pas pu être ajouté. Vérifiez votre connexion."; return false; }
+  MENU.push(data); return true;
+}
+async function remplirSemaine(){
+  const auj=isoJour(new Date()), jours=joursSemaine().map(isoJour).filter(j=>S.semaine>0||j>=auj);
+  const repas=S.rempl==="midi-soir"?["midi","soir"]:[S.rempl];
+  const deja=new Set(MENU.filter(m=>jours.includes(m.jour)).map(m=>m.recette_id)), lignes=[];
+  for(const j of jours) for(const rp of repas){
+    if(MENU.some(m=>m.jour===j&&m.repas===rp)) continue;
+    let r=tirerRecette(deja); if(!r) r=tirerRecette(new Set(lignes.slice(-3).map(l=>l.recette_id)));   // carnet trop petit : on autorise les répétitions espacées
+    if(!r) continue;
+    deja.add(r.id); lignes.push({jour:j, repas:rp, recette_id:r.id, personnes:FOYER.personnes});
+  }
+  S.sheet=null;
+  if(!lignes.length){ W.semMsg="Tout est déjà rempli pour ces repas."; render(); return; }
+  const {data,error}=await sb.from("menu").insert(lignes).select("*");
+  if(error){ statusEl.textContent="Le menu n'a pas pu être rempli. Vérifiez votre connexion."; render(); return; }
+  MENU.push(...(data||[])); render();
+}
+async function majFoyer(){ await sb.from("reglages").upsert({cle:"foyer", valeur:FOYER, modifie_le:new Date().toISOString()}); }
+function texteCourses(){
+  const items=listeCourses().filter(i=>!i.placard&&!COCHES.has(cleCoche(i.k)));
+  const lignes=[`Liste de courses – ${libSemaine(joursSemaine())}`];
+  for(const [k,l] of RAYONS){
+    const a=items.filter(x=>x.rayon===k).map(x=>`• ${x.nom}${x.qte&&x.qte!=="au goût"?" – "+x.qte:""}`), x=EXTRAS.filter(e=>(e.rayon||"dv")===k&&!e.coche).map(e=>`• ${e.nom}`);
+    if(a.length||x.length) lignes.push("", l.toUpperCase(), ...a, ...x);
+  }
+  return lignes.join("\n");
+}
+// Synchronisation entre les téléphones (toutes les 8 s sur ces pages)
+let SIG_COURSES="";
+async function rafraichirCourses(){
+  if(!MOI?.admin || !["semaine","courses"].includes(S.vue) || document.hidden || S.sheet || document.activeElement?.matches?.("input,textarea")) return;
+  await chargerCourses();
+  const sig=JSON.stringify([MENU.map(m=>m.id+m.recette_id+m.personnes),EXTRAS.map(e=>e.id+e.coche),[...COCHES].sort()]);
+  if(sig!==SIG_COURSES){ SIG_COURSES=sig; const y=scrollY; render(); scrollTo({top:y}); }
+}
+setInterval(rafraichirCourses, 8000);
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) rafraichirCourses(); });
+async function clicSemaine(t,d){
+  const garde=fn=>{ const y=scrollY; fn(); render(); scrollTo({top:y}); };
+  if("goCourses" in d){ W.coursesMsg=""; aller("courses"); return true; }
+  if("goSemaine" in d){ aller("semaine"); return true; }
+  if(d.sem){ S.semaine+=+d.sem; W.coursesMsg=""; render(); return true; }
+  if(d.rempl){ S.rempl=d.rempl; render(); return true; }
+  if(t.id==="remplir-go"){ t.disabled=true; await remplirSemaine(); return true; }
+  if(d.choisir){ S.slot=d.choisir; S.pickQ=""; S.sheet="choisir"; render(); return true; }
+  if(d.mpick){ const [j,rp]=S.slot.split("|"); S.sheet=null; if(await ajouterAuMenu(j,rp,d.mpick)) render(); return true; }
+  if(d.mrm){ const m=MENU.find(x=>x.id===d.mrm); garde(()=>{ MENU=MENU.filter(x=>x.id!==d.mrm); }); const {error}=await sb.from("menu").delete().eq("id",d.mrm); if(error&&m){ MENU.push(m); render(); } return true; }
+  if(d.mpers){ const [id,dx]=d.mpers.split("|"), m=MENU.find(x=>x.id===id); if(!m) return true; const v=Math.min(30,Math.max(1,m.personnes+(+dx))); if(v===m.personnes) return true; garde(()=>{ m.personnes=v; }); await sb.from("menu").update({personnes:v}).eq("id",id); return true; }
+  if(d.mchange){ const m=MENU.find(x=>x.id===d.mchange); if(!m) return true; const sem=new Set(joursSemaine().map(isoJour)); const r=tirerRecette(new Set(MENU.filter(x=>sem.has(x.jour)).map(x=>x.recette_id))); if(!r){ statusEl.textContent="Pas d'autre plat disponible dans le carnet."; return true; } garde(()=>{ m.recette_id=r.id; }); await sb.from("menu").update({recette_id:r.id}).eq("id",m.id); return true; }
+  if(d.foyer){ FOYER.personnes=Math.min(30,Math.max(1,FOYER.personnes+(+d.foyer))); render(); majFoyer(); return true; }
+  if(d.placardRm){ FOYER.placard=(FOYER.placard||[]).filter(p=>p!==d.placardRm); render(); majFoyer(); return true; }
+  if(d.placard){ const it=listeCourses().find(x=>x.k===d.placard); FOYER.placard=[...new Set([...(FOYER.placard||[]), (it?it.nom:d.placard).toLowerCase()])]; garde(()=>{}); majFoyer(); return true; }
+  if(d.deplacard){ FOYER.placard=(FOYER.placard||[]).filter(p=>sing(p)!==d.deplacard); garde(()=>{}); majFoyer(); return true; }
+  if(d.art){ const cle=cleCoche(d.art), avait=COCHES.has(cle); garde(()=>{ avait?COCHES.delete(cle):COCHES.add(cle); });
+    const {error}= avait ? await sb.from("courses_coches").delete().eq("cle",cle) : await sb.from("courses_coches").upsert({cle});
+    if(error){ avait?COCHES.add(cle):COCHES.delete(cle); render(); } return true; }
+  if(d.extra){ const e=EXTRAS.find(x=>x.id===d.extra); if(!e) return true; garde(()=>{ e.coche=!e.coche; }); await sb.from("courses_extra").update({coche:e.coche}).eq("id",e.id); return true; }
+  if(d.xrm){ garde(()=>{ EXTRAS=EXTRAS.filter(x=>x.id!==d.xrm); }); await sb.from("courses_extra").delete().eq("id",d.xrm); return true; }
+  if(t.id==="ajout-art-ok"){ await ajouterArticle(); return true; }
+  if(t.id==="courses-decocher"){ const sk=isoJour(joursSemaine()[0])+"|", cles=[...COCHES].filter(c=>c.startsWith(sk)); garde(()=>{ cles.forEach(c=>COCHES.delete(c)); EXTRAS.forEach(e=>e.coche=false); });
+    if(cles.length) await sb.from("courses_coches").delete().in("cle",cles); await sb.from("courses_extra").update({coche:false}).eq("coche",true); return true; }
+  if(t.id==="courses-envoyer"){ const txt=texteCourses();
+    try{ if(navigator.share){ await navigator.share({title:"Liste de courses", text:txt}); return true; } }catch(e){ if(e&&e.name==="AbortError") return true; }
+    try{ await navigator.clipboard.writeText(txt); W.coursesMsg="Liste copiée : collez-la dans WhatsApp ou un SMS."; }catch{ W.coursesMsg="Impossible de copier la liste sur cet appareil."; } render(); return true; }
+  if(d.ajmsem){ S.ajmSem=Math.max(0,S.ajmSem+(+d.ajmsem)); render(); return true; }
+  if(d.ajm){ const [j,rp]=d.ajm.split("|"), r=recettes.find(x=>x.id===S.ficheId); S.sheet=null;
+    const pers=S.personnes??FOYER.personnes;
+    if(await ajouterAuMenu(j,rp,S.ficheId,pers)){ const dd=new Date(j+"T12:00"); W.ficheMsg=`Ajouté au menu : ${libJour(dd)} ${rp==="midi"?"midi":"soir"}, pour ${pers} personne${pers>1?"s":""}.`; }
+    render(); return true; }
+  return false;
+}
+async function ajouterArticle(){
+  const el=document.getElementById("ajout-art"), nom=(el?.value||"").trim(); if(!nom) { focusId("ajout-art"); return; }
+  const {data,error}=await sb.from("courses_extra").insert({nom:cap(nom).slice(0,80), rayon:rayonDe(nom)}).select("*").single();
+  if(error){ statusEl.textContent="L'article n'a pas pu être ajouté."; return; }
+  EXTRAS.push(data); W.coursesMsg=""; const y=scrollY; render(); scrollTo({top:y}); focusId("ajout-art");
+}
+
 function render(garderFocus){
   const a=document.activeElement, fid=a&&a.id, sel=a&&a.selectionStart;
   const corpsSheet=document.getElementById("sheet-corps"), sheetY=corpsSheet?corpsSheet.scrollTop:0;
-  app.innerHTML = S.vue==="attente"?`<div class="empty">${ic("skillet")}<span>Ouverture du carnet…</span></div>`:S.vue==="login"?vueLogin():S.vue==="fiche"||S.vue==="apercu"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():S.vue==="miennes"?vueMiennes():S.vue==="valider"?vueValider():vueListe();
+  app.innerHTML = S.vue==="attente"?`<div class="empty">${ic("skillet")}<span>Ouverture du carnet…</span></div>`:S.vue==="login"?vueLogin():S.vue==="fiche"||S.vue==="apercu"?vueFiche():S.vue==="form"?vueForm():S.vue==="profils"?vueProfils():S.vue==="miennes"?vueMiennes():S.vue==="valider"?vueValider():S.vue==="semaine"&&MOI?.admin?vueSemaine():S.vue==="courses"&&MOI?.admin?vueCourses():vueListe();
+  if(["remplir","choisir","foyer","ajmenu"].includes(S.sheet)) app.insertAdjacentHTML("beforeend", panneauxSemaine());
   document.getElementById("hdr-avs").innerHTML = MOI ? avatar(monAvatarNom(),"hd") : "";
+  const tb=document.getElementById("tabbar");
   const enAttente = PROPS.filter(p=>p.statut==="en_attente").length;
   const extraL = MOI&&MOI.admin ? "À valider" : "Mes recettes";
   for(const id of ["tab-extra-l","nav-extra-l"]){ const el=document.getElementById(id); if(el) el.textContent=extraL; }
@@ -1723,9 +2070,14 @@ function render(garderFocus){
   document.getElementById("tab-add-l").textContent = MOI&&!MOI.admin ? "Proposer" : "Ajouter";
   document.getElementById("nav-ajout").lastChild.textContent = MOI&&!MOI.admin ? "Proposer" : "Ajouter";
   document.getElementById("nav-extra").hidden = !MOI || S.vue==="form";
-  document.getElementById("nav-hasard").hidden = !MOI;
+  const adm=!!MOI?.admin;
+  document.getElementById("nav-hasard").hidden = !MOI || adm;
+  for(const id of ["nav-semaine","nav-courses"]) document.getElementById(id).hidden = !adm || S.vue==="form";
+  tb.querySelector('[data-tab="frigo"]').hidden = adm; tb.querySelector('[data-tab="hasard"]').hidden = adm;
+  tb.querySelector('[data-tab="semaine"]').hidden = !adm; tb.querySelector('[data-tab="courses"]').hidden = !adm;
+  tb.querySelector('[data-tab="semaine"]').setAttribute("aria-current", S.vue==="semaine"?"page":"false");
+  tb.querySelector('[data-tab="courses"]').setAttribute("aria-current", S.vue==="courses"?"page":"false");
   document.getElementById("nav-profils").hidden = !MOI;
-  const tb=document.getElementById("tabbar");
   tb.hidden = ["form","login","attente"].includes(S.vue) || S.selMode || !!S.sheet || !!S.viewer;
   tb.querySelector('[data-tab="home"]').setAttribute("aria-current", S.vue==="liste"?"page":"false");
   tb.querySelector('[data-tab="add"]').hidden = !peutEcrire;
@@ -1752,6 +2104,8 @@ function allerEtape(k){
 document.getElementById("home").onclick=()=>aller("liste");
 document.getElementById("nav-ajout").onclick=ouvrirAjout;
 document.getElementById("nav-hasard").onclick=auHasard;
+document.getElementById("nav-semaine").onclick=()=>aller("semaine");
+document.getElementById("nav-courses").onclick=()=>{ W.coursesMsg=""; aller("courses"); };
 document.getElementById("nav-profils").onclick=()=>aller("profils");
 document.getElementById("nav-extra").onclick=()=>{ W.msg=""; aller(MOI&&MOI.admin?"valider":"miennes"); };
 function auHasard(){
@@ -1768,7 +2122,9 @@ document.getElementById("tabbar").addEventListener("click",e=>{
   else if(t==="add") ouvrirAjout();
   else if(t==="hasard") auHasard();
   else if(t==="extra"){ W.msg=""; aller(MOI&&MOI.admin?"valider":"miennes"); }
-  else if(t==="frigo"){ S.vue="liste"; render(); document.getElementById("frigo")?.scrollIntoView({behavior:"smooth",block:"start"}); }
+  else if(t==="frigo"){ if(S.vue!=="liste") aller("liste"); S.sheet="frigo"; S.frigoQ=""; render(); }
+  else if(t==="semaine") aller("semaine");
+  else if(t==="courses"){ W.coursesMsg=""; aller("courses"); }
 });
 
 function ajouterIngr(nom, depuisSaisie){
@@ -1788,6 +2144,7 @@ app.addEventListener("click", async e=>{
   if(coeur){ e.preventDefault(); if(S.lpFired){ S.lpFired=false; return; } basculerCoeur(coeur.dataset.coeur); return; }
   const t=e.target.closest("button"); if(!t) return;
   const d=t.dataset;
+  if(MOI?.admin && await clicSemaine(t,d)) return;
   /* accueil */
   if(d.sheet){ S.sheet=d.sheet; S.frigoQ=""; render(); if(d.sheet==="frigo" && S.ingr.length<MAX_FRIGO) focusId("frigo-q"); return; }
   if("fermerSheet" in d){ S.sheet=null; render(); document.getElementById("resultats")?.scrollIntoView({block:"start"}); return; }
@@ -1813,7 +2170,7 @@ app.addEventListener("click", async e=>{
     if(error){ alertMsg("La suppression n'a pas abouti. Réessayez."); S.selConfirm=false; render(); return; }
     await chargerTout(); quitterSelection(); render(); alertMsg(`${ids.length} recette${ids.length>1?"s":""} supprimée${ids.length>1?"s":""}.`); setTimeout(()=>majStatus(),4000); return;
   }
-  if(d.open){ S.detOuvert=new Set(); S.coches=new Set(); S.ficheId=d.open; S.personnes=null; aller("fiche"); return; }
+  if(d.open){ W.ficheMsg=""; S.ajmSem=0; S.detOuvert=new Set(); S.coches=new Set(); S.ficheId=d.open; S.personnes=null; aller("fiche"); return; }
   if("back" in d){ aller("liste"); return; }
   if("goAjout" in d){ ouvrirAjout(); return; }
   if(d.add){ if(d.add==="ingr" && !S.ingr.includes(d.v) && S.ingr.length>=MAX_FRIGO){ return; } if(S.sheet==="frigo") S.frigoQ=""; if(!S[d.add].includes(d.v)) S[d.add].push(d.v); S.q=""; S.sugMasque=false; render(); return; }
@@ -1887,6 +2244,7 @@ app.addEventListener("input", e=>{
   if(t.id==="moi-prenom" && MOI){ MOI.prenom=t.value; return; }
   if(t.id==="q"){ S.q=t.value; S.sugMasque=false; render(true); return; }
   if(t.id==="frigo-q"){ S.frigoQ=t.value; render(true); return; }
+  if(t.id==="pick-q"){ S.pickQ=t.value; render(true); return; }
   if(!B) return;
   if(t.id==="ing-add"){ W.ingQ=t.value; render(true); return; }
   if(t.dataset.b){ B[t.dataset.b]=t.value; if(t.id==="d") {} garderBrouillon(); return; }
@@ -1922,6 +2280,7 @@ app.addEventListener("drop", e=>{ const z=e.target.closest("[data-drop]"); if(!z
 app.addEventListener("keydown", e=>{
   if((e.key==="Enter"||e.key===" ") && e.target.matches?.("span[data-coeur]")){ e.preventDefault(); e.stopPropagation(); basculerCoeur(e.target.dataset.coeur); return; }
   const t=e.target;
+  if(t.id==="ajout-art" && e.key==="Enter"){ e.preventDefault(); ajouterArticle(); return; }
   if(t.id==="frigo-q" && e.key==="Enter"){ e.preventDefault(); const b=app.querySelector('.sheet [data-add="ingr"]'); if(b) b.click(); return; }
   if(e.key==="Escape" && (S.sheet||S.viewer)){ S.sheet=null; S.viewer=null; render(); return; }
   if(S.viewer && (e.key==="ArrowRight"||e.key==="ArrowLeft")){ const p=document.getElementById("viewer-piste"); defiler(p, e.key==="ArrowRight"?1:-1); return; }
@@ -2060,7 +2419,7 @@ const lpStop=()=>{ clearTimeout(lpTimer); };
 app.addEventListener("pointerup", lpStop); app.addEventListener("pointercancel", lpStop);
 app.addEventListener("pointermove", e=>{ if(Math.abs(e.clientX-lpX)>10||Math.abs(e.clientY-lpY)>10) lpStop(); });
 app.addEventListener("contextmenu", e=>{ if(e.target.closest(".card")) e.preventDefault(); });
-document.addEventListener("keydown", e=>{ if(e.key==="Escape" && S.selMode){ quitterSelection(); render(); } });
+document.addEventListener("keydown", e=>{ if(e.key!=="Escape") return; if(S.sheet||S.viewer){ if(!app.contains(document.activeElement)){ S.sheet=null; S.viewer=null; render(); } return; } if(S.selMode){ quitterSelection(); render(); } });
 // Passe à la photo suivante / précédente (et repart au début après la dernière)
 function defiler(p, pas){
   if(!p) return;
